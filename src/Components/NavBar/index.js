@@ -1,13 +1,14 @@
 import { useState } from 'react';
 
-import { Drawer, Button } from 'antd';
+import { Drawer, Button, Grid } from 'antd';
 import LeftMenu from './LeftMenu';
 import RightMenu from './RightMenu';
+import { Link } from 'react-router-dom';
 
-import './index.css';
+const { useBreakpoint } = Grid;
 
 export default function NavBar() {
-  // const [current, setCurrent] = useState('mail');
+  const { md } = useBreakpoint();
   const [visible, setVisible] = useState(false);
 
   const showDrawer = () => {
@@ -20,7 +21,7 @@ export default function NavBar() {
   return (
     <nav className='menuBar alignItem'>
       <div className='logo'>
-        <a>logo</a>
+        <Link to='/'>logo</Link>
       </div>
       <div className='menuCon'>
         <div className='leftMenu'>
@@ -29,11 +30,17 @@ export default function NavBar() {
         <div className='rightMenu'>
           <RightMenu />
         </div>
-        <Button className='barsMenu' type='primary' onClick={showDrawer}>
-          <span className='barsBtn'></span>
-        </Button>
+        {md ? (
+          <></>
+        ) : (
+          <Button className='barsMenu center' style={{ display: 'flex' }} onClick={showDrawer}>
+            <span className='barsBtn'></span>
+          </Button>
+        )}
+
         <Drawer
-          title='Basic Drawer'
+          title='Menu'
+          bodyStyle={{ padding: 0 }}
           placement='right'
           closable={false}
           onClose={onClose}

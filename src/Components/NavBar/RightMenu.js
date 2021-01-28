@@ -1,30 +1,32 @@
-import React from 'react';
 import { Menu, Grid } from 'antd';
+import { Link } from 'react-router-dom';
 
-const { useBreakpoint } = Grid;
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
+const { useBreakpoint } = Grid;
+
 const RightMenu = () => {
   const { md } = useBreakpoint();
+
   return (
     <Menu mode={md ? 'horizontal' : 'inline'}>
       <Menu.Item key='create'>
-        <a href=''>Create</a>
+        <Link to='/create'>Create</Link>
       </Menu.Item>
       <Menu.Item key='help'>
-        <a href=''>Help</a>
+        <Link to='/help'>Help</Link>
       </Menu.Item>
       <Menu.Item key='contact'>
-        <a href=''>Contact</a>
+        <Link to='/contact'>Contact</Link>
       </Menu.Item>
       <SubMenu
-        key='avatar'
+        key='sub1'
         title={
-          <span
+          <div
             style={{ fontSize: '30px', height: '40px', display: 'flex' }}
             className='fas fa-user-circle'
-          ></span>
+          ></div>
         }
       >
         <MenuItemGroup title='Item 1'>
