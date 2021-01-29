@@ -59,7 +59,7 @@
 
 .leftMenu {
   height: 48px;
-
+  width: 40%;
 }
 
 .menuCon .leftMenu {
@@ -124,6 +124,12 @@
 
 .ant-drawer-body .ant-menu-horizontal>.ant-menu-item:hover {
   border-bottom-color: transparent;
+}
+
+@media (max-width: 1024px) {
+  .leftMenu {
+    width: 30%;
+  }
 }
 
 @media (max-width: 767px) {

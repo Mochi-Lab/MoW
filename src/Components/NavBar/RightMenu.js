@@ -1,8 +1,8 @@
 import { Menu, Grid } from 'antd';
 import { Link } from 'react-router-dom';
+import ConnectWallet from 'Components/ConnectWallet';
 
 const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 
 const { useBreakpoint } = Grid;
 
@@ -20,6 +20,7 @@ const RightMenu = () => {
       <Menu.Item key='contact'>
         <Link to='/contact'>Contact</Link>
       </Menu.Item>
+      <ConnectWallet />
       <SubMenu
         key='sub1'
         title={
@@ -29,10 +30,8 @@ const RightMenu = () => {
           ></div>
         }
       >
-        <MenuItemGroup title='Item 1'>
-          <Menu.Item key='setting:1'>Option 1</Menu.Item>
-          <Menu.Item key='setting:2'>Option 2</Menu.Item>
-        </MenuItemGroup>
+        <Menu.Item key='setting:1'>Option 1</Menu.Item>
+        <Menu.Item key='setting:2'>Option 2</Menu.Item>
       </SubMenu>
     </Menu>
   );
