@@ -1,4 +1,4 @@
-import * as actions from './actions';
+import * as actions from 'store/actions';
 
 const initialState = {
   web3: null,
@@ -35,4 +35,5 @@ const rootReducer = (state = initialState, action) => {
       return state;
   }
 };
+
 export default rootReducer;

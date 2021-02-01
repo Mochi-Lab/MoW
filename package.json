@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "3box": "^1.22.2",
+    "@ant-design/icons": "^4.4.0",
     "@portis/web3": "^3.0.3",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",

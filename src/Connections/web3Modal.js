@@ -4,7 +4,7 @@ import Authereum from 'authereum';
 import Fortmatic from 'fortmatic';
 import Portis from '@portis/web3';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import { setChainId, setWeb3 } from 'store/actions';
+import { setChainId, setWeb3, setAddress } from 'store/actions';
 import store from 'store/index';
 
 export const providerOptions = {
@@ -42,25 +42,28 @@ export const connectWeb3Modal = async () => {
 
   const web3 = new Web3(provider);
 
-  let chainId = await web3.eth.net.getId();
+  store.dispatch(setWeb3(web3));
 
-  console.log(store);
+  let chainId = await web3.eth.net.getId();
+  let account = await web3.eth.getAccounts();
+
   if (chainId === 1 || chainId === 4 || chainId === 3) {
     store.dispatch(setChainId(chainId));
+    store.dispatch(setAddress(account[0]));
   } else {
     alert('Please change to Mainnet or Rinkeby or Ropsten testnet');
   }
 
-  store.dispatch(setWeb3(web3));
-
   // Subscribe to accounts change
   provider.on('accountsChanged', (accounts) => {
     console.log(accounts);
+    store.dispatch(setAddress(accounts[0]));
   });
 
   // Subscribe to chainId change
   provider.on('chainChanged', (chainId) => {
     console.log(chainId);
+    store.dispatch(setChainId(chainId));
   });
 
   // Subscribe to provider connection
@@ -71,5 +74,6 @@ export const connectWeb3Modal = async () => {
   // Subscribe to provider disconnection
   provider.on('disconnect', (error) => {
     console.log(error);
+    store.dispatch(setAddress(''));
   });
 };

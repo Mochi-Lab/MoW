@@ -11,7 +11,6 @@ export default function ConnectWallet() {
 
   return (
     <>
-      {console.log(web3)}
       <Button shape='round' onClick={() => connect()}>
         {!!web3 ? (
           <>
