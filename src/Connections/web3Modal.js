@@ -4,10 +4,30 @@ import Authereum from 'authereum';
 import Fortmatic from 'fortmatic';
 import Portis from '@portis/web3';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import { setChainId, setWeb3, setAddress } from 'store/actions';
+import { setChainId, setWeb3, setAddress, setThreebox } from 'store/actions';
 import store from 'store/index';
+import Box from '3box';
 
-export const providerOptions = {
+const getThreeBox = async (address) => {
+  const profile = await Box.getProfile(address);
+  return profile;
+};
+
+const Sync3Box = async (address, provider) => {
+  try {
+    const threeBoxProfile = await getThreeBox(address);
+
+    const box = await Box.openBox(address, provider);
+
+    await box.syncDone;
+
+    store.dispatch(setThreebox(threeBoxProfile, box));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
@@ -43,21 +63,23 @@ export const connectWeb3Modal = async () => {
   const web3 = new Web3(provider);
 
   store.dispatch(setWeb3(web3));
+  let accounts = await web3.eth.getAccounts();
 
-  let chainId = await web3.eth.net.getId();
-  let account = await web3.eth.getAccounts();
-
-  if (chainId === 1 || chainId === 4 || chainId === 3) {
-    store.dispatch(setChainId(chainId));
-    store.dispatch(setAddress(account[0]));
-  } else {
-    alert('Please change to Mainnet or Rinkeby or Ropsten testnet');
+  if (accounts.length > 0) {
+    let chainId = await web3.eth.net.getId();
+    Sync3Box(accounts[0], provider);
+    if (chainId === 1 || chainId === 4 || chainId === 3) {
+      store.dispatch(setChainId(chainId));
+      store.dispatch(setAddress(accounts[0]));
+    } else {
+      alert('Please change to Mainnet or Rinkeby or Ropsten testnet');
+    }
   }
 
   // Subscribe to accounts change
   provider.on('accountsChanged', (accounts) => {
-    console.log(accounts);
     store.dispatch(setAddress(accounts[0]));
+    Sync3Box(accounts[0], provider);
   });
 
   // Subscribe to chainId change

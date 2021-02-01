@@ -1,6 +1,9 @@
 import * as actions from 'store/actions';
 
 const initialState = {
+  threeboxProfile: null,
+  box: null,
+  space: null,
   web3: null,
   chainId: null,
   walletAddress: null,
@@ -10,6 +13,17 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.SET_THREEBOX:
+      return {
+        ...state,
+        threeboxProfile: action.threeboxProfile,
+        box: action.box,
+      };
+    case actions.SET_SPACE:
+      return {
+        ...state,
+        space: action.space,
+      };
     case actions.SET_WEB3:
       return {
         ...state,

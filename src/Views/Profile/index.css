@@ -8,14 +8,14 @@
 .banner {
   height: 320px;
   width: 940px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
 }
 
 .banner > img {
   height: 100%;
   width: 100%;
-  object-fit: 'cover';
+  object-fit: cover;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
 .avatar {
@@ -57,6 +57,6 @@
   border-radius: 16px;
   background-color: rgba(222, 222, 222, 0.6);
   position: absolute;
-  right: 7px;
-  bottom: 7px;
+  right: 20px;
+  bottom: 20px;
 }

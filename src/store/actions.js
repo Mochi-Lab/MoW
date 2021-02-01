@@ -1,11 +1,25 @@
 import { parseBalance } from 'utils/helper';
 
-export const SET_WEB3 = 'SET_WEB3';
-export const setWeb3 = (web3) => (dispatch, getState) => {
-  dispatch({ type: SET_WEB3, web3 });
-  let { chainId } = getState();
+////////////////////
+// 3box
+////////////////////
 
-  dispatch(setChainId(chainId));
+export const SET_THREEBOX = 'SET_THREEBOX';
+export const setThreebox = (threeboxProfile, box) => (dispatch) => {
+  dispatch({ type: SET_THREEBOX, threeboxProfile, box });
+};
+
+export const SET_SPACE = 'SET_SPACE';
+export const setSpace = (space) => (dispatch) => {
+  dispatch({ type: SET_SPACE, space });
+};
+////////////////////
+// Contract
+////////////////////
+
+export const SET_WEB3 = 'SET_WEB3';
+export const setWeb3 = (web3) => (dispatch) => {
+  dispatch({ type: SET_WEB3, web3 });
 };
 
 export const SET_CHAINID = 'SET_CHAINID';

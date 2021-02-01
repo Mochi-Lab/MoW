@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "3box": "^1.22.2",
+    "3box-profile-edit-react": "^0.0.9",
     "@ant-design/icons": "^4.4.0",
     "@portis/web3": "^3.0.3",
     "@testing-library/jest-dom": "^5.11.9",
