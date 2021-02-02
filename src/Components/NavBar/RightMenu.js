@@ -1,14 +1,15 @@
 import { Menu, Grid } from 'antd';
 import { Link } from 'react-router-dom';
+import ConnectWallet from 'Components/ConnectWallet';
+import { useSelector } from 'react-redux';
 
 const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 
 const { useBreakpoint } = Grid;
 
 const RightMenu = () => {
   const { md } = useBreakpoint();
-
+  const shortAddress = useSelector((state) => state.shortAddress);
   return (
     <Menu mode={md ? 'horizontal' : 'inline'}>
       <Menu.Item key='create'>
@@ -20,6 +21,7 @@ const RightMenu = () => {
       <Menu.Item key='contact'>
         <Link to='/contact'>Contact</Link>
       </Menu.Item>
+      <ConnectWallet />
       <SubMenu
         key='sub1'
         title={
@@ -29,10 +31,14 @@ const RightMenu = () => {
           ></div>
         }
       >
-        <MenuItemGroup title='Item 1'>
-          <Menu.Item key='setting:1'>Option 1</Menu.Item>
-          <Menu.Item key='setting:2'>Option 2</Menu.Item>
-        </MenuItemGroup>
+        <Menu.Item key='setting:1'>
+          <strong>{shortAddress}</strong>
+        </Menu.Item>
+        <Menu.Item key='setting:2'>
+          <Link to='profile'>
+            <strong>Profile</strong>
+          </Link>
+        </Menu.Item>
       </SubMenu>
     </Menu>
   );
