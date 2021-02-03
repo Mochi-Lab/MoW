@@ -4,9 +4,11 @@ import Authereum from 'authereum';
 import Fortmatic from 'fortmatic';
 import Portis from '@portis/web3';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import { setChainId, setWeb3, setAddress, setThreebox } from 'store/actions';
+import { setChainId, setWeb3, setAddress, setThreebox, initERC721 } from 'store/actions';
 import store from 'store/index';
 import Box from '3box';
+
+import { erc721List } from 'utils/testList';
 
 const getThreeBox = async (address) => {
   const profile = await Box.getProfile(address);
@@ -67,10 +69,16 @@ export const connectWeb3Modal = async () => {
 
   if (accounts.length > 0) {
     let chainId = await web3.eth.net.getId();
+
+    // Sync 3box
     Sync3Box(accounts[0], provider);
+
     if (chainId === 1 || chainId === 4 || chainId === 3) {
       store.dispatch(setChainId(chainId));
       store.dispatch(setAddress(accounts[0]));
+
+      // Init ERC721
+      store.dispatch(initERC721(erc721List));
     } else {
       alert('Please change to Mainnet or Rinkeby or Ropsten testnet');
     }
@@ -79,13 +87,15 @@ export const connectWeb3Modal = async () => {
   // Subscribe to accounts change
   provider.on('accountsChanged', (accounts) => {
     store.dispatch(setAddress(accounts[0]));
+    store.dispatch(initERC721(erc721List));
     Sync3Box(accounts[0], provider);
   });
 
   // Subscribe to chainId change
   provider.on('chainChanged', (chainId) => {
-    console.log(chainId);
+    chainId = parseInt(chainId.substring(2));
     store.dispatch(setChainId(chainId));
+    store.dispatch(initERC721(erc721List));
   });
 
   // Subscribe to provider connection

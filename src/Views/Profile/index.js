@@ -1,10 +1,12 @@
-import { Tabs } from 'antd';
-
-import './index.css';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Tabs } from 'antd';
+import { WalletOutlined, HistoryOutlined } from '@ant-design/icons';
 import ConnectWallet from 'Components/ConnectWallet';
+import ERC721Filter from 'Components/ERC721Filter';
 import Edit from './Edit';
+
+import './index.css';
 
 const { TabPane } = Tabs;
 
@@ -76,12 +78,28 @@ export default function Profile() {
               )}
             </div>
           </div>
-          <div>
+          <div style={{ width: '95vw' }}>
             <Tabs defaultActiveKey='1' type='card' size={'large'}>
-              <TabPane tab={<strong>ERC 721</strong>} key='1'>
-                Content of card tab 1
+              <TabPane
+                tab={
+                  <div>
+                    <WalletOutlined />
+                    <strong>My Wallet</strong>
+                  </div>
+                }
+                key='1'
+              >
+                <ERC721Filter />
               </TabPane>
-              <TabPane tab={<strong>ERC 1155s</strong>} key='2'>
+              <TabPane
+                tab={
+                  <div>
+                    <HistoryOutlined />
+                    <strong>Activity</strong>
+                  </div>
+                }
+                key='2'
+              >
                 Content of card tab 2
               </TabPane>
               <TabPane tab={<strong>Card Tab 3</strong>} key='3'>
