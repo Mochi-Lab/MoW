@@ -10,7 +10,7 @@ function App() {
   return (
     <BrowserRouter>
       <NavBar />
-      <div className='page center'>
+      <div className='center'>
         <Switch>
           <Route exact path='/' component={Home} />
           <Route exact path='/profile' component={Profile} />

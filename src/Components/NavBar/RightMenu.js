@@ -31,9 +31,14 @@ const RightMenu = () => {
           ></div>
         }
       >
-        <Menu.Item key='setting:1'>
-          <strong>{shortAddress}</strong>
-        </Menu.Item>
+        {shortAddress ? (
+          <Menu.Item key='setting:1'>
+            <strong>{shortAddress}</strong>
+          </Menu.Item>
+        ) : (
+          <></>
+        )}
+
         <Menu.Item key='setting:2'>
           <Link to='profile'>
             <strong>Profile</strong>
