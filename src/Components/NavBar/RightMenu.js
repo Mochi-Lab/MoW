@@ -40,7 +40,7 @@ const RightMenu = () => {
         )}
 
         <Menu.Item key='setting:2'>
-          <Link to='profile'>
+          <Link to='/profile'>
             <strong>Profile</strong>
           </Link>
         </Menu.Item>

@@ -1,25 +1,28 @@
 import { Card, Row, Col, Input } from 'antd';
 import './index.css';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const { Meta } = Card;
 
 function ERC721Card({ token, name }) {
   return (
     <Col className='gutter-row' span={8}>
-      <Card
-        hoverable
-        style={{ width: '100%', margin: 'auto', padding: '12px' }}
-        cover={<img className='erc721-img' alt={token.index} src={token.detail.image} />}
-      >
-        <Meta title={<strong>{token.detail.name}</strong>} description={name} />
-      </Card>
+      <Link to={`/token/${token.addressToken}/${token.index}`}>
+        <Card
+          hoverable
+          style={{ width: '100%', margin: 'auto', padding: '12px' }}
+          cover={<img className='erc721-img' alt={token.index} src={token.detail.image} />}
+        >
+          <Meta title={<strong>{token.detail.name}</strong>} description={name} />
+        </Card>
+      </Link>
     </Col>
   );
 }
 
 export default function ERC721({ tokens }) {
-  const [afterFilter, setafterFilter] = useState(tokens.tokens);
+  const [afterFilter, setafterFilter] = useState(!!tokens ? tokens.tokens : null);
 
   const searchNFT = (text) => {
     let filter = tokens.tokens.filter((token) => {

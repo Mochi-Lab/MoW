@@ -7,6 +7,7 @@ import ERC721Filter from 'Components/ERC721Filter';
 import Edit from './Edit';
 
 import './index.css';
+import TransactionTable from 'Components/TransactionTable';
 
 const { TabPane } = Tabs;
 
@@ -100,7 +101,7 @@ export default function Profile() {
                 }
                 key='2'
               >
-                Content of card tab 2
+                <TransactionTable />
               </TabPane>
               <TabPane tab={<strong>Card Tab 3</strong>} key='3'>
                 Content of card tab 3
