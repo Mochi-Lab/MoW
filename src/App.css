@@ -22,12 +22,6 @@
   float: left;
 }
 
-.ant-menu-submenu {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .logo a {
   display: inline-block;
   font-size: 20px;

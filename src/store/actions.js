@@ -89,6 +89,7 @@ export const getOwnedERC721 = (erc721Instances) => async (dispatch, getState) =>
           let token = {};
           token.index = await instance.methods.tokenOfOwnerByIndex(walletAddress, i).call();
           token.tokenURI = await instance.methods.tokenURI(token.index).call();
+          token.addressToken = instance._address;
           let req = await axios.get(token.tokenURI);
           token.detail = req.data;
           ERC721token.tokens.push(token);
