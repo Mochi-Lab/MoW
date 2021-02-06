@@ -1,6 +1,14 @@
 import { parseBalance } from 'utils/helper';
 import ERC721 from 'Contracts/ERC721.json';
+import AddressesProvider from 'Contracts/AddressesProvider.json';
+import Market from 'Contracts/Market.json';
+import NFTList from 'Contracts/NFTList.json';
+import SellOrderList from 'Contracts/SellOrderList.json';
+import Vault from 'Contracts/Vault.json';
 import axios from 'axios';
+import { getContractAddress } from 'utils/getContractAddress';
+
+var contractAddress;
 
 ////////////////////
 // 3box
@@ -20,8 +28,23 @@ export const setSpace = (space) => (dispatch) => {
 ////////////////////
 
 export const SET_WEB3 = 'SET_WEB3';
-export const setWeb3 = (web3) => (dispatch) => {
+export const setWeb3 = (web3) => (dispatch, getState) => {
   dispatch({ type: SET_WEB3, web3 });
+  let { chainId } = getState();
+  contractAddress = getContractAddress(chainId);
+
+  const addressesProvider = new web3.eth.Contract(
+    AddressesProvider.abi,
+    contractAddress.AddressesProvider
+  );
+  const market = new web3.eth.Contract(Market.abi, contractAddress.Market);
+  const nftList = new web3.eth.Contract(NFTList.abi, contractAddress.NFTList);
+  const sellOrderList = new web3.eth.Contract(SellOrderList.abi, contractAddress.SellOrderList);
+  const vault = new web3.eth.Contract(Vault.abi, contractAddress.Vault);
+  dispatch(setAddressesProvider(market));
+  dispatch(setNftList(nftList));
+  dispatch(setSellOrderList(sellOrderList));
+  dispatch(setVault(vault));
 };
 
 export const SET_CHAINID = 'SET_CHAINID';
@@ -122,5 +145,56 @@ export const setLoadingErc721 = (isLoadingErc721) => async (dispatch) => {
   dispatch({
     type: IS_LOADING_ERC721,
     isLoadingErc721,
+  });
+};
+
+////////////////////
+// CONTRACT ADDRESS
+////////////////////
+export const SET_ADDRESSESPROVIDER = 'SET_ADDRESSESPROVIDER';
+export const setAddressesProvider = (addressesProvider) => async (dispatch) => {
+  dispatch({
+    type: SET_ADDRESSESPROVIDER,
+    addressesProvider,
+  });
+};
+
+export const SET_NFTLIST = 'SET_NFTLIST';
+export const setNftList = (nftListImpl) => async (dispatch) => {
+  dispatch({
+    type: SET_NFTLIST,
+    nftListImpl,
+  });
+};
+
+export const SET_NFTLIST = 'SET_NFTLIST';
+export const setNftList = (nftList) => async (dispatch) => {
+  dispatch({
+    type: SET_NFTLIST,
+    nftList,
+  });
+};
+
+export const SET_VAULT = 'SET_VAULT';
+export const setVault = (vault) => async (dispatch) => {
+  dispatch({
+    type: SET_VAULT,
+    vault,
+  });
+};
+
+export const SET_SELLORDERLIST = 'SET_SELLORDERLIST';
+export const setSellOrderList = (sellOrderList) => async (dispatch) => {
+  dispatch({
+    type: SET_SELLORDERLIST,
+    sellOrderList,
+  });
+};
+
+export const SET_MARKET = 'SET_MARKET';
+export const setMarket = (market) => async (dispatch) => {
+  dispatch({
+    type: SET_MARKET,
+    market,
   });
 };

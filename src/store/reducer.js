@@ -17,6 +17,13 @@ const initialState = {
   erc721Instances: null,
   erc721Tokens: null,
   isLoadingErc721: null,
+
+  // Main contracts
+  addressesProvider: null,
+  nftList: null,
+  vault: null,
+  sellOrderList: null,
+  market: null,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -67,6 +74,31 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoadingErc721: action.isLoadingErc721,
+      };
+    case actions.SET_ADDRESSESPROVIDER:
+      return {
+        ...state,
+        addressesProvider: action.addressesProvider,
+      };
+    case actions.SET_NFTLIST:
+      return {
+        ...state,
+        nftListImpl: action.nftList,
+      };
+    case actions.SET_VAULT:
+      return {
+        ...state,
+        vault: action.vault,
+      };
+    case action.SET_SELLORDERLIST:
+      return {
+        ...state,
+        sellOrderList: action.sellOrderList,
+      };
+    case action.SET_MARKET:
+      return {
+        ...state,
+        market: action.market,
       };
     default:
       return state;
