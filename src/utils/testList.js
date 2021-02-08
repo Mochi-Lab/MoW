@@ -1,17 +1,9 @@
 export const erc721List = {
   // Mainnet
-  1: [
+  97: [
     {
-      name: 'KUDO',
-      address: '0x2aea4add166ebf38b63d09a75de1a7b94aa24163',
-    },
-    {
-      name: 'AXIE',
-      address: '0xf5b0a3efb8e8e4c201e2a935f110eaaf3ffecb8d', // not
-    },
-    {
-      name: 'iPhone',
-      address: '0x77fde3242eaA67E7ee21bEf8247d9909dbA06ee4',
+      name: 'BS',
+      address: '0xE2427c499B4a4439Bc0cC83da410283f3e4495b9',
     },
   ],
   3: [],
