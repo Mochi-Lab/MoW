@@ -83,7 +83,7 @@ const rootReducer = (state = initialState, action) => {
     case actions.SET_NFTLIST:
       return {
         ...state,
-        nftListImpl: action.nftList,
+        nftList: action.nftList,
       };
     case actions.SET_VAULT:
       return {
