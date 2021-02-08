@@ -85,11 +85,13 @@ export const INIT_ERC721 = 'INIT_ERC721';
 export const initERC721 = (contracts) => async (dispatch, getState) => {
   let { web3, chainId } = getState();
   let erc721Instances = [];
-  erc721Instances = await contracts[chainId].map(
-    (contract) => new web3.eth.Contract(ERC721.abi, contract.address)
-  );
-  dispatch({ type: INIT_ERC721, erc721Instances });
-  dispatch(getOwnedERC721(erc721Instances));
+  if (!!contracts[chainId]) {
+    erc721Instances = await contracts[chainId].map(
+      (contract) => new web3.eth.Contract(ERC721.abi, contract.address)
+    );
+    dispatch({ type: INIT_ERC721, erc721Instances });
+    dispatch(getOwnedERC721(erc721Instances));
+  }
 };
 
 export const GET_OWNED_ERC721 = 'GET_OWNED_ERC721';
@@ -156,14 +158,6 @@ export const setAddressesProvider = (addressesProvider) => async (dispatch) => {
   dispatch({
     type: SET_ADDRESSESPROVIDER,
     addressesProvider,
-  });
-};
-
-export const SET_NFTLIST = 'SET_NFTLIST';
-export const setNftList = (nftListImpl) => async (dispatch) => {
-  dispatch({
-    type: SET_NFTLIST,
-    nftListImpl,
   });
 };
 

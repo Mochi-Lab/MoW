@@ -64,24 +64,25 @@ export const connectWeb3Modal = async () => {
 
   const web3 = new Web3(provider);
 
-  store.dispatch(setWeb3(web3));
-  let accounts = await web3.eth.getAccounts();
+  let chainId = await web3.eth.net.getId();
 
-  if (accounts.length > 0) {
-    let chainId = await web3.eth.net.getId();
+  if (chainId === 56 || chainId === 97) {
+    let accounts = await web3.eth.getAccounts();
 
-    // Sync 3box
-    Sync3Box(accounts[0], provider);
+    store.dispatch(setChainId(chainId));
+    store.dispatch(setWeb3(web3));
 
-    if (chainId === 1 || chainId === 4 || chainId === 3) {
-      store.dispatch(setChainId(chainId));
+    if (accounts.length > 0) {
+      // Sync 3box
+      Sync3Box(accounts[0], provider);
+
       store.dispatch(setAddress(accounts[0]));
 
       // Init ERC721
       store.dispatch(initERC721(erc721List));
-    } else {
-      alert('Please change to Mainnet or Rinkeby or Ropsten testnet');
     }
+  } else {
+    alert('Please change to Mainnet or Testnet of Binance Smart Chain');
   }
 
   // Subscribe to accounts change

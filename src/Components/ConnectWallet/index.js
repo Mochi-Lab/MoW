@@ -11,7 +11,7 @@ export default function ConnectWallet() {
 
   return (
     <>
-      <Button shape='round' onClick={() => connect()}>
+      <Button style={{ width: '143px' }} shape='round' onClick={() => connect()}>
         {!!web3 ? (
           <>
             <Badge status='success' />

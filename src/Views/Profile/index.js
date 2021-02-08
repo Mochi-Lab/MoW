@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Tabs } from 'antd';
 import { WalletOutlined, HistoryOutlined } from '@ant-design/icons';
-import ConnectWallet from 'Components/ConnectWallet';
 import ERC721Filter from 'Components/ERC721Filter';
 import Edit from './Edit';
 
@@ -12,7 +11,7 @@ import TransactionTable from 'Components/TransactionTable';
 const { TabPane } = Tabs;
 
 export default function Profile() {
-  const { web3, walletAddress, threeboxProfile } = useSelector((state) => state);
+  const { walletAddress, threeboxProfile } = useSelector((state) => state);
   const [copy, setCopy] = useState('CLICK TO COPY');
   const [isWantCopy, setIsWantCopy] = useState(false);
 
@@ -32,7 +31,7 @@ export default function Profile() {
 
   return (
     <>
-      {!!web3 ? (
+      {
         <div>
           <div className='profile-header'>
             <div className='banner relative'>
@@ -109,11 +108,7 @@ export default function Profile() {
             </Tabs>
           </div>
         </div>
-      ) : (
-        <div className='center' style={{ height: '400px', width: '100wh' }}>
-          <ConnectWallet />
-        </div>
-      )}
+      }
     </>
   );
 }
