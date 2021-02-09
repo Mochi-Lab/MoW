@@ -24,6 +24,13 @@ const initialState = {
   vault: null,
   sellOrderList: null,
   market: null,
+
+  //NftList
+  acceptedNftsAddress: [],
+
+  //SellOrderList
+  availableSellOrder: [],
+  mySellOrder: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -99,6 +106,21 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         market: action.market,
+      };
+    case action.SET_ACCEPTED_NFTS:
+      return {
+        ...state,
+        acceptedNftsAddress: action.acceptedNftsAddress,
+      };
+    case action.SET_AVAILABLE_SELL_ORDER:
+      return {
+        ...state,
+        availableSellOrder: action.availableSellOrder,
+      };
+    case action.SET_MY_SELL_ORDER:
+      return {
+        ...state,
+        mySellOrder: action.mySellOrder,
       };
     default:
       return state;

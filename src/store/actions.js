@@ -41,7 +41,8 @@ export const setWeb3 = (web3) => (dispatch, getState) => {
   const nftList = new web3.eth.Contract(NFTList.abi, contractAddress.NFTList);
   const sellOrderList = new web3.eth.Contract(SellOrderList.abi, contractAddress.SellOrderList);
   const vault = new web3.eth.Contract(Vault.abi, contractAddress.Vault);
-  dispatch(setAddressesProvider(market));
+  dispatch(setAddressesProvider(addressesProvider));
+  dispatch(setMarket(market));
   dispatch(setNftList(nftList));
   dispatch(setSellOrderList(sellOrderList));
   dispatch(setVault(vault));
@@ -191,4 +192,57 @@ export const setMarket = (market) => async (dispatch) => {
     type: SET_MARKET,
     market,
   });
+};
+
+////////////////////
+// NFTs List
+////////////////////
+
+export const SET_ACCEPTED_NFTS = 'SET_ACCEPTED_NFTS';
+export const setAcceptedNfts = () => async (dispatch, getState) => {
+  const { nftList } = getState();
+  try {
+    let acceptedNftsAddress = await nftList.methods.getAcceptedNFTs().call();
+    dispatch({ type: SET_ACCEPTED_NFTS, acceptedNftsAddress });
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+};
+
+export const getNftInfo = async (nftAddress, nftList) => {
+  try {
+    let nftInfo = await nftList.methods.getNFTInfor(nftAddress).call();
+    return nftInfo;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+////////////////////
+// SellOrders List
+////////////////////
+
+export const SET_AVAILABLE_SELL_ORDER = 'SET_AVAILABLE_SELL_ORDER';
+export const setAvailableSellOrder = () => async (dispatch, getState) => {
+  const { sellOrderList } = getState();
+  try {
+    let availableSellOrder = await sellOrderList.methods.getAvailableSellOrder().call();
+    dispatch({ type: SET_AVAILABLE_SELL_ORDER, availableSellOrder });
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+export const SET_MY_SELL_ORDER = 'SET_MY_SELL_ORDER';
+export const setMySellOrder = () => async (dispatch, getState) => {
+  const { sellOrderList, add } = getState();
+  try {
+    let mySellOrder = await sellOrderList.methods.getAllSellOrderIdListByUser().call();
+    dispatch({ type: SET_MY_SELL_ORDER, mySellOrder });
+  } catch (e) {
+    console.log(e);
+  }
 };
