@@ -4,11 +4,16 @@ import Authereum from 'authereum';
 import Fortmatic from 'fortmatic';
 import Portis from '@portis/web3';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import { setChainId, setWeb3, setAddress, setThreebox, initERC721 } from 'store/actions';
+import {
+  setChainId,
+  setWeb3,
+  setAddress,
+  setThreebox,
+  initERC721,
+  setAcceptedNfts,
+} from 'store/actions';
 import store from 'store/index';
 import Box from '3box';
-
-import { erc721List } from 'utils/testList';
 
 const getThreeBox = async (address) => {
   const profile = await Box.getProfile(address);
@@ -79,7 +84,7 @@ export const connectWeb3Modal = async () => {
       store.dispatch(setAddress(accounts[0]));
 
       // Init ERC721
-      store.dispatch(initERC721(erc721List));
+      store.dispatch(setAcceptedNfts());
     }
   } else {
     alert('Please change to Mainnet or Testnet of Binance Smart Chain');
@@ -88,7 +93,7 @@ export const connectWeb3Modal = async () => {
   // Subscribe to accounts change
   provider.on('accountsChanged', (accounts) => {
     store.dispatch(setAddress(accounts[0]));
-    store.dispatch(initERC721(erc721List));
+    store.dispatch(initERC721(setAcceptedNfts()));
     Sync3Box(accounts[0], provider);
   });
 
@@ -96,7 +101,7 @@ export const connectWeb3Modal = async () => {
   provider.on('chainChanged', (chainId) => {
     chainId = parseInt(chainId.substring(2));
     store.dispatch(setChainId(chainId));
-    store.dispatch(initERC721(erc721List));
+    store.dispatch(initERC721(setAcceptedNfts()));
   });
 
   // Subscribe to provider connection

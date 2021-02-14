@@ -7,6 +7,7 @@ import SellOrderList from 'Contracts/SellOrderList.json';
 import Vault from 'Contracts/Vault.json';
 import axios from 'axios';
 import { getContractAddress } from 'utils/getContractAddress';
+import { message } from 'antd';
 
 var contractAddress;
 
@@ -38,7 +39,7 @@ export const setWeb3 = (web3) => (dispatch, getState) => {
     contractAddress.AddressesProvider
   );
   const market = new web3.eth.Contract(Market.abi, contractAddress.Market);
-  const nftList = new web3.eth.Contract(NFTList.abi, contractAddress.NFTList);
+  const nftList = new web3.eth.Contract(NFTList.abi, contractAddress.NftList);
   const sellOrderList = new web3.eth.Contract(SellOrderList.abi, contractAddress.SellOrderList);
   const vault = new web3.eth.Contract(Vault.abi, contractAddress.Vault);
   dispatch(setAddressesProvider(addressesProvider));
@@ -83,13 +84,11 @@ export const setBalance = () => async (dispatch, getState) => {
 // ERC721
 ////////////////////
 export const INIT_ERC721 = 'INIT_ERC721';
-export const initERC721 = (contracts) => async (dispatch, getState) => {
-  let { web3, chainId } = getState();
+export const initERC721 = (nftList) => async (dispatch, getState) => {
+  let { web3 } = getState();
   let erc721Instances = [];
-  if (!!contracts[chainId]) {
-    erc721Instances = await contracts[chainId].map(
-      (contract) => new web3.eth.Contract(ERC721.abi, contract.address)
-    );
+  if (!!nftList) {
+    erc721Instances = await nftList.map((contract) => new web3.eth.Contract(ERC721.abi, contract));
     dispatch({ type: INIT_ERC721, erc721Instances });
     dispatch(getOwnedERC721(erc721Instances));
   }
@@ -198,12 +197,37 @@ export const setMarket = (market) => async (dispatch) => {
 // NFTs List
 ////////////////////
 
+export const registerNft = (contractAddress) => async (dispatch, getState) => {
+  const { nftList, walletAddress, web3 } = getState();
+
+  try {
+    // is contract address
+    let ERC721token = new web3.eth.Contract(ERC721.abi, contractAddress);
+    await ERC721token.methods.name().call();
+
+    nftList.methods
+      .registerNft(contractAddress)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Register Successfully');
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+      });
+  } catch (error) {
+    console.log(error);
+    message.error('Sorry, but this is not contract address');
+  }
+};
+
 export const SET_ACCEPTED_NFTS = 'SET_ACCEPTED_NFTS';
 export const setAcceptedNfts = () => async (dispatch, getState) => {
   const { nftList } = getState();
   try {
     let acceptedNftsAddress = await nftList.methods.getAcceptedNFTs().call();
     dispatch({ type: SET_ACCEPTED_NFTS, acceptedNftsAddress });
+    dispatch(initERC721(acceptedNftsAddress));
   } catch (e) {
     console.log(e);
     return e;
@@ -238,7 +262,7 @@ export const setAvailableSellOrder = () => async (dispatch, getState) => {
 
 export const SET_MY_SELL_ORDER = 'SET_MY_SELL_ORDER';
 export const setMySellOrder = () => async (dispatch, getState) => {
-  const { sellOrderList, add } = getState();
+  const { sellOrderList } = getState();
   try {
     let mySellOrder = await sellOrderList.methods.getAllSellOrderIdListByUser().call();
     dispatch({ type: SET_MY_SELL_ORDER, mySellOrder });

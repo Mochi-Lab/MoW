@@ -1,4 +1,6 @@
 .erc721-img {
   width: 70% !important;
   margin: auto;
+  height: 250px;
+  object-fit: contain;
 }
