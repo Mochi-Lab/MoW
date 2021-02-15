@@ -4,14 +4,7 @@ import Authereum from 'authereum';
 import Fortmatic from 'fortmatic';
 import Portis from '@portis/web3';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import {
-  setChainId,
-  setWeb3,
-  setAddress,
-  setThreebox,
-  initERC721,
-  setAcceptedNfts,
-} from 'store/actions';
+import { setChainId, setWeb3, setAddress, setThreebox, setAcceptedNfts } from 'store/actions';
 import store from 'store/index';
 import Box from '3box';
 
