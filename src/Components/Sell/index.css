@@ -1,0 +1,30 @@
+.sell-img {
+  height: 60px;
+  display: flex;
+}
+
+.sell-img > img {
+  height: 60px;
+  width: 60px;
+  object-fit: contain;
+  margin-right: 20px;
+}
+
+.sell-img > p {
+  font-size: 0.5cm;
+  font-weight: 800;
+}
+
+.bnb-coin {
+  width: 18px;
+  height: 18px;
+}
+
+.price-des {
+  margin: 10px 0px;
+}
+
+.price-des > :first-child {
+  font-weight: 800;
+  margin: 25px 0px 0px 0px;
+}

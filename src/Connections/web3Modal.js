@@ -93,7 +93,7 @@ export const connectWeb3Modal = async () => {
   // Subscribe to accounts change
   provider.on('accountsChanged', (accounts) => {
     store.dispatch(setAddress(accounts[0]));
-    store.dispatch(initERC721(setAcceptedNfts()));
+    store.dispatch(setAcceptedNfts());
     Sync3Box(accounts[0], provider);
   });
 
@@ -101,7 +101,7 @@ export const connectWeb3Modal = async () => {
   provider.on('chainChanged', (chainId) => {
     chainId = parseInt(chainId.substring(2));
     store.dispatch(setChainId(chainId));
-    store.dispatch(initERC721(setAcceptedNfts()));
+    store.dispatch(setAcceptedNfts());
   });
 
   // Subscribe to provider connection

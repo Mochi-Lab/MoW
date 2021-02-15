@@ -47,6 +47,8 @@ export const setWeb3 = (web3) => (dispatch, getState) => {
   dispatch(setNftList(nftList));
   dispatch(setSellOrderList(sellOrderList));
   dispatch(setVault(vault));
+
+  dispatch(setAvailableSellOrder());
 };
 
 export const SET_CHAINID = 'SET_CHAINID';
@@ -262,11 +264,35 @@ export const setAvailableSellOrder = () => async (dispatch, getState) => {
 
 export const SET_MY_SELL_ORDER = 'SET_MY_SELL_ORDER';
 export const setMySellOrder = () => async (dispatch, getState) => {
-  const { sellOrderList } = getState();
+  const { sellOrderList, walletAddress } = getState();
   try {
-    let mySellOrder = await sellOrderList.methods.getAllSellOrderIdListByUser().call();
+    let mySellOrder = await sellOrderList.methods.getAllSellOrderIdListByUser(walletAddress).call();
     dispatch({ type: SET_MY_SELL_ORDER, mySellOrder });
   } catch (e) {
     console.log(e);
+  }
+};
+
+export const createSellOrder = (nftAddress, tokenId, price) => async (dispatch, getState) => {
+  const { market, walletAddress, web3 } = getState();
+  try {
+    // Approve ERC721
+    const erc721Instances = await new web3.eth.Contract(ERC721.abi, nftAddress);
+    await erc721Instances.methods.approve(market._address, tokenId).send({ from: walletAddress });
+
+    // Create Sell Order
+    await market.methods
+      .createSellOrder(nftAddress, tokenId, price)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Create Sell Order Successfully');
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+      });
+  } catch (error) {
+    console.log(error);
+    message.error('Oh no! Something went wrong !');
   }
 };
