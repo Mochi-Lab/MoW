@@ -2,10 +2,12 @@ import { Card, Row, Col, Input } from 'antd';
 import './index.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const { Meta } = Card;
 
 function ERC721Card({ token, name }) {
+  const { web3 } = useSelector((state) => state);
   return (
     <Col className='gutter-row' span={8}>
       <Link to={`/token/${token.addressToken}/${token.index}`}>
@@ -14,7 +16,17 @@ function ERC721Card({ token, name }) {
           style={{ width: '100%', margin: 'auto', padding: '12px' }}
           cover={<img className='erc721-img' alt={token.index} src={token.detail.image} />}
         >
-          <Meta title={<strong>{token.detail.name}</strong>} description={name} />
+          <Meta
+            title={
+              <div className='sp-between'>
+                <strong>{token.detail.name}</strong>
+                <strong>
+                  {!!token.price ? `${web3.utils.fromWei(token.price, 'ether')} BNB` : <></>}
+                </strong>
+              </div>
+            }
+            description={name}
+          />
         </Card>
       </Link>
     </Col>

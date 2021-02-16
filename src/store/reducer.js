@@ -30,6 +30,7 @@ const initialState = {
 
   //SellOrderList
   availableSellOrder: [],
+  convertErc721Tokens: [],
   mySellOrder: [],
 };
 
@@ -116,6 +117,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         availableSellOrder: action.availableSellOrder,
+        convertErc721Tokens: action.convertErc721Tokens,
       };
     case actions.SET_MY_SELL_ORDER:
       return {

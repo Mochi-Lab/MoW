@@ -13,7 +13,10 @@ const { TabPane } = Tabs;
 
 export default function Profile() {
   const dispatch = useDispatch();
-  const { walletAddress, threeboxProfile } = useSelector((state) => state);
+  const { walletAddress, threeboxProfile, erc721Tokens, isLoadingErc721 } = useSelector(
+    (state) => state
+  );
+
   const [copy, setCopy] = useState('CLICK TO COPY');
   const [isWantCopy, setIsWantCopy] = useState(false);
 
@@ -95,7 +98,7 @@ export default function Profile() {
                 }
                 key='1'
               >
-                <ERC721Filter />
+                <ERC721Filter erc721Tokens={erc721Tokens} isLoadingErc721={isLoadingErc721} />
               </TabPane>
               <TabPane
                 tab={
