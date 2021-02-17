@@ -47,6 +47,8 @@ export const setWeb3 = (web3) => (dispatch, getState) => {
   dispatch(setNftList(nftList));
   dispatch(setSellOrderList(sellOrderList));
   dispatch(setVault(vault));
+
+  dispatch(setAvailableSellOrder());
 };
 
 export const SET_CHAINID = 'SET_CHAINID';
@@ -250,10 +252,60 @@ export const getNftInfo = async (nftAddress, nftList) => {
 
 export const SET_AVAILABLE_SELL_ORDER = 'SET_AVAILABLE_SELL_ORDER';
 export const setAvailableSellOrder = () => async (dispatch, getState) => {
-  const { sellOrderList } = getState();
+  const { sellOrderList, web3 } = getState();
+
+  const pushErc721 = (listNftContract) => {
+    return new Promise(async (resolve) => {
+      let ERC721token = {};
+
+      ERC721token.name = await listNftContract.instance.methods.name().call();
+      ERC721token.symbol = await listNftContract.instance.methods.symbol().call();
+
+      ERC721token.tokens = [];
+      await listNftContract.tokenId.map(async (tokenId, index) => {
+        let token = {};
+        token.index = tokenId;
+        token.tokenURI = await listNftContract.instance.methods.tokenURI(tokenId).call();
+        token.addressToken = listNftContract.instance._address;
+        token.price = listNftContract.price[index];
+        let req = await axios.get(token.tokenURI);
+        token.detail = req.data;
+        ERC721token.tokens.push(token);
+      });
+
+      resolve(ERC721token);
+    });
+  };
+
+  // Loading done
   try {
     let availableSellOrder = await sellOrderList.methods.getAvailableSellOrder().call();
-    dispatch({ type: SET_AVAILABLE_SELL_ORDER, availableSellOrder });
+
+    var convertErc721Tokens = [];
+    var listNftContracts = [];
+
+    availableSellOrder.map(async (sellOrder) => {
+      let token = { tokenId: [], price: [] };
+      let nftindex = listNftContracts.findIndex((nft) => nft.nftAddress === sellOrder.nftAddress);
+      if (nftindex === -1) {
+        token.nftAddress = sellOrder.nftAddress;
+        token.instance = new web3.eth.Contract(ERC721.abi, sellOrder.nftAddress);
+        token.tokenId.push(sellOrder.tokenId);
+        token.price.push(sellOrder.price);
+        listNftContracts.push(token);
+      } else {
+        listNftContracts[nftindex].tokenId.push(sellOrder.tokenId);
+        listNftContracts[nftindex].price.push(sellOrder.price);
+      }
+    });
+
+    convertErc721Tokens = await Promise.all(
+      listNftContracts.map(async (listNftcontract) => {
+        return await pushErc721(listNftcontract);
+      })
+    );
+
+    dispatch({ type: SET_AVAILABLE_SELL_ORDER, availableSellOrder, convertErc721Tokens });
   } catch (e) {
     console.log(e);
     return null;
@@ -262,11 +314,52 @@ export const setAvailableSellOrder = () => async (dispatch, getState) => {
 
 export const SET_MY_SELL_ORDER = 'SET_MY_SELL_ORDER';
 export const setMySellOrder = () => async (dispatch, getState) => {
-  const { sellOrderList } = getState();
+  const { sellOrderList, walletAddress } = getState();
   try {
-    let mySellOrder = await sellOrderList.methods.getAllSellOrderIdListByUser().call();
+    let mySellOrder = await sellOrderList.methods.getAllSellOrderIdListByUser(walletAddress).call();
     dispatch({ type: SET_MY_SELL_ORDER, mySellOrder });
   } catch (e) {
     console.log(e);
+  }
+};
+
+export const createSellOrder = (nftAddress, tokenId, price) => async (dispatch, getState) => {
+  const { market, walletAddress, web3 } = getState();
+  try {
+    // Approve ERC721
+    const erc721Instances = await new web3.eth.Contract(ERC721.abi, nftAddress);
+    await erc721Instances.methods.approve(market._address, tokenId).send({ from: walletAddress });
+
+    // Create Sell Order
+    await market.methods
+      .createSellOrder(nftAddress, tokenId, price)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Create Sell Order Successfully');
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+      });
+  } catch (error) {
+    message.error('Oh no! Something went wrong !');
+  }
+};
+
+export const buyNft = (orderDetail) => async (dispatch, getState) => {
+  const { market, walletAddress } = getState();
+  try {
+    await market.methods
+      .buy(orderDetail.sellId)
+      .send({ from: walletAddress, value: orderDetail.price })
+      .on('receipt', (receipt) => {
+        message.success('Create Sell Order Successfully');
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+      });
+  } catch (error) {
+    message.error('Oh no! Something went wrong !');
   }
 };

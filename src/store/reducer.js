@@ -30,6 +30,7 @@ const initialState = {
 
   //SellOrderList
   availableSellOrder: [],
+  convertErc721Tokens: [],
   mySellOrder: [],
 };
 
@@ -97,27 +98,28 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         vault: action.vault,
       };
-    case action.SET_SELLORDERLIST:
+    case actions.SET_SELLORDERLIST:
       return {
         ...state,
         sellOrderList: action.sellOrderList,
       };
-    case action.SET_MARKET:
+    case actions.SET_MARKET:
       return {
         ...state,
         market: action.market,
       };
-    case action.SET_ACCEPTED_NFTS:
+    case actions.SET_ACCEPTED_NFTS:
       return {
         ...state,
         acceptedNftsAddress: action.acceptedNftsAddress,
       };
-    case action.SET_AVAILABLE_SELL_ORDER:
+    case actions.SET_AVAILABLE_SELL_ORDER:
       return {
         ...state,
         availableSellOrder: action.availableSellOrder,
+        convertErc721Tokens: action.convertErc721Tokens,
       };
-    case action.SET_MY_SELL_ORDER:
+    case actions.SET_MY_SELL_ORDER:
       return {
         ...state,
         mySellOrder: action.mySellOrder,

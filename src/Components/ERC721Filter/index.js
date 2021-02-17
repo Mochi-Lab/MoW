@@ -1,6 +1,5 @@
 import { Layout, Menu, Input } from 'antd';
 import { ShopOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import ERC721 from 'Components/ERC721';
 import { PacmanLoader } from 'react-spinners';
@@ -8,8 +7,7 @@ import { PacmanLoader } from 'react-spinners';
 const { SubMenu } = Menu;
 const { Content, Sider } = Layout;
 
-export default function ERC721Filter() {
-  const { erc721Tokens, isLoadingErc721 } = useSelector((state) => state);
+export default function ERC721Filter({ erc721Tokens, isLoadingErc721 }) {
   const [selectedTokens, setSelectedTokens] = useState();
 
   return (

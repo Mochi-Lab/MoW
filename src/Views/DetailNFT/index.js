@@ -1,5 +1,5 @@
 import s from './style.module.css';
-import { Tabs, Button } from 'antd';
+import { Tabs, Button, message } from 'antd';
 import { ExpandAltOutlined, ShareAltOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -7,25 +7,77 @@ import ERC721 from 'Contracts/ERC721.json';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { PacmanLoader } from 'react-spinners';
+import Sell from 'Components/Sell';
+import Buy from 'Components/Buy';
 
 const { TabPane } = Tabs;
 
+const RenderSwitch = ({ status, token, orderDetail }) => {
+  switch (status) {
+    case 3:
+      return (
+        <div className={s['actions-btn']}>
+          <div className={s.gSzfBw}>
+            <Button type='primary' shape='round' size='large'>
+              Cancel
+            </Button>
+          </div>
+        </div>
+      );
+    case 2:
+      return <Sell token={token} />;
+    case 1:
+      return <Buy orderDetail={orderDetail} />;
+    default:
+      return <div></div>;
+  }
+};
+
 export default function DetailNFT() {
   const [token, setToken] = useState(null);
+  const [orderDetail, setOrderDetail] = useState();
+  const [status, setStatus] = useState(0);
   // get details nft
-  const { web3 } = useSelector((state) => state);
+  const { web3, walletAddress, sellOrderList, availableSellOrder } = useSelector((state) => state);
   const { addressToken, id } = useParams();
 
   useEffect(() => {
     const getNFTDetails = async () => {
-      const erc721Instances = await new web3.eth.Contract(ERC721.abi, addressToken);
-      const token = await erc721Instances.methods.tokenURI(id).call();
-      let req = await axios.get(token);
-      let detail = req.data;
-      setToken(detail);
+      try {
+        const erc721Instances = await new web3.eth.Contract(ERC721.abi, addressToken);
+
+        // check if user is owner of token
+        let tokenOwner = await erc721Instances.methods.ownerOf(id).call();
+        if (tokenOwner === walletAddress) {
+          // Check if the token is in the order list?
+          let isOnList = await sellOrderList.methods
+            .checkDuplicate(addressToken, id, tokenOwner)
+            .call();
+          isOnList ? setStatus(3) : setStatus(2);
+        } else {
+          let isOnList = await sellOrderList.methods
+            .checkDuplicate(addressToken, id, tokenOwner)
+            .call();
+          isOnList ? setStatus(1) : setStatus(0);
+        }
+
+        let fil = availableSellOrder.filter(
+          (token) => token.nftAddress === addressToken && token.tokenId === id
+        );
+        setOrderDetail(fil[0]);
+
+        // get token info
+        const token = await erc721Instances.methods.tokenURI(id).call();
+        let req = await axios.get(token);
+        let detail = req.data;
+        setToken(detail);
+      } catch (error) {
+        console.log(error);
+        message.error("NFT doesn't exist!");
+      }
     };
-    if (web3) getNFTDetails();
-  }, [web3, addressToken, id]);
+    if (web3 && sellOrderList && walletAddress && availableSellOrder) getNFTDetails();
+  }, [web3, addressToken, id, walletAddress, sellOrderList, availableSellOrder]);
 
   return (
     <>
@@ -64,15 +116,6 @@ export default function DetailNFT() {
                       <Button shape='circle' icon={<ShareAltOutlined />} size='large' />
                     </div>
                   </div>
-                  <div className={s['price-nft']}>
-                    <div className={s.doaTrL}>
-                      <div className={s.lapozE}>
-                        <div className={s['price-eth']}>0.3 ETH</div>
-                        <div className={s['price-usd']}>$459.46</div>
-                        <div className={s['amount-nft']}>1 of 1</div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div className={`${s['content-sidebar']}`}>
@@ -92,15 +135,21 @@ export default function DetailNFT() {
                                 <Button shape='circle' icon={<ShareAltOutlined />} size='large' />
                               </div>
                             </div>
-                            <div className={s['price-nft']}>
-                              <div className={s.doaTrL}>
-                                <div className={s.lapozE}>
-                                  <div className={s['price-eth']}>0.3 ETH</div>
-                                  <div className={s['price-usd']}>$459.46</div>
-                                  <div className={s['amount-nft']}>1 of 1</div>
+                            {orderDetail ? (
+                              <div className={s['price-nft']}>
+                                <div className={s.doaTrL}>
+                                  <div className={s.lapozE}>
+                                    <div className={s['price-eth']}>
+                                      {web3.utils.fromWei(orderDetail.price, 'ether')} BNB
+                                    </div>
+                                    {/* <div className={s['price-usd']}>$459.46</div> */}
+                                    <div className={s['amount-nft']}>1 of 1</div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
+                            ) : (
+                              <></>
+                            )}
                           </div>
                         </div>
                         <div className={s['nft-info']}>
@@ -130,24 +179,13 @@ export default function DetailNFT() {
                       <div className={`${s['footer-sidebar']} `}>
                         <div className={s['actions-buy-bid']}>
                           <div className='PE'>
-                            <div className={s['actions-btn']}>
-                              <div className={s.gSzfBw}>
-                                <Button type='primary' shape='round' size='large'>
-                                  Buy now
-                                </Button>
-                              </div>
-                              <div className={s.cAFwWB}></div>
-                              <div className={s.gSzfBw}>
-                                <Button shape='round' size='large'>
-                                  Bid
-                                </Button>
-                              </div>
-                            </div>
+                            <RenderSwitch status={status} token={token} orderDetail={orderDetail} />
+
                             <div className={s['calc-fee']}>
                               <div className={s.feeService}>
                                 Service fee
                                 <span className={s.pt}> 2.5% </span>.
-                                <span className={s['eth-usd']}> 0.308 ETH $470.95 </span>
+                                <span className={s['eth-usd']}> 0.308 BNB $470.95 </span>
                               </div>
                             </div>
                           </div>

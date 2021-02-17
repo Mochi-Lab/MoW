@@ -4,3 +4,8 @@
   height: 250px;
   object-fit: contain;
 }
+
+.sp-between {
+  display: flex;
+  justify-content: space-between;
+}

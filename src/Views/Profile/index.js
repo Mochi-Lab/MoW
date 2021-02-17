@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Tabs } from 'antd';
 import { WalletOutlined, HistoryOutlined } from '@ant-design/icons';
 import ERC721Filter from 'Components/ERC721Filter';
@@ -7,13 +7,22 @@ import Edit from './Edit';
 
 import './index.css';
 import TransactionTable from 'Components/TransactionTable';
+import { setMySellOrder } from 'store/actions';
 
 const { TabPane } = Tabs;
 
 export default function Profile() {
-  const { walletAddress, threeboxProfile } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const { walletAddress, threeboxProfile, erc721Tokens, isLoadingErc721 } = useSelector(
+    (state) => state
+  );
+
   const [copy, setCopy] = useState('CLICK TO COPY');
   const [isWantCopy, setIsWantCopy] = useState(false);
+
+  useEffect(() => {
+    dispatch(setMySellOrder());
+  }, [dispatch]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(walletAddress);
@@ -89,7 +98,7 @@ export default function Profile() {
                 }
                 key='1'
               >
-                <ERC721Filter />
+                <ERC721Filter erc721Tokens={erc721Tokens} isLoadingErc721={isLoadingErc721} />
               </TabPane>
               <TabPane
                 tab={
