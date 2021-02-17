@@ -1,0 +1,54 @@
+.input-search-nft {
+  border-radius: 1rem !important;
+}
+
+.menuBar {
+  z-index: 2;
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  transform: translate3d(0px, 0px, 0px);
+  background: white;
+}
+
+.leftMenu {
+  height: 48px;
+  width: 40%;
+}
+
+.menuCon .leftMenu {
+  float: left;
+  margin-left: 2rem;
+}
+
+.ant-menu-submenu-expand-icon,
+.ant-menu-submenu-arrow {
+  right: 50px !important;
+}
+
+@media (max-width: 1219px) {
+  .menuCon .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item,
+  .menuCon .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu {
+    margin: 0 8px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .leftMenu {
+    width: 32%;
+  }
+}
+
+@media (max-width: 992px) {
+  .barsMenu {
+    display: block !important;
+  }
+
+  .rightMenu {
+    display: none;
+  }
+
+  .leftMenu {
+    width: 100%;
+  }
+}

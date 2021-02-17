@@ -29,11 +29,12 @@
 .input-address {
   width: 70% !important;
   margin: 15px !important;
+  border-radius: 1rem !important;
 }
 
 .select-box {
   margin: auto;
-  width: 400px;
+  width: 20vw;
 }
 
 .select-box > div {
@@ -52,4 +53,26 @@
 .create-page {
   width: 80%;
   margin: auto;
+}
+
+@media (max-width: 1024px) {
+  .select-box {
+    width: 35vw;
+  }
+}
+@media (max-width: 768px) {
+  .select-box {
+    width: 45vw;
+  }
+}
+@media (max-width: 576px) {
+  .select-box {
+    width: 75vw;
+  }
+  .get-listed {
+    font-size: 1.3rem;
+  }
+  .select-network {
+    font-size: 1.2rem;
+  }
 }

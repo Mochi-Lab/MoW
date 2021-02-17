@@ -8,6 +8,14 @@ import { setChainId, setWeb3, setAddress, setThreebox, setAcceptedNfts } from 's
 import store from 'store/index';
 import Box from '3box';
 
+// //Mainnet
+// export const web3Default = new Web3(new Web3.providers.HttpProvider("https://bsc-dataseed.binance.org/"));
+
+// Testnet
+export const web3Default = new Web3(
+  new Web3.providers.HttpProvider('https://data-seed-prebsc-1-s2.binance.org:8545/')
+);
+
 const getThreeBox = async (address) => {
   const profile = await Box.getProfile(address);
   return profile;

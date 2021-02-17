@@ -1,70 +1,73 @@
-import { Card, Row, Col, Input } from 'antd';
+import { Card, Row, Col, Skeleton } from 'antd';
 import './index.css';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import imgNotFound from 'Assets/notfound.png';
 
 const { Meta } = Card;
 
-function ERC721Card({ token, name }) {
+function ERC721Card({ token, strSearch }) {
   const { web3 } = useSelector((state) => state);
-  return (
-    <Col className='gutter-row' span={8}>
-      <Link to={`/token/${token.addressToken}/${token.index}`}>
-        <Card
-          hoverable
-          style={{ width: '100%', margin: 'auto', padding: '12px' }}
-          cover={<img className='erc721-img' alt={token.index} src={token.detail.image} />}
-        >
-          <Meta
-            title={
-              <div className='sp-between'>
-                <strong>{token.detail.name}</strong>
-                <strong>
-                  {!!token.price ? `${web3.utils.fromWei(token.price, 'ether')} BNB` : <></>}
-                </strong>
-              </div>
-            }
-            description={name}
-          />
-        </Card>
-      </Link>
+  const [detailNFT, setDetailNFT] = useState(null);
+
+  useEffect(() => {
+    async function fethDeatil() {
+      if (!!token && !!token.tokenURI) {
+        let req = await axios.get(token.tokenURI);
+        setDetailNFT(req.data);
+      } else {
+        setDetailNFT({ name: '', description: '', image: imgNotFound });
+      }
+    }
+    fethDeatil();
+  }, [token]);
+
+  return !!detailNFT && detailNFT.name.toLocaleLowerCase().includes(strSearch.toLowerCase()) ? (
+    <Col className='gutter-row' xs={{ span: 24 }} md={{ span: 12 }} lg={{ span: 8 }}>
+      {!!detailNFT ? (
+        <Link to={`/token/${token.addressToken}/${token.index}`}>
+          <Card
+            hoverable
+            style={{ width: '100%', margin: 'auto', padding: '12px' }}
+            cover={<img className='erc721-img' alt={token.index} src={detailNFT.image} />}
+            className='card-token'
+          >
+            <Meta
+              title={
+                <div className='sp-between'>
+                  <strong>{detailNFT.name}</strong>
+                  <strong>
+                    {!!token.price ? `${web3.utils.fromWei(token.price, 'ether')} BNB` : <></>}
+                  </strong>
+                </div>
+              }
+              description={token.collections}
+            />
+          </Card>
+        </Link>
+      ) : (
+        <Skeleton active round title='123' />
+      )}
     </Col>
-  );
+  ) : null;
 }
 
 export default function ERC721({ tokens }) {
-  const [afterFilter, setafterFilter] = useState(!!tokens ? tokens.tokens : null);
+  const [afterFilter, setafterFilter] = useState(!!tokens ? tokens : []);
+  const { strSearch } = useSelector((state) => state);
 
   useEffect(() => {
-    if (!!tokens) {
-      setafterFilter(tokens.tokens);
-    }
+    if (tokens) setafterFilter(() => tokens);
   }, [tokens]);
-
-  const searchNFT = (text) => {
-    let filter = tokens.tokens.filter((token) => {
-      let name = token.detail.name.toUpperCase();
-      return name.includes(text.toUpperCase());
-    });
-    setafterFilter(filter);
-  };
 
   return (
     <div>
       <Row gutter={[16, 24]} style={{ margin: 0 }}>
-        <Col span={24}>
-          <Input.Search
-            allowClear
-            onChange={(e) => searchNFT(e.target.value)}
-            style={{ width: '100%' }}
-            size='large'
-            placeholder='Search NFT'
-          />
-        </Col>
-        {!!tokens ? (
+        {!!afterFilter ? (
           afterFilter.map((token, index) => (
-            <ERC721Card key={index} token={token} name={tokens.name} />
+            <ERC721Card key={index} token={token} strSearch={strSearch} />
           ))
         ) : (
           <></>

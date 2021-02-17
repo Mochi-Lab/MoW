@@ -9,3 +9,11 @@
   display: flex;
   justify-content: space-between;
 }
+
+.card-token {
+  background-color: white;
+  box-shadow: 0 6px 15px rgb(36 37 38 / 8%);
+  border-radius: 1rem !important;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}

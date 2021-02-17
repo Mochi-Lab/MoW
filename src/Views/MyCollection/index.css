@@ -38,7 +38,7 @@
   width: 300px;
   color: rgba(45, 46, 46, 0.35);
   border: 1px dashed rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
+  border-radius: 1rem;
 }
 
 .dropzone:hover {
@@ -48,8 +48,83 @@
   color: black;
   border: 1px dashed rgba(58, 59, 59, 0.35);
   border-radius: 5px;
+  border-radius: 1rem;
 }
 
 .input-area {
   width: 30vw;
+}
+.input-area input,
+.input-area textarea {
+  border-radius: 1rem;
+}
+
+.input-name-nft {
+  margin-bottom: 15px;
+  width: 30vw;
+}
+
+@media (max-width: 1200px) {
+  .my-collection {
+    width: 70vw;
+    padding: 1.5rem 1rem 0 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .my-collection {
+    width: 75vw;
+    padding: 1.5rem 1rem 0 1rem;
+  }
+
+  .my-collection div.input-area {
+    width: 100%;
+    text-align: center;
+    margin-left: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .my-collection div.input-area {
+    width: 100%;
+    text-align: center;
+    margin-left: 1rem;
+  }
+
+  .drag-box-search .dropzone {
+    width: 240px;
+    height: 240px;
+  }
+}
+@media (max-width: 576px) {
+  .my-collection > div {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .my-collection div.input-area {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .drag-box-search .dropzone {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+  }
+
+  .my-collection .input-name-nft {
+    width: 100%;
+  }
+
+  .my-collection > h2 {
+    font-size: 1.3rem;
+  }
+
+  .my-collection h3.text-upload-image {
+    margin-bottom: 0.15rem;
+  }
 }

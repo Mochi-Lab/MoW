@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Steps, Button, Input } from 'antd';
+import { Steps, Button, Input, Grid } from 'antd';
 import './index.css';
 import { useDispatch } from 'react-redux';
 import { registerNft } from 'store/actions';
 
 const { Step } = Steps;
+const { useBreakpoint } = Grid;
 
 const steps = [
   {
@@ -32,9 +33,15 @@ export default function Create() {
     dispatch(registerNft(contractAddress));
   };
 
+  const { md } = useBreakpoint();
+
   return (
     <div className='create-page'>
-      <Steps className='create-step center' current={current}>
+      <Steps
+        className='create-step center'
+        current={current}
+        direction={md ? 'horizontal' : 'vertical'}
+      >
         {steps.map((item) => (
           <Step key={item.title} title={item.title} />
         ))}
@@ -80,10 +87,10 @@ export default function Create() {
               />
             </div>
 
-            <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+            <Button style={{ margin: '0 8px' }} onClick={() => prev()} shape='round' size='large'>
               Previous
             </Button>
-            <Button type='primary' onClick={() => register()}>
+            <Button type='primary' onClick={() => register()} shape='round' size='large'>
               Submit
             </Button>
           </div>

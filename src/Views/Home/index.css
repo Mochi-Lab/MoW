@@ -1,0 +1,25 @@
+.content-home {
+  position: relative;
+  inset: 0px;
+  margin: 0px;
+  padding: 0px;
+  border-width: 0px;
+  border-style: solid;
+  border-color: rgb(4, 4, 5);
+  display: flex;
+  flex: 1 0 auto;
+  min-height: 0px;
+  min-width: 0px;
+  max-width: 100%;
+  z-index: 0;
+  -webkit-box-flex: 1;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+}
+
+@media (max-width: 992px) {
+  .content-home {
+    display: block;
+  }
+}

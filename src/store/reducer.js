@@ -12,6 +12,7 @@ const initialState = {
   walletAddress: null,
   shortAddress: null,
   balance: 0,
+  strSearch: '',
 
   // Erc721
   erc721Instances: null,
@@ -67,6 +68,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         balance: action.balance,
+      };
+    case actions.SET_STR_SEARCH:
+      return {
+        ...state,
+        strSearch: action.strSearch,
       };
     case actions.INIT_ERC721:
       return {
