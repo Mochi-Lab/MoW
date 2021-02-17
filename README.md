@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+<h1 align="center">Welcome to MEW Market 🙀</h1>
+<p align="center">
+</p>
+<p>
+  <img src="https://img.shields.io/badge/version-1.0-blue.svg?cacheSeconds=2592000" />
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction 👋
 
-## Available Scripts
+The platform allows blockchain users to create, sell or collect NFT
 
-In the project directory, you can run:
+## Live Project 🚀
 
-### `npm start`
+https://chobuanft.firebaseapp.com/
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Roadmap ⛳
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 📌 Phase 1:
 
-### `npm test`
+- [Admin] List NFT contract address -> **ERC1155**, **ERC721**
+- Login
+- Sell NFT with fixed price
+- Buy NFT with fixed price
+- My page: list all my NFT assets
+- Browse page: buy NFT assets
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Phase 2:
 
-### `npm run build`
+- Let user create their own NFT assets right on UI
+- Implement aution style (bid/ask) NFT market
+- Improve UI:
+  - Sort NFT by categories
+  - Show activity -> transfer, bid, sales, listing
+  - Show NFT leaderboard -> volume, avg price
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Phase 3:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Improve UX by reduce user's approve & sign transactions.
+- NFT lending/borrowing/farming.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Future:**
 
-### `npm run eject`
+- Swap NFT between chains (**Harmony** and **Binance smart chain**)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Sequence Diagram
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Users create request for new NFT contract address:
+  <img src="./images/listNft.png" />
+- Admin accepts listing requests for new NFT contract address:
+  <img src="./images/addNft.png">
+- Users create orders when selling their NFT
+  <img src="./images/createSellOrder.png">
+- Users create transactions to buy the NFTs being offered for sale
+  <img src="./images/buyNft.png">
+- The owners of the NFTs can cancel the sell orders if they no longer want to sell
+  <img src="./images/cancelSellOrder.png">
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Technical 🤖
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Frontend: Using **Reactjs**, **Redux thunk**
+- Storage: Using **3Box** for user's profile.
+- Smart contract: Using solidity version 0.6.12 and **Upgradable Proxy Contracts**.
