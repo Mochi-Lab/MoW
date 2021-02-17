@@ -1,16 +1,41 @@
-import { Table, Layout, Menu, Input } from 'antd';
-import { StarOutlined, ShopOutlined } from '@ant-design/icons';
+import { Table, Layout, Menu, Input, Checkbox, Divider } from 'antd';
+import { ShopOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const { SubMenu } = Menu;
 const { Content, Sider } = Layout;
 
+const CheckboxGroup = Checkbox.Group;
+
+const plainOptions = [
+  'Transfer',
+  'Approval',
+  'SellOrderAdded',
+  'SellOrderCompleted',
+  'SellOrderDeactive',
+];
+const defaultCheckedList = [
+  'Transfer',
+  'Approval',
+  'SellOrderAdded',
+  'SellOrderCompleted',
+  'SellOrderDeactive',
+];
+
 export default function TransactionTable() {
   const dispatch = useDispatch();
-  const { erc721Instances, erc721Tokens, walletAddress } = useSelector((state) => state);
+  const { web3, sellOrderList, erc721Instances, erc721Tokens, walletAddress } = useSelector(
+    (state) => state
+  );
   const [txns, setTxns] = useState([]);
+  const [filterTxns, setFilterTxns] = useState([]);
 
+  const [checkedList, setCheckedList] = useState(defaultCheckedList);
+  const [indeterminate, setIndeterminate] = useState(true);
+  const [checkAll, setCheckAll] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const firstUpdate = useRef(true);
   useEffect(() => {
     const fetchTxns = async () => {
       var getERC721Txn = (instance) => {
@@ -18,7 +43,7 @@ export default function TransactionTable() {
           let balance = await instance.methods.balanceOf(walletAddress).call();
           if (balance > 0) {
             let txn = [];
-            // to
+            // Transfer to
             await instance.events.Transfer(
               {
                 filter: { to: walletAddress },
@@ -30,7 +55,7 @@ export default function TransactionTable() {
               }
             );
 
-            // from
+            // Transfer from
             await instance.events.Transfer(
               {
                 filter: { from: walletAddress },
@@ -41,6 +66,64 @@ export default function TransactionTable() {
                 setTxns((txns) => [...txns, event]);
               }
             );
+
+            // Owner
+            await instance.events.Approval(
+              {
+                filter: { owner: walletAddress },
+                fromBlock: 0,
+              },
+              function (error, event) {
+                event.key = event.id;
+                setTxns((txns) => [...txns, event]);
+              }
+            );
+
+            // Approved
+            await instance.events.Approval(
+              {
+                filter: { approved: walletAddress },
+                fromBlock: 0,
+              },
+              function (error, event) {
+                event.key = event.id;
+                setTxns((txns) => [...txns, event]);
+              }
+            );
+
+            await sellOrderList.events.SellOrderAdded(
+              {
+                filter: { seller: walletAddress },
+                fromBlock: 0,
+              },
+              function (error, event) {
+                event.key = event.id;
+                setTxns((txns) => [...txns, event]);
+              }
+            );
+
+            await sellOrderList.events.SellOrderDeactive(
+              {
+                filter: { seller: walletAddress },
+                fromBlock: 0,
+              },
+              function (error, event) {
+                event.key = event.id;
+                setTxns((txns) => [...txns, event]);
+              }
+            );
+
+            await sellOrderList.events.SellOrderCompleted(
+              {
+                filter: { seller: walletAddress },
+                fromBlock: 0,
+              },
+              function (error, event) {
+                event.key = event.id;
+                setTxns((txns) => [...txns, event]);
+              }
+            );
+
             resolve(txn);
           } else {
             resolve();
@@ -55,8 +138,29 @@ export default function TransactionTable() {
           })
         );
     };
-    fetchTxns();
-  }, [dispatch, walletAddress, erc721Instances]);
+    if (walletAddress && erc721Instances && sellOrderList) fetchTxns();
+  }, [dispatch, walletAddress, erc721Instances, sellOrderList]);
+
+  useEffect(() => {
+    if (!firstUpdate.current) {
+      let filterTxns = txns.filter((value) => checkedList.includes(value.event));
+      setFilterTxns(filterTxns);
+      setIsChecked(true);
+    } else firstUpdate.current = false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkedList]);
+
+  const onChange = (list) => {
+    setCheckedList(list);
+    setIndeterminate(!!list.length && list.length < plainOptions.length);
+    setCheckAll(list.length === plainOptions.length);
+  };
+
+  const onCheckAllChange = (e) => {
+    setCheckedList(e.target.checked ? plainOptions : []);
+    setIndeterminate(false);
+    setCheckAll(e.target.checked);
+  };
 
   const columns = [
     {
@@ -73,19 +177,21 @@ export default function TransactionTable() {
     {
       title: 'Unit Price',
       dataIndex: 'price',
+      render: (value) => {
+        value && value.price ? <p>{web3.utils.fromWei(value.price, 'ether')}</p> : <></>;
+      },
       key: 'price',
-    },
-    {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      key: 'quantity',
     },
     {
       title: 'From',
       dataIndex: 'returnValues',
       render: (value) => {
-        if (value.from.length > 15) value.from = value.from.substr(0, 15) + '...';
-        return <p style={{ margin: 0 }}>{value.from}</p>;
+        let from = '';
+        if (!!value.from) from = value.from.substr(0, 15) + '...';
+        if (!!value.owner) from = value.owner.substr(0, 15) + '...';
+        if (!!value.seller) from = value.seller.substr(0, 15) + '...';
+
+        return <p style={{ margin: 0 }}>{from}</p>;
       },
       key: 'returnValues.from',
       width: 150,
@@ -94,8 +200,11 @@ export default function TransactionTable() {
       title: 'To',
       dataIndex: 'returnValues',
       render: (value) => {
-        if (value.to.length > 15) value.to = value.to.substr(0, 15) + '...';
-        return <p style={{ margin: 0 }}>{value.to}</p>;
+        let to = '';
+        if (!!value.to) to = value.to.substr(0, 15) + '...';
+        if (!!value.owner) to = value.approved.substr(0, 15) + '...';
+        if (!!value.buyer) to = value.buyer.substr(0, 15) + '...';
+        return <p style={{ margin: 0 }}>{to}</p>;
       },
       key: 'returnValues.to',
       width: 150,
@@ -104,6 +213,22 @@ export default function TransactionTable() {
       title: 'Block Number',
       dataIndex: 'blockNumber',
       key: 'blockNumber',
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => a.blockNumber - b.blockNumber,
+    },
+    {
+      title: 'View',
+      dataIndex: 'transactionHash',
+      key: 'transactionHash',
+      render: (value) => (
+        <a
+          target='_blank'
+          rel='noopener noreferrer'
+          href={`https://testnet.bscscan.com/tx/${value}`}
+        >
+          View
+        </a>
+      ),
     },
   ];
 
@@ -128,12 +253,23 @@ export default function TransactionTable() {
               <></>
             )}
           </SubMenu>
-          <SubMenu key='sub2' icon={<StarOutlined />} title='Events'>
-            <Menu.Item key='5'>Listings</Menu.Item>
-            <Menu.Item key='6'>Sales</Menu.Item>
-            <Menu.Item key='7'>Bids</Menu.Item>
-            <Menu.Item key='8'>Transfers</Menu.Item>
-          </SubMenu>
+          {/* <SubMenu key='sub2' icon={<StarOutlined />} title='Events'>
+            <Menu.Item key='5'>
+              <Checkbox onChange={onChange}>Transfer</Checkbox>
+            </Menu.Item>
+            <Menu.Item key='6'>
+              <Checkbox onChange={onChange}>Approval</Checkbox>
+            </Menu.Item>
+            <Menu.Item key='7'>
+              <Checkbox onChange={onChange}>SellOrderAdded</Checkbox>
+            </Menu.Item>
+            <Menu.Item key='8'>
+              <Checkbox onChange={onChange}>SellOrderCompleted</Checkbox>
+            </Menu.Item>
+            <Menu.Item key='9'>
+              <Checkbox onChange={onChange}>SellOrderDeactive</Checkbox>
+            </Menu.Item>
+          </SubMenu> */}
         </Menu>
       </Sider>
       <Layout style={{ padding: '0 24px 24px' }}>
@@ -145,15 +281,15 @@ export default function TransactionTable() {
             minHeight: 280,
           }}
         >
-          <Table
-            onRow={(record, rowIndex) => {
-              return {
-                onClick: (event) => {}, // click to open BscScan
-              };
-            }}
-            columns={columns}
-            dataSource={txns}
-          />
+          <>
+            <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
+              Check all
+            </Checkbox>
+
+            <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
+            <Divider />
+          </>
+          <Table columns={columns} dataSource={isChecked ? filterTxns : txns} />
         </Content>
       </Layout>
     </Layout>

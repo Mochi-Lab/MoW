@@ -1,3 +1,3 @@
 export default function MyCollection() {
-  return <div>My Collection</div>;
+  return <div>Create New NFT</div>;
 }
