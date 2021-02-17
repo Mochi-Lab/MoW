@@ -353,7 +353,25 @@ export const buyNft = (orderDetail) => async (dispatch, getState) => {
       .buy(orderDetail.sellId)
       .send({ from: walletAddress, value: orderDetail.price })
       .on('receipt', (receipt) => {
-        message.success('Create Sell Order Successfully');
+        message.success('Successfully purchased !');
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+      });
+  } catch (error) {
+    message.error('Oh no! Something went wrong !');
+  }
+};
+
+export const cancelSellOrder = (orderDetail) => async (dispatch, getState) => {
+  const { market, walletAddress } = getState();
+  try {
+    await market.methods
+      .cancleSellOrder(orderDetail.sellId)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Cancel Successfully');
       })
       .on('error', (error, receipt) => {
         console.log(error);

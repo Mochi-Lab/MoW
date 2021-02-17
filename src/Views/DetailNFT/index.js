@@ -9,21 +9,14 @@ import { useParams } from 'react-router-dom';
 import { PacmanLoader } from 'react-spinners';
 import Sell from 'Components/Sell';
 import Buy from 'Components/Buy';
+import Cancel from 'Components/Cancel';
 
 const { TabPane } = Tabs;
 
 const RenderSwitch = ({ status, token, orderDetail }) => {
   switch (status) {
     case 3:
-      return (
-        <div className={s['actions-btn']}>
-          <div className={s.gSzfBw}>
-            <Button type='primary' shape='round' size='large'>
-              Cancel
-            </Button>
-          </div>
-        </div>
-      );
+      return <Cancel orderDetail={orderDetail} />;
     case 2:
       return <Sell token={token} />;
     case 1:
