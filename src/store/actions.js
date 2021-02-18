@@ -152,6 +152,25 @@ export const setLoadingErc721 = (isLoadingErc721) => async (dispatch) => {
   });
 };
 
+export const transferNft = (contractAddress, to, tokenId) => async (dispatch, getState) => {
+  let { walletAddress, web3 } = getState();
+  let nftInstance = new web3.eth.Contract(ERC721.abi, contractAddress);
+  try {
+    await nftInstance.methods
+      .safeTransferFrom(walletAddress, to, tokenId)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Transfer Successfully');
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+      });
+  } catch (error) {
+    message.error('Oh no! Something went wrong !');
+  }
+};
+
 ////////////////////
 // CONTRACT ADDRESS
 ////////////////////

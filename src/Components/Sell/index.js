@@ -34,14 +34,13 @@ export default function Sell({ token }) {
   };
 
   return (
-    <div className='PE'>
-      <div className={s['actions-btn']}>
-        <div className={s.gSzfBw}>
-          <Button type='primary' shape='round' size='large' onClick={showModal}>
-            Sell
-          </Button>
-        </div>
+    <>
+      <div className={s.gSzfBw}>
+        <Button type='primary' shape='round' size='large' onClick={showModal}>
+          Sell
+        </Button>
       </div>
+
       <Modal title='Sell order' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         <div className='sell-img'>
           <img alt='img-nft' src={token.image} />
@@ -65,6 +64,6 @@ export default function Sell({ token }) {
           />
         </div>
       </Modal>
-    </div>
+    </>
   );
 }

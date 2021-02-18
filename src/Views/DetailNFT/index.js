@@ -10,6 +10,7 @@ import { PacmanLoader } from 'react-spinners';
 import Sell from 'Components/Sell';
 import Buy from 'Components/Buy';
 import Cancel from 'Components/Cancel';
+import Transfer from 'Components/Transfer';
 
 const { TabPane } = Tabs;
 
@@ -18,7 +19,15 @@ const RenderSwitch = ({ status, token, orderDetail }) => {
     case 3:
       return <Cancel orderDetail={orderDetail} />;
     case 2:
-      return <Sell token={token} />;
+      return (
+        <div className='PE'>
+          <div className={s['actions-btn']}>
+            <Sell token={token} />
+            <div className={s.cAFwWB} />
+            <Transfer token={token} />
+          </div>
+        </div>
+      );
     case 1:
       return <Buy orderDetail={orderDetail} />;
     default:
