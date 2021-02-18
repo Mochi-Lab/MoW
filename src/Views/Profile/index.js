@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Tabs } from 'antd';
-import { WalletOutlined, HistoryOutlined, GiftOutlined } from '@ant-design/icons';
+import { WalletOutlined, HistoryOutlined } from '@ant-design/icons';
 import ERC721Filter from 'Components/ERC721Filter';
 import Edit from './Edit';
 
@@ -114,17 +114,6 @@ export default function Profile() {
                 key='2'
               >
                 <TransactionTable />
-              </TabPane>
-              <TabPane
-                tab={
-                  <div>
-                    <GiftOutlined />
-                    <strong>Gift for you Friend</strong>
-                  </div>
-                }
-                key='3'
-              >
-                Content of card tab 3
               </TabPane>
             </Tabs>
           </div>

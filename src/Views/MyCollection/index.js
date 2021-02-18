@@ -1,3 +1,141 @@
+import { Form, Input, Button, Row } from 'antd';
+import { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { useDispatch } from 'react-redux';
+import './index.css';
+import { generateNFt } from 'store/actions';
+
+const { TextArea } = Input;
+
 export default function MyCollection() {
-  return <div>Create New NFT</div>;
+  const dispatch = useDispatch();
+
+  const [files, setFiles] = useState([]);
+
+  const generateUUID = () => {
+    let uuid = '';
+    const cs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 16; i++) {
+      uuid += cs.charAt(Math.floor(Math.random() * cs.length));
+    }
+    return uuid;
+  };
+
+  const generateImageUri = (values) => {
+    var blob = new Blob([files[0]], { type: files[0].fype });
+    var formData = new FormData();
+    formData.append('file', blob);
+
+    const uuid = generateUUID();
+    fetch(`https://siasky.net/skynet/skyfile/${uuid}`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        let image = 'https://siasky.net/' + result.skylink;
+        generateURI(values, image);
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const generateURI = ({ name, description }, image) => {
+    let draw = {
+      name,
+      image,
+      description,
+    };
+    draw = JSON.stringify(draw);
+    var blob = new Blob([draw], { type: 'application/json' });
+    var formData = new FormData();
+    formData.append('file', blob);
+
+    const uuid = generateUUID();
+    fetch(`https://siasky.net/skynet/skyfile/${uuid}`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        let tokenUri = 'https://siasky.net/' + result.skylink;
+        dispatch(generateNFt(name, tokenUri));
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: 'image/*',
+    onDrop: (acceptedFiles) => {
+      setFiles(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+    },
+  });
+
+  const onFinish = async (values) => {
+    generateImageUri(values);
+  };
+
+  return (
+    <div className='my-collection'>
+      <h2>You can create NFT for your own !!!</h2>
+      <div>
+        <div>
+          <h3>Upload Image</h3>
+          <div className='drag-box-search'>
+            <div className='drag-box' {...getRootProps({ className: 'dropzone' })}>
+              <input {...getInputProps()} />
+              {!!files[0] ? (
+                <img
+                  src={files[0].preview}
+                  alt='priview'
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
+              ) : (
+                <p>{'Drag and Drop your image here'}</p>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className='input-area'>
+          <Form onFinish={onFinish}>
+            <Form.Item
+              label='Name'
+              name='name'
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input name of NFT!',
+                },
+              ]}
+            >
+              <Input
+                style={{ marginBottom: '15px', width: '30vw' }}
+                placeholder='Name of Nft'
+                size='large'
+              />
+            </Form.Item>
+            <Form.Item label='Description' name='description'>
+              <TextArea
+                style={{ width: '30vw' }}
+                autoSize={{ minRows: 6 }}
+                placeholder='Description'
+              />
+            </Form.Item>
+            <Form.Item>
+              <Row justify='end'>
+                <Button type='primary' htmlType='submit'>
+                  Submit
+                </Button>
+              </Row>
+            </Form.Item>
+          </Form>
+        </div>
+      </div>
+    </div>
+  );
 }
