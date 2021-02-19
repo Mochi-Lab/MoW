@@ -1,3 +1,5 @@
+@import '../../dark.css';
+@import '../../light.css';
 .content-home {
   position: relative;
   inset: 0px;

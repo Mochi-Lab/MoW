@@ -1,0 +1,6 @@
+html[data-theme='dark'] {
+  --color: rgb(250, 250, 250);
+  --background-color: #121212;
+  --nft-background: #000000;
+  --input-background: #232323;
+}
