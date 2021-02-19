@@ -97,7 +97,6 @@ export default function DetailNFT() {
     <>
       {!!token ? (
         <div className={`${s['detail-nft']} ${s.bWQTJz}`}>
-          {console.log(availableSellOrder)}
           <div className={s['content-nft']}>
             <div className={`${s['nft-content']} content`}>
               <div className={s['btns-actions']}>
@@ -129,7 +128,6 @@ export default function DetailNFT() {
                   </div>
                 </div>
               </div>
-              {console.log(indexAvailable + 1, availableSellOrder.length)}
               {indexAvailable + 1 >= availableSellOrder.length ? (
                 <></>
               ) : (

@@ -176,11 +176,12 @@ export default function TransactionTable() {
     },
     {
       title: 'Unit Price',
-      dataIndex: 'price',
+      dataIndex: 'returnValues',
       render: (value) => {
-        value && value.price ? <p>{web3.utils.fromWei(value.price, 'ether')}</p> : <></>;
+        if (value && value.price) return <p>{web3.utils.fromWei(value.price, 'ether')} BNB</p>;
+        else <></>;
       },
-      key: 'price',
+      key: 'returnValues.price',
     },
     {
       title: 'From',
@@ -253,23 +254,6 @@ export default function TransactionTable() {
               <></>
             )}
           </SubMenu>
-          {/* <SubMenu key='sub2' icon={<StarOutlined />} title='Events'>
-            <Menu.Item key='5'>
-              <Checkbox onChange={onChange}>Transfer</Checkbox>
-            </Menu.Item>
-            <Menu.Item key='6'>
-              <Checkbox onChange={onChange}>Approval</Checkbox>
-            </Menu.Item>
-            <Menu.Item key='7'>
-              <Checkbox onChange={onChange}>SellOrderAdded</Checkbox>
-            </Menu.Item>
-            <Menu.Item key='8'>
-              <Checkbox onChange={onChange}>SellOrderCompleted</Checkbox>
-            </Menu.Item>
-            <Menu.Item key='9'>
-              <Checkbox onChange={onChange}>SellOrderDeactive</Checkbox>
-            </Menu.Item>
-          </SubMenu> */}
         </Menu>
       </Sider>
       <Layout style={{ padding: '0 24px 24px' }}>
