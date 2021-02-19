@@ -4,12 +4,14 @@ import { useDropzone } from 'react-dropzone';
 import { useDispatch } from 'react-redux';
 import './index.css';
 import { generateNFt } from 'store/actions';
+import { PacmanLoader } from 'react-spinners';
 
 const { TextArea } = Input;
 
 export default function MyCollection() {
   const dispatch = useDispatch();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
 
   const generateUUID = () => {
@@ -22,6 +24,9 @@ export default function MyCollection() {
   };
 
   const generateImageUri = (values) => {
+    // Start Upload image
+    setIsLoading(true);
+
     var blob = new Blob([files[0]], { type: files[0].fype });
     var formData = new FormData();
     formData.append('file', blob);
@@ -36,7 +41,10 @@ export default function MyCollection() {
         let image = 'https://siasky.net/' + result.skylink;
         generateURI(values, image);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        setIsLoading(false);
+        console.log(e);
+      });
   };
 
   const generateURI = ({ name, description }, image) => {
@@ -58,9 +66,13 @@ export default function MyCollection() {
       .then((response) => response.json())
       .then((result) => {
         let tokenUri = 'https://siasky.net/' + result.skylink;
+        setIsLoading(false);
         dispatch(generateNFt(name, tokenUri));
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        setIsLoading(false);
+        console.log(e);
+      });
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -82,7 +94,15 @@ export default function MyCollection() {
 
   return (
     <div className='my-collection'>
+      {isLoading ? (
+        <div className='center loading'>
+          <PacmanLoader color={'#36D7B7'} />
+        </div>
+      ) : (
+        <></>
+      )}
       <h2>You can create NFT for your own !!!</h2>
+
       <div>
         <div>
           <h3>Upload Image</h3>
