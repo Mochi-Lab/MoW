@@ -1,3 +1,5 @@
+@import './dark.css';
+@import './light.css';
 .menuBar {
   padding: 0 20px;
   border-bottom: solid 1px #e8e8e8;
@@ -167,6 +169,10 @@
   max-width: 100%;
   min-height: 100vh;
   width: 100%;
+
+  /* theme */
+  background-color: var(--background-color);
+  color: var(--color);
 }
 
 .content {

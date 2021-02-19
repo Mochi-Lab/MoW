@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { setWeb3, setAvailableSellOrder } from 'store/actions';
 import store from 'store/index';
 import { useEffect } from 'react';
+import ToggleDarkMode from 'Components/ToggleDarkMode';
 
 function App() {
   const { web3 } = useSelector((state) => state);
@@ -29,6 +30,7 @@ function App() {
       <BrowserRouter>
         <div className={`page center content`}>
           <div className='bg-header'></div>
+          <ToggleDarkMode />
           <NavBar />
           <Switch>
             <Route exact path='/' component={Home} />

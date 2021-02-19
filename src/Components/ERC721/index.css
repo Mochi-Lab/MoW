@@ -1,3 +1,5 @@
+@import '../../dark.css';
+@import '../../light.css';
 .erc721-img {
   width: 100% !important;
   margin: auto;
@@ -7,13 +9,22 @@
 
 .sp-between {
   display: flex;
+  color: var(--color) !important;
   justify-content: space-between;
 }
 
 .card-token {
-  background-color: white;
+  background-color: var(--nft-background) !important;
   box-shadow: 0 6px 15px rgb(36 37 38 / 8%);
   border-radius: 1rem !important;
   overflow: hidden;
   transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.ant-row .ant-card-bordered {
+  border: 1px solid #f0f0f0 !important;
+}
+
+.card-token .ant-card-meta-description {
+  color: var(--color) !important;
 }

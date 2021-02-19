@@ -23,7 +23,7 @@ export default function LeftNar() {
             size='large'
             allowClear
             style={{ width: '100%' }}
-            placeholder='Search NFT'
+            placeholder='Search by name'
             onChange={(e) => searchNFT(e.target.value)}
             prefix={<SearchOutlined />}
             className='input-search-nft'
