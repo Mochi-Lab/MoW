@@ -154,7 +154,7 @@ export const setLoadingErc721 = (isLoadingErc721) => async (dispatch) => {
 };
 
 export const transferNft = (contractAddress, to, tokenId) => async (dispatch, getState) => {
-  let { walletAddress, web3 } = getState();
+  let { walletAddress, web3, erc721Instances } = getState();
   let nftInstance = new web3.eth.Contract(ERC721.abi, contractAddress);
   try {
     await nftInstance.methods
@@ -170,6 +170,8 @@ export const transferNft = (contractAddress, to, tokenId) => async (dispatch, ge
   } catch (error) {
     message.error('Oh no! Something went wrong !');
   }
+  // get own nft
+  dispatch(getOwnedERC721(erc721Instances));
 };
 
 ////////////////////
@@ -363,10 +365,13 @@ export const createSellOrder = (nftAddress, tokenId, price) => async (dispatch, 
   } catch (error) {
     message.error('Oh no! Something went wrong !');
   }
+
+  // Fetch new availableOrderList
+  dispatch(setAvailableSellOrder());
 };
 
 export const buyNft = (orderDetail) => async (dispatch, getState) => {
-  const { market, walletAddress } = getState();
+  const { market, walletAddress, erc721Instances } = getState();
   try {
     await market.methods
       .buy(orderDetail.sellId)
@@ -381,6 +386,11 @@ export const buyNft = (orderDetail) => async (dispatch, getState) => {
   } catch (error) {
     message.error('Oh no! Something went wrong !');
   }
+
+  // Fetch new availableOrderList
+  dispatch(setAvailableSellOrder());
+  // get own nft
+  dispatch(getOwnedERC721(erc721Instances));
 };
 
 export const cancelSellOrder = (orderDetail) => async (dispatch, getState) => {
@@ -399,6 +409,9 @@ export const cancelSellOrder = (orderDetail) => async (dispatch, getState) => {
   } catch (error) {
     message.error('Oh no! Something went wrong !');
   }
+
+  // Fetch new availableOrderList
+  dispatch(setAvailableSellOrder());
 };
 
 ////////////////////
@@ -406,12 +419,12 @@ export const cancelSellOrder = (orderDetail) => async (dispatch, getState) => {
 ////////////////////
 
 export const generateNFt = (name, tokenUri) => async (dispatch, getState) => {
-  let { web3, chainId, walletAddress } = getState();
+  let { web3, chainId, walletAddress, erc721Instances } = getState();
   contractAddress = getContractAddress(chainId);
-  const erc721Instances = await new web3.eth.Contract(ChoBua.abi, contractAddress.ChoBua);
+  const erc721Instance = await new web3.eth.Contract(ChoBua.abi, contractAddress.ChoBua);
 
   try {
-    await erc721Instances.methods
+    await erc721Instance.methods
       .mint(walletAddress, name, tokenUri)
       .send({ from: walletAddress })
       .on('receipt', (receipt) => {
@@ -425,4 +438,6 @@ export const generateNFt = (name, tokenUri) => async (dispatch, getState) => {
     console.log(error);
     message.error('Oh no! Something went wrong !');
   }
+  // get own nft
+  dispatch(getOwnedERC721(erc721Instances));
 };

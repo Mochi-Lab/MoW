@@ -12,10 +12,13 @@ const RightMenu = () => {
   const shortAddress = useSelector((state) => state.shortAddress);
   return (
     <Menu mode={md ? 'horizontal' : 'inline'}>
+      <Menu.Item key='explorer'>
+        <Link to='/'>Explorer</Link>
+      </Menu.Item>
       <SubMenu key='create-sub' title='Create'>
         <Menu.Item key='create'>
           <Link to='/create'>
-            <strong>List NFTs</strong>
+            <strong>Submit NFTs</strong>
           </Link>
         </Menu.Item>
         <Menu.Item key='collection'>
@@ -25,9 +28,6 @@ const RightMenu = () => {
         </Menu.Item>
       </SubMenu>
 
-      <Menu.Item key='help'>
-        <Link to='/help'>Help</Link>
-      </Menu.Item>
       <Menu.Item key='contact'>
         <Link to='/contact'>Contact</Link>
       </Menu.Item>
