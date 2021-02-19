@@ -1,6 +1,6 @@
 import { Card, Row, Col, Input } from 'antd';
 import './index.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -35,6 +35,12 @@ function ERC721Card({ token, name }) {
 
 export default function ERC721({ tokens }) {
   const [afterFilter, setafterFilter] = useState(!!tokens ? tokens.tokens : null);
+
+  useEffect(() => {
+    if (!!tokens) {
+      setafterFilter(tokens.tokens);
+    }
+  }, [tokens]);
 
   const searchNFT = (text) => {
     let filter = tokens.tokens.filter((token) => {

@@ -14,6 +14,8 @@ const contractAddress = {
     Vault: '0x4B38B78DD9C5f72161b6D57890Dd365A121Ef554',
     SellOrderList: '0x7f530594048284bd841D492DE4FeDB1a7d6Ce40d',
     Market: '0xF4A977222bb3a0Eea888f455515237f7BD8F3560',
+    // generate nft for user
+    ChoBua: '0x68f33d151cdAaeDc54aC80e14a79B94167fb30B4',
   },
   //Hmy Mainnet shard 0
   1666600000: {

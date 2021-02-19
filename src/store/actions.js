@@ -1,5 +1,6 @@
 import { parseBalance } from 'utils/helper';
 import ERC721 from 'Contracts/ERC721.json';
+import ChoBua from 'Contracts/ChoBua.json';
 import AddressesProvider from 'Contracts/AddressesProvider.json';
 import Market from 'Contracts/Market.json';
 import NFTList from 'Contracts/NFTList.json';
@@ -225,9 +226,8 @@ export const registerNft = (contractAddress) => async (dispatch, getState) => {
     // is contract address
     let ERC721token = new web3.eth.Contract(ERC721.abi, contractAddress);
     await ERC721token.methods.name().call();
-
     nftList.methods
-      .registerNft(contractAddress)
+      .registerNFT(contractAddress)
       .send({ from: walletAddress })
       .on('receipt', (receipt) => {
         message.success('Register Successfully');
@@ -397,6 +397,32 @@ export const cancelSellOrder = (orderDetail) => async (dispatch, getState) => {
         message.error('Oh no! Something went wrong !');
       });
   } catch (error) {
+    message.error('Oh no! Something went wrong !');
+  }
+};
+
+////////////////////
+// Create New NFT
+////////////////////
+
+export const generateNFt = (name, tokenUri) => async (dispatch, getState) => {
+  let { web3, chainId, walletAddress } = getState();
+  contractAddress = getContractAddress(chainId);
+  const erc721Instances = await new web3.eth.Contract(ChoBua.abi, contractAddress.ChoBua);
+
+  try {
+    await erc721Instances.methods
+      .mint(walletAddress, name, tokenUri)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Create Successfully !');
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+      });
+  } catch (error) {
+    console.log(error);
     message.error('Oh no! Something went wrong !');
   }
 };
