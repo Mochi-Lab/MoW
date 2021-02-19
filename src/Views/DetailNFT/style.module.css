@@ -62,6 +62,18 @@
   padding: 32px;
 }
 
+.btL {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+}
+
+.btR {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+}
+
 .btns-actions .btns {
   margin: 0px;
   padding: 0px;

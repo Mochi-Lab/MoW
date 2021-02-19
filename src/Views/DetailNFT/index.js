@@ -1,11 +1,16 @@
 import s from './style.module.css';
 import { Tabs, Button, message } from 'antd';
-import { ExpandAltOutlined, ShareAltOutlined } from '@ant-design/icons';
+import {
+  ExpandAltOutlined,
+  ShareAltOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ERC721 from 'Contracts/ERC721.json';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { PacmanLoader } from 'react-spinners';
 import Sell from 'Components/Sell';
 import Buy from 'Components/Buy';
@@ -39,6 +44,8 @@ export default function DetailNFT() {
   const [token, setToken] = useState(null);
   const [orderDetail, setOrderDetail] = useState();
   const [status, setStatus] = useState(0);
+  const [owner, setOwner] = useState('');
+  const [indexAvailable, setIndexAvailable] = useState(null);
   // get details nft
   const { web3, walletAddress, sellOrderList, availableSellOrder } = useSelector((state) => state);
   const { addressToken, id } = useParams();
@@ -50,6 +57,7 @@ export default function DetailNFT() {
 
         // check if user is owner of token
         let tokenOwner = await erc721Instances.methods.ownerOf(id).call();
+        setOwner(tokenOwner);
         if (tokenOwner === walletAddress) {
           // Check if the token is in the order list?
           let isOnList = await sellOrderList.methods
@@ -68,6 +76,10 @@ export default function DetailNFT() {
         );
         setOrderDetail(fil[0]);
 
+        let indexInAvalableSell = availableSellOrder.findIndex(
+          (token) => token.nftAddress === addressToken && token.tokenId === id
+        );
+        setIndexAvailable(indexInAvalableSell);
         // get token info
         const token = await erc721Instances.methods.tokenURI(id).call();
         let req = await axios.get(token);
@@ -85,6 +97,7 @@ export default function DetailNFT() {
     <>
       {!!token ? (
         <div className={`${s['detail-nft']} ${s.bWQTJz}`}>
+          {console.log(availableSellOrder)}
           <div className={s['content-nft']}>
             <div className={`${s['nft-content']} content`}>
               <div className={s['btns-actions']}>
@@ -92,6 +105,20 @@ export default function DetailNFT() {
                   <Button shape='circle' icon={<ExpandAltOutlined />} size='large' />
                 </div>
               </div>
+              {indexAvailable - 1 < 0 ? (
+                <></>
+              ) : (
+                <div className={`${s.btns} ${s.btL}`}>
+                  <Link
+                    to={`/token/${availableSellOrder[indexAvailable - 1].nftAddress}/${
+                      availableSellOrder[indexAvailable - 1].tokenId
+                    }`}
+                  >
+                    <Button shape='circle' icon={<LeftOutlined />} size='large' />
+                  </Link>
+                </div>
+              )}
+
               <div className={`${s['content-nft-img']} PE`}>
                 <div className={`${s['img-nft']} PE`}>
                   <div className={`${s['img-token']} ${s['css-1dbjc4n']}`}>
@@ -102,6 +129,20 @@ export default function DetailNFT() {
                   </div>
                 </div>
               </div>
+              {console.log(indexAvailable + 1, availableSellOrder.length)}
+              {indexAvailable + 1 >= availableSellOrder.length ? (
+                <></>
+              ) : (
+                <div className={`${s.btns} ${s.btR}`}>
+                  <Link
+                    to={`/token/${availableSellOrder[indexAvailable + 1].nftAddress}/${
+                      availableSellOrder[indexAvailable + 1].tokenId
+                    }`}
+                  >
+                    <Button shape='circle' icon={<RightOutlined />} size='large' />
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
           <div className={`${s['info-nft']} PE`}>
@@ -160,17 +201,10 @@ export default function DetailNFT() {
                         <div className={s['nft-info']}>
                           <div className={s['tabs-info']}>
                             <Tabs defaultActiveKey='1'>
-                              <TabPane tab='Info' key='1'>
-                                Content of Tab Pane 1
-                              </TabPane>
-                              <TabPane tab='Owners' key='2'>
-                                Content of Tab Pane 2
-                              </TabPane>
-                              <TabPane tab='History' key='3'>
-                                Content of Tab Pane 3
-                              </TabPane>
-                              <TabPane tab='Bids' key='4'>
-                                Content of Tab Pane 4
+                              <TabPane tab='Owners' key='1'>
+                                <p>
+                                  <strong>{owner}</strong>
+                                </p>
                               </TabPane>
                             </Tabs>
                             {/* <div className={s['tabs']}>Tabs</div>
