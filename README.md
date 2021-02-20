@@ -54,9 +54,13 @@ https://chobuanft.firebaseapp.com/
   <img src="./images/buyNft.png">
 - The owners of the NFTs can cancel the sell orders if they no longer want to sell
   <img src="./images/cancelSellOrder.png">
+- Users can create their own NFT with MOW:
+  <img src="./images/createNFT.png">
 
 ## Technical 🤖
 
 - Frontend: Using **Reactjs**, **Redux thunk**
-- Storage: Using **3Box** for user's profile.
+- Storage: Using **3Box** (https://github.com/3box/3box) for user's profile, **Sia** for NFT's storage:
+  <img src="./images/3box-.jpeg" width="80">
+  <img src="./images/sia.jpg" width="80">
 - Smart contract: Using solidity version 0.6.12 and **Upgradable Proxy Contracts**.
