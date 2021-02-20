@@ -1,4 +1,4 @@
-import { Form, Input, Button, Row } from 'antd';
+import { Form, Input, Button, Row, message } from 'antd';
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useDispatch } from 'react-redux';
@@ -13,6 +13,7 @@ export default function MyCollection() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
+  const [form] = Form.useForm();
 
   const generateUUID = () => {
     let uuid = '';
@@ -64,13 +65,21 @@ export default function MyCollection() {
       body: formData,
     })
       .then((response) => response.json())
-      .then((result) => {
+      .then(async (result) => {
         let tokenUri = 'https://siasky.net/' + result.skylink;
         setIsLoading(false);
-        dispatch(generateNFt(name, tokenUri));
+
+        await dispatch(generateNFt(name, tokenUri));
+
+        // reset inpurt
+        setFiles([]);
+        form.resetFields();
       })
       .catch((e) => {
         setIsLoading(false);
+        // reset inpurt
+        setFiles([]);
+        form.resetFields();
         console.log(e);
       });
   };
@@ -88,8 +97,9 @@ export default function MyCollection() {
     },
   });
 
-  const onFinish = async (values) => {
-    generateImageUri(values);
+  const onFinish = (values) => {
+    if (files.length > 0) generateImageUri(values);
+    else message.warn('Did you forget upload an Image ?');
   };
 
   return (
@@ -122,7 +132,7 @@ export default function MyCollection() {
           </div>
         </div>
         <div className='input-area'>
-          <Form onFinish={onFinish}>
+          <Form onFinish={onFinish} form={form}>
             <Form.Item
               label='Name'
               name='name'
