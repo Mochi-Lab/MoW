@@ -60,7 +60,12 @@ https://chobuanft.firebaseapp.com/
 ## Technical 🤖
 
 - Frontend: Using **Reactjs**, **Redux thunk**
+
+  <img src="./images/reactjs.png" width="100">
+
 - Storage: Using **3Box** (https://github.com/3box/3box) for user's profile, **Sia** for NFT's storage:
+
   <img src="./images/3box-.jpeg" width="80">
   <img src="./images/sia.jpg" width="80">
+
 - Smart contract: Using solidity version 0.6.12 and **Upgradable Proxy Contracts**.
