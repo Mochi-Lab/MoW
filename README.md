@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to MEW Market 🙀</h1>
+<h1 align="center">Welcome to MOW Market 🐮</h1>
 <p align="center">
 </p>
 <p>
