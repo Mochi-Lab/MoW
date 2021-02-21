@@ -11,13 +11,13 @@ The platform allows blockchain users to create, sell or collect NFT
 
 ## Live Project 🚀
 
-https://chobuanft.firebaseapp.com/
+https://mow-market-275c5.web.app/
 
 ## Roadmap ⛳
 
 ### 📌 Phase 1:
 
-- [Admin] List NFT contract address -> **ERC1155**, **ERC721**
+- [Admin] List NFT contract address -> **BEP-1155**, **BEP-721**
 - Login
 - Sell NFT with fixed price
 - Buy NFT with fixed price
@@ -40,7 +40,7 @@ https://chobuanft.firebaseapp.com/
 
 **Future:**
 
-- Swap NFT between chains (**Harmony** and **Binance smart chain**)
+- Swap NFT between chains (**Ethereum** and **Binance smart chain**)
 
 ## Sequence Diagram
 
