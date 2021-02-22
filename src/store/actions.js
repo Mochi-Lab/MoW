@@ -347,9 +347,14 @@ export const setMySellOrder = () => async (dispatch, getState) => {
 export const createSellOrder = (nftAddress, tokenId, price) => async (dispatch, getState) => {
   const { market, walletAddress, web3 } = getState();
   try {
-    // Approve ERC721
     const erc721Instances = await new web3.eth.Contract(ERC721.abi, nftAddress);
-    await erc721Instances.methods.approve(market._address, tokenId).send({ from: walletAddress });
+
+    // Check to see if nft have accepted
+    let addressApproved = await erc721Instances.methods.getApproved(tokenId).call();
+
+    if (addressApproved !== market._address)
+      // Approve ERC721
+      await erc721Instances.methods.approve(market._address, tokenId).send({ from: walletAddress });
 
     // Create Sell Order
     await market.methods
