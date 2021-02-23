@@ -1,5 +1,5 @@
 import { Table, Layout, Menu, Input, Checkbox, Divider } from 'antd';
-import { ShopOutlined } from '@ant-design/icons';
+import { ShopOutlined, SearchOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState, useRef } from 'react';
 
@@ -36,6 +36,7 @@ export default function TransactionTable() {
   const [checkAll, setCheckAll] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const firstUpdate = useRef(true);
+  const [tokenActive, setTokenActive] = useState(null);
   useEffect(() => {
     const fetchTxns = async () => {
       var getERC721Txn = (instance) => {
@@ -233,22 +234,48 @@ export default function TransactionTable() {
     },
   ];
 
+  function selectToken(token, index) {
+    setTokenActive(index);
+  }
+
   return (
     <Layout>
-      <Sider width={200} className='site-layout-background'>
+      <Sider width={200} className='site-layout-background style-sider-left'>
         <Menu
           mode='inline'
           defaultSelectedKeys={['1']}
           defaultOpenKeys={['sub1']}
           style={{ height: '100%', borderRight: 0 }}
         >
-          <SubMenu key='sub1' icon={<ShopOutlined />} title='Collection'>
-            <Menu.Item key='1'>
-              <Input.Search allowClear style={{ width: '100%' }} placeholder='Search NFT' />
+          <SubMenu
+            key='sub1'
+            icon={<ShopOutlined />}
+            title='Collection'
+            className='collections-sidebar-left'
+          >
+            <Menu.Item key='1' onClick={() => selectToken(null, null)}>
+              <Input
+                size='large'
+                className='input-search-collections'
+                allowClear
+                style={{ width: '100%' }}
+                placeholder='Search Collections'
+                prefix={<SearchOutlined />}
+              />
             </Menu.Item>
             {erc721Tokens ? (
               erc721Tokens.map((erc721Token, index) => (
-                <Menu.Item key={index + 2}>{erc721Token.name}</Menu.Item>
+                <Menu.Item key={index + 2} onClick={() => selectToken(erc721Token, index)}>
+                  <div className={`sidenav-item ${tokenActive === index ? 'is-active' : ''}`}>
+                    <div
+                      className='avatar-token'
+                      dangerouslySetInnerHTML={{ __html: erc721Token.avatarToken }}
+                    />
+                    <div className='name-token'>
+                      <h2>{erc721Token.name}</h2>
+                    </div>
+                  </div>
+                </Menu.Item>
               ))
             ) : (
               <></>
@@ -273,7 +300,12 @@ export default function TransactionTable() {
             <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
             <Divider />
           </>
-          <Table columns={columns} dataSource={isChecked ? filterTxns : txns} />
+          <Table
+            columns={columns}
+            dataSource={isChecked ? filterTxns : txns}
+            pagination={{ size: 'small' }}
+            scroll={{ x: '100vw' }}
+          />
         </Content>
       </Layout>
     </Layout>

@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import { useDispatch } from 'react-redux';
 import './index.css';
 import { generateNFt } from 'store/actions';
-import { PacmanLoader } from 'react-spinners';
+import IconLoading from 'Components/IconLoading';
 
 const { TextArea } = Input;
 
@@ -106,7 +106,7 @@ export default function MyCollection() {
     <div className='my-collection'>
       {isLoading ? (
         <div className='center loading'>
-          <PacmanLoader color={'#36D7B7'} />
+          <IconLoading />
         </div>
       ) : (
         <></>
@@ -115,7 +115,7 @@ export default function MyCollection() {
 
       <div>
         <div>
-          <h3>Upload Image</h3>
+          <h3 className='text-upload-image'>Upload Image</h3>
           <div className='drag-box-search'>
             <div className='drag-box' {...getRootProps({ className: 'dropzone' })}>
               <input {...getInputProps()} />
@@ -132,7 +132,7 @@ export default function MyCollection() {
           </div>
         </div>
         <div className='input-area'>
-          <Form onFinish={onFinish} form={form}>
+          <Form onFinish={onFinish} form={form} layout='vertical'>
             <Form.Item
               label='Name'
               name='name'
@@ -143,22 +143,18 @@ export default function MyCollection() {
                 },
               ]}
             >
-              <Input
-                style={{ marginBottom: '15px', width: '30vw' }}
-                placeholder='Name of Nft'
-                size='large'
-              />
+              <Input className='input-name-nft' placeholder='Name of Nft' size='large' />
             </Form.Item>
             <Form.Item label='Description' name='description'>
               <TextArea
-                style={{ width: '30vw' }}
+                className='input-name-nft'
                 autoSize={{ minRows: 6 }}
                 placeholder='Description'
               />
             </Form.Item>
             <Form.Item>
               <Row justify='end'>
-                <Button type='primary' htmlType='submit'>
+                <Button type='primary' htmlType='submit' shape='round' size='large'>
                   Submit
                 </Button>
               </Row>

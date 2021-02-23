@@ -1,7 +1,10 @@
+@import 'Assets/font-Circular-Std/style-font-circular-std.css';
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+  font-family: 'Circular Std', Helvetica, Arial, sans-serif !important;
+  font-weight: 400;
+  max-width: 100%;
+  color: rgb(4, 4, 5);
+  background: rgb(255, 255, 255);
 }
 
 .page {

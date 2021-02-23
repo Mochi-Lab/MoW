@@ -41,7 +41,19 @@ export default function Sell({ token }) {
         </Button>
       </div>
 
-      <Modal title='Sell order' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      <Modal
+        title='Sell order'
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={[
+          <Button key='cancel' shape='round' size='large' onClick={() => handleCancel()}>
+            Cancel
+          </Button>,
+          <Button key='sell' type='primary' shape='round' size='large' onClick={() => handleOk()}>
+            Sell
+          </Button>,
+        ]}
+      >
         <div className='sell-img'>
           <img alt='img-nft' src={token.image} />
           <p>{token.name}</p>

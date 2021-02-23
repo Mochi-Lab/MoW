@@ -9,6 +9,7 @@ import Vault from 'Contracts/Vault.json';
 import axios from 'axios';
 import { getContractAddress } from 'utils/getContractAddress';
 import { message } from 'antd';
+import * as randomAvatarGenerator from '@fractalsoftware/random-avatar-generator';
 
 var contractAddress;
 
@@ -30,9 +31,10 @@ export const setSpace = (space) => (dispatch) => {
 ////////////////////
 
 export const SET_WEB3 = 'SET_WEB3';
-export const setWeb3 = (web3) => (dispatch, getState) => {
+export const setWeb3 = (web3) => async (dispatch, getState) => {
   dispatch({ type: SET_WEB3, web3 });
-  let { chainId } = getState();
+
+  let chainId = getState().chainId ? getState().chainId : await web3.eth.net.getId();
   contractAddress = getContractAddress(chainId);
 
   const addressesProvider = new web3.eth.Contract(
@@ -75,12 +77,18 @@ export const SET_BALANCE = 'SET_BALANCE';
 export const setBalance = () => async (dispatch, getState) => {
   let { web3, walletAddress } = getState();
   let balance;
-  if (walletAddress !== null) balance = parseBalance(await web3.eth.getBalance(walletAddress), 18);
+  if (walletAddress !== null)
+    balance = parseBalance((await web3.eth.getBalance(walletAddress)).toString(), 18);
   else balance = 0;
   dispatch({
     type: SET_BALANCE,
     balance,
   });
+};
+
+export const SET_STR_SEARCH = 'SET_STR_SEARCH';
+export const setStrSearch = (strSearch) => (dispatch) => {
+  dispatch({ type: SET_STR_SEARCH, strSearch });
 };
 
 ////////////////////
@@ -274,28 +282,28 @@ export const getNftInfo = async (nftAddress, nftList) => {
 export const SET_AVAILABLE_SELL_ORDER = 'SET_AVAILABLE_SELL_ORDER';
 export const setAvailableSellOrder = () => async (dispatch, getState) => {
   const { sellOrderList, web3 } = getState();
+  const pushErc721 = async (listNftContract) => {
+    let ERC721token = { name: '', symbol: '', avatarToken: '', tokens: [] };
+    ERC721token.name = await listNftContract.instance.methods.name().call();
+    ERC721token.symbol = await listNftContract.instance.methods.symbol().call();
+    let avatarData = randomAvatarGenerator.generateRandomAvatarData();
+    ERC721token.avatarToken = randomAvatarGenerator.getAvatarFromData(avatarData);
 
-  const pushErc721 = (listNftContract) => {
-    return new Promise(async (resolve) => {
-      let ERC721token = {};
-
-      ERC721token.name = await listNftContract.instance.methods.name().call();
-      ERC721token.symbol = await listNftContract.instance.methods.symbol().call();
-
-      ERC721token.tokens = [];
-      await listNftContract.tokenId.map(async (tokenId, index) => {
+    ERC721token.tokens = await Promise.all(
+      listNftContract.tokenId.map(async (tokenId, index) => {
         let token = {};
         token.index = tokenId;
         token.tokenURI = await listNftContract.instance.methods.tokenURI(tokenId).call();
         token.addressToken = listNftContract.instance._address;
         token.price = listNftContract.price[index];
-        let req = await axios.get(token.tokenURI);
-        token.detail = req.data;
-        ERC721token.tokens.push(token);
-      });
-
-      resolve(ERC721token);
-    });
+        token.collections = ERC721token.name;
+        token.symbolCollections = ERC721token.symbol;
+        // let req = await axios.get(token.tokenURI);
+        // token.detail = req.data;
+        return token;
+      })
+    );
+    return ERC721token;
   };
 
   // Loading done
@@ -325,8 +333,8 @@ export const setAvailableSellOrder = () => async (dispatch, getState) => {
         return await pushErc721(listNftcontract);
       })
     );
-
     dispatch({ type: SET_AVAILABLE_SELL_ORDER, availableSellOrder, convertErc721Tokens });
+    dispatch(setLoadingErc721(false));
   } catch (e) {
     console.log(e);
     return null;

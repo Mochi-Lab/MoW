@@ -1,14 +1,13 @@
 import { useState } from 'react';
 
-import { Drawer, Button, Grid } from 'antd';
+import { Drawer, Button } from 'antd';
 import LeftMenu from './LeftMenu';
 import RightMenu from './RightMenu';
 import { Link } from 'react-router-dom';
-
-const { useBreakpoint } = Grid;
+import logoBull from 'Assets/logo-bull.png';
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
 
 export default function NavBar() {
-  const { md } = useBreakpoint();
   const [visible, setVisible] = useState(false);
 
   const showDrawer = () => {
@@ -21,8 +20,13 @@ export default function NavBar() {
   return (
     <nav className='menuBar alignItem'>
       <div className='logo'>
-        <Link to='/'>logo</Link>
+        <Link to='/'>
+          <img src={logoBull} alt='logo'></img>
+        </Link>
       </div>
+      <Button className='barsMenu' style={{ display: 'none' }} onClick={showDrawer}>
+        {visible ? <UpOutlined /> : <DownOutlined />}
+      </Button>
       <div className='menuCon'>
         <div className='leftMenu'>
           <LeftMenu />
@@ -30,23 +34,14 @@ export default function NavBar() {
         <div className='rightMenu'>
           <RightMenu />
         </div>
-        {md ? (
-          <></>
-        ) : (
-          <Button className='barsMenu center' style={{ display: 'flex' }} onClick={showDrawer}>
-            <span className='barsBtn'></span>
-          </Button>
-        )}
 
         <Drawer
-          title='Menu'
-          bodyStyle={{ padding: 0 }}
-          placement='right'
+          bodyStyle={{ padding: 0, width: '300px' }}
+          placement='left'
           closable={false}
           onClose={onClose}
           visible={visible}
         >
-          <LeftMenu />
           <RightMenu />
         </Drawer>
       </div>
