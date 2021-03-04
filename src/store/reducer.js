@@ -25,6 +25,7 @@ const initialState = {
   vault: null,
   sellOrderList: null,
   market: null,
+  creativeStudio: null,
 
   //NftList
   acceptedNftsAddress: [],
@@ -129,6 +130,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         mySellOrder: action.mySellOrder,
+      };
+    case actions.SET_CREATIVESTUDIO:
+      return {
+        ...state,
+        creativeStudio: action.creativeStudio,
       };
     default:
       return state;

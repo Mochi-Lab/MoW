@@ -6,6 +6,7 @@ import Market from 'Contracts/Market.json';
 import NFTList from 'Contracts/NFTList.json';
 import SellOrderList from 'Contracts/SellOrderList.json';
 import Vault from 'Contracts/Vault.json';
+import CreativeStudio from 'Contracts/CreativeStudio.json';
 import axios from 'axios';
 import { getContractAddress } from 'utils/getContractAddress';
 import { message } from 'antd';
@@ -45,11 +46,13 @@ export const setWeb3 = (web3) => async (dispatch, getState) => {
   const nftList = new web3.eth.Contract(NFTList.abi, contractAddress.NftList);
   const sellOrderList = new web3.eth.Contract(SellOrderList.abi, contractAddress.SellOrderList);
   const vault = new web3.eth.Contract(Vault.abi, contractAddress.Vault);
+  const creativeStudio = new web3.eth.Contract(CreativeStudio.abi, contractAddress.creativeStudio);
   dispatch(setAddressesProvider(addressesProvider));
   dispatch(setMarket(market));
   dispatch(setNftList(nftList));
   dispatch(setSellOrderList(sellOrderList));
   dispatch(setVault(vault));
+  dispatch(setCreativeStudio(creativeStudio));
 
   dispatch(setAvailableSellOrder());
 };
@@ -222,6 +225,14 @@ export const setMarket = (market) => async (dispatch) => {
   dispatch({
     type: SET_MARKET,
     market,
+  });
+};
+
+export const SET_CREATIVESTUDIO = 'SET_CREATIVESTUDIO';
+export const setCreativeStudio = (creativeStudio) => async (dispatch) => {
+  dispatch({
+    type: SET_CREATIVESTUDIO,
+    creativeStudio,
   });
 };
 
@@ -454,3 +465,7 @@ export const generateNFt = (name, tokenUri) => async (dispatch, getState) => {
   // get own nft
   dispatch(getOwnedERC721(erc721Instances));
 };
+
+////////////////////
+// Create Collection
+////////////////////
