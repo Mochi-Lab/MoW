@@ -1,10 +1,7 @@
 import Web3 from 'web3';
 import Web3Modal from 'web3modal';
-import Authereum from 'authereum';
-import Fortmatic from 'fortmatic';
-import Portis from '@portis/web3';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import { setChainId, setWeb3, setAddress, setThreebox, setAcceptedNfts } from 'store/actions';
+import { setChainId, setWeb3, setAddress, setAcceptedNfts, setThreebox } from 'store/actions';
 import store from 'store/index';
 import Box from '3box';
 
@@ -39,30 +36,17 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      infuraId: '27e484dcd9e3efcfd25a83a78777cdf1',
+      rpc: {
+        56: 'https://bsc-dataseed.binance.org/',
+        97: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
+      },
     },
-  },
-  portis: {
-    package: Portis, // required
-    options: {
-      id: 'PORTIS_ID', // required
-    },
-  },
-  fortmatic: {
-    package: Fortmatic, // required
-    options: {
-      key: 'pk_test_F266140F4F5611D1', // required
-    },
-  },
-  authereum: {
-    package: Authereum, // required
   },
 };
 
 export const connectWeb3Modal = async () => {
   const web3Modal = new Web3Modal({
-    network: 'mainnet', // optional
-    // cacheProvider: true, // optional
+    // network: 'mainnet', // optional
     providerOptions, // required
   });
 
@@ -100,9 +84,13 @@ export const connectWeb3Modal = async () => {
 
   // Subscribe to chainId change
   provider.on('chainChanged', (chainId) => {
-    chainId = parseInt(chainId.substring(2));
-    store.dispatch(setChainId(chainId));
-    store.dispatch(setAcceptedNfts());
+    chainId = parseInt(web3.utils.hexToNumber(chainId));
+    if (chainId === 56 || chainId === 97) {
+      store.dispatch(setChainId(chainId));
+      store.dispatch(setAcceptedNfts());
+    } else {
+      alert('Please change to Mainnet or Testnet of Binance Smart Chain');
+    }
   });
 
   // Subscribe to provider connection

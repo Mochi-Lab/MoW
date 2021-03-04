@@ -1,18 +1,23 @@
 import { Form, Input, Button, Row, message } from 'antd';
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.css';
 import { generateNFt } from 'store/actions';
 import IconLoading from 'Components/IconLoading';
+import Collections from './Collections';
+import ConnectWallet from 'Components/ConnectWallet';
 
 const { TextArea } = Input;
 
 export default function MyCollection() {
   const dispatch = useDispatch();
+  const { walletAddress } = useSelector((state) => state);
+  const [isCreateNew, setIsCreateNew] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
+
   const [form] = Form.useForm();
 
   const generateUUID = () => {
@@ -69,7 +74,7 @@ export default function MyCollection() {
         let tokenUri = 'https://siasky.net/' + result.skylink;
         setIsLoading(false);
 
-        await dispatch(generateNFt(name, tokenUri));
+        await dispatch(generateNFt(isCreateNew, tokenUri));
 
         // reset inpurt
         setFiles([]);
@@ -132,6 +137,10 @@ export default function MyCollection() {
           </div>
         </div>
         <div className='input-area'>
+          <div>
+            <h3 className='text-upload-image'>Choose collection</h3>
+            <Collections isCreateNew={isCreateNew} setIsCreateNew={setIsCreateNew} />
+          </div>
           <Form onFinish={onFinish} form={form} layout='vertical'>
             <Form.Item
               label='Name'
@@ -154,9 +163,13 @@ export default function MyCollection() {
             </Form.Item>
             <Form.Item>
               <Row justify='end'>
-                <Button type='primary' htmlType='submit' shape='round' size='large'>
-                  Submit
-                </Button>
+                {walletAddress ? (
+                  <Button type='primary' htmlType='submit' shape='round' size='large'>
+                    Create Item
+                  </Button>
+                ) : (
+                  <ConnectWallet />
+                )}
               </Row>
             </Form.Item>
           </Form>

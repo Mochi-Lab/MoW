@@ -33,8 +33,8 @@ function App() {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/profile' component={web3 ? Profile : ConnectWallet} />
-            <Route exact path='/create' component={web3 ? Create : ConnectWallet} />
-            <Route exact path='/collection' component={web3 ? MyCollection : ConnectWallet} />
+            <Route exact path='/submit-Nfts' component={web3 ? Create : ConnectWallet} />
+            <Route exact path='/create' component={web3 ? MyCollection : ConnectWallet} />
             <Route
               exact
               path='/token/:addressToken/:id'
