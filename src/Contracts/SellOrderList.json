@@ -258,6 +258,24 @@
     {
       "inputs": [
         {
+          "internalType": "uint256[]",
+          "name": "sellId",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "buyer",
+          "type": "address[]"
+        }
+      ],
+      "name": "completeSellOrderByBatch",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint256",
           "name": "sellId",
           "type": "uint256"
