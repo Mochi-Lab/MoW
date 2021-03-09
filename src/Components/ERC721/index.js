@@ -13,7 +13,7 @@ function ERC721Card({ token, strSearch }) {
   const [detailNFT, setDetailNFT] = useState(null);
 
   useEffect(() => {
-    async function fethDeatil() {
+    async function fetchDetail() {
       if (!!token && !!token.tokenURI) {
         let req = await axios.get(token.tokenURI);
         setDetailNFT(req.data);
@@ -21,10 +21,12 @@ function ERC721Card({ token, strSearch }) {
         setDetailNFT({ name: '', description: '', image: imgNotFound });
       }
     }
-    fethDeatil();
+    fetchDetail();
   }, [token]);
 
-  return !!detailNFT && detailNFT.name.toLocaleLowerCase().includes(strSearch.toLowerCase()) ? (
+  return !!detailNFT &&
+    (detailNFT.name.toLocaleLowerCase().includes(strSearch.toLowerCase()) ||
+      token.collections.toLocaleLowerCase().includes(strSearch.toLowerCase())) ? (
     <Col className='gutter-row' xs={{ span: 24 }} md={{ span: 12 }} lg={{ span: 8 }}>
       {!!detailNFT ? (
         <Link to={`/token/${token.addressToken}/${token.index}`}>
