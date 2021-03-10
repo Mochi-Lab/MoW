@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "3box": "^1.22.2",
-    "3box-profile-edit-react": "^0.0.9",
     "@ant-design/icons": "^4.4.0",
     "@fractalsoftware/random-avatar-generator": "^1.0.5",
     "@portis/web3": "^3.0.3",
@@ -56,5 +54,8 @@
   },
   "devDependencies": {
     "prettier": "2.2.1"
+  },
+  "resolutions": {
+    "pull-ws": "3.3.2"
   }
 }

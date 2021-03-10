@@ -1,6 +1,5 @@
 .detail-nft {
   position: relative;
-  inset: 0px;
   margin: 0px;
   padding: 0px;
   border-width: 0px;
@@ -53,19 +52,16 @@
   border-style: solid;
   border-color: rgb(4, 4, 5);
   display: flex;
-  flex-basis: auto;
   flex-direction: column;
   flex-shrink: 0;
-  min-height: 0px;
-  min-width: 0px;
-  max-width: 100%;
-  z-index: 0;
+  z-index: 5;
   padding: 32px;
 }
 
 .btL {
   position: absolute;
   left: 15px;
+  z-index: 5;
   top: 50%;
 }
 
@@ -84,7 +80,6 @@
   border-style: solid;
   border-color: rgb(4, 4, 5);
   display: flex;
-  flex-basis: auto;
   flex-shrink: 0;
   min-height: 0px;
   min-width: 0px;
@@ -95,7 +90,8 @@
 
 .nft-content .content-nft-img {
   position: absolute;
-  inset: 14% 12% 12%;
+  height: 100%;
+  width: 100%;
 }
 
 .content-nft-img .img-nft {
@@ -134,7 +130,6 @@
   background-color: rgba(0, 0, 0, 0);
 }
 .img-nft .img-token .img img {
-  inset: 0px;
   object-fit: contain;
   height: 100%;
   opacity: 1;
@@ -157,6 +152,7 @@
   box-sizing: border-box;
   display: flex;
   flex-basis: auto;
+  height: 100%;
   flex-direction: column;
   flex-shrink: 0;
   margin: 0px;
@@ -214,14 +210,19 @@
 }
 .content-sidebar .sidebar-content {
   position: absolute;
-  inset: 0px;
-  overflow: hidden scroll;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
   margin-right: -15px;
   margin-bottom: 0px;
 }
 
 .sidebar-content .box-sidebar {
   min-height: 100%;
+}
+
+.owner {
+  font-size: 13px;
 }
 
 .box-sidebar .sidebar-box {
@@ -234,9 +235,6 @@
   border-color: rgb(4, 4, 5);
   display: flex;
   flex: 1 0 auto;
-  min-height: 0px;
-  min-width: 0px;
-  max-width: 100%;
   z-index: 0;
   flex-direction: column;
   -webkit-box-flex: 1;
@@ -271,9 +269,6 @@
   flex-basis: auto;
   flex-direction: column;
   flex-shrink: 0;
-  min-height: 0px;
-  min-width: 0px;
-  max-width: 100%;
   z-index: 0;
 }
 
@@ -608,9 +603,7 @@
   flex-basis: auto;
   flex-direction: column;
   flex-shrink: 0;
-  min-height: 0px;
-  min-width: 0px;
-  max-width: 100%;
+  width: 100%;
   z-index: 0;
   padding: 20px 32px;
 }
@@ -637,13 +630,14 @@
 
 .expand-img-nft {
   position: fixed;
-  inset: 0px;
   background: rgb(255, 255, 255);
   color: rgb(4, 4, 5);
   display: flex;
   flex-direction: column;
   -webkit-box-flex: 1;
   flex-grow: 1;
+  width: 100%;
+  height: 100%;
   z-index: 1000;
 }
 
@@ -726,7 +720,6 @@
 }
 
 .img-nft-expand {
-  inset: 0px;
   height: 100%;
   opacity: 0;
   position: absolute;

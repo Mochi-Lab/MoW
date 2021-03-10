@@ -34,6 +34,9 @@ const initialState = {
   availableSellOrder: [],
   convertErc721Tokens: [],
   mySellOrder: [],
+
+  //CreativeStudio
+  userCollections: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -135,6 +138,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         creativeStudio: action.creativeStudio,
+      };
+    case actions.SET_USER_COLLECTIONS:
+      return {
+        ...state,
+        userCollections: action.userCollections,
       };
     default:
       return state;

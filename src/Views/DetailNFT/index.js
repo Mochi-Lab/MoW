@@ -221,7 +221,6 @@ export default function DetailNFT() {
                                       <div className={s['price-eth']}>
                                         {web3.utils.fromWei(orderDetail.price, 'ether')} BNB
                                       </div>
-                                      {/* <div className={s['price-usd']}>$459.46</div> */}
                                       <div className={s['amount-nft']}>1 of 1</div>
                                     </div>
                                   </div>
@@ -238,13 +237,11 @@ export default function DetailNFT() {
                             <div className={s['tabs-info']}>
                               <Tabs defaultActiveKey='1'>
                                 <TabPane tab='Owners' key='1'>
-                                  <p>
+                                  <p className={s['owner']}>
                                     <strong>{owner}</strong>
                                   </p>
                                 </TabPane>
                               </Tabs>
-                              {/* <div className={s['tabs']}>Tabs</div>
-                     <div className={s['content-tabs']}>Contnet Tabs</div> */}
                             </div>
                           </div>
                         </div>

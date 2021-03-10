@@ -70,7 +70,6 @@ export default function Profile() {
             <div className='address' onClick={() => copyToClipboard()}>
               <p>
                 {walletAddress}
-                {'  '}
                 <span className='icon-coppy'>
                   {isCopied ? (
                     <svg

@@ -35,7 +35,7 @@
   align-items: center;
   justify-content: center;
   height: 300px;
-  width: 300px;
+  width: 350px;
   color: rgba(45, 46, 46, 0.35);
   border: 1px dashed rgba(0, 0, 0, 0.3);
   border-radius: 1rem;
@@ -47,13 +47,13 @@
   justify-content: center;
   color: black;
   border: 1px dashed rgba(58, 59, 59, 0.35);
-  border-radius: 5px;
   border-radius: 1rem;
 }
 
 .input-area {
   width: 30vw;
 }
+
 .input-area input,
 .input-area textarea {
   border-radius: 1rem;
@@ -62,7 +62,38 @@
 .input-name-nft {
   margin-bottom: 15px;
   width: 30vw;
+  border-radius: 1rem !important;  
 }
+
+.ant-modal-footer{
+  border-top:0 !important ;
+}
+
+.choose {
+  display: flex;
+  margin-bottom: 24px;
+}
+
+.choose > .active{
+  border: 1px solid rgb(0, 102, 255) !important;
+}
+
+.choose > .box{
+  cursor: pointer;
+  border: 1px solid rgba(4, 4, 5, 0.1);
+  margin: 0px 15px 0px 0px;
+  height: 140px;
+  width: 128px;
+  flex-shrink: 0;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.12s ease-in-out 0s;
+} 
 
 @media (max-width: 1200px) {
   .my-collection {

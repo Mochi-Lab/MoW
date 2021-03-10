@@ -1,21 +1,27 @@
 const contractAddress = {
   //BSC Mainnet
   56: {
-    AddressesProvider: '',
-    NftList: '',
-    Vault: '',
-    SellOrderList: '',
-    Market: '',
+    AddressesProvider: '0xc6732Eb8A138052D9e3DFEB66cB0175C94f7e970',
+    NftList: '0xC8224F5511fae865793B4235b1aA02011637e742',
+    Vault: '0xDa5F1f8d32C094a6c0fc21319bA2E5a64265C429',
+    SellOrderList: '0x4786999b7Ebb24876B2bD4705ecc89ECeebDa559',
+    Market: '0xc6A8101003d7d2ce14BD344e3df23E4AAfd77899',
+    CreativeStudio: '0xa5dD241c1A9A9826fB8E78c7db4dc8fdD3043b66',
+    ExchangeOrderList: '0x37ca1D6c7479F3Eb9d6d10309e6f0C611E6bE48F',
+    // generate nft for user
+    Mochi: '0x3bF0FD7176204A80021C1BD17807144714E31148',
   },
   //BSC Testnet
   97: {
-    AddressesProvider: '0x61c8C967b54118d3310A24f0D4c1aA4A51bA11A4',
-    NftList: '0x8717b0243ADaB85213f002F062dD43ef48647CfB',
-    Vault: '0x672a1AE943b870184644d0b36A1a210AffDcb984',
-    SellOrderList: '0xf6901a458Def0F2C94C47947a2016F782F2ea2ba',
-    Market: '0xb4C087DF69Cf9A54B5FA0b47B59Bd6b46266579B',
+    AddressesProvider: '0x9256AE394CAc7FA3c3DEC65aE5c9A4592a97f74E',
+    NftList: '0xaCA040938913fA3A8d2f0893210EA3B34B68c0d9',
+    Vault: '0x6610B40d72143332FA2856376482A038B5711C43',
+    SellOrderList: '0x6E228E07B33afa09A27be4e3b57896C6A915A062',
+    Market: '0x5232786A6263F7570F33635FC4Bb9f574EeBa1fF',
+    CreativeStudio: '0x67afEC3F8958BbDED4Db6Cdcc6559ceee5703a2e',
+    ExchangeOrderList: '0x7b816A80Dd5FbC5d098970ffD44feC7D8f649343',
     // generate nft for user
-    ChoBua: '0xEB8894de49349b9dfe804d43BFe988F483EaB5e7',
+    Mochi: '0xe1A8671a0793eC4506AB3B829887214086130FAE',
   },
   //Hmy Mainnet shard 0
   1666600000: {
