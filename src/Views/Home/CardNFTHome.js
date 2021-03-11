@@ -19,7 +19,7 @@ export default function CardNFTHome({ token, strSearch }) {
       }
     }
     fetchDetail();
-  }, [token]);
+  }, [token, token.tokenURI]);
 
   return !!detailNFT &&
     (detailNFT.name.toLocaleLowerCase().includes(strSearch.toLowerCase()) ||

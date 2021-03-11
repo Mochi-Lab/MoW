@@ -47,30 +47,34 @@ export default function Collections({ isCreateNew, setIsCreateNew }) {
       <div className='choose'>
         {!!userCollections && userCollections[0] && nftInfo ? (
           <div
-            className={`${isCreateNew ? 'active' : ''} box`}
+            className={`${isCreateNew ? 'active' : ''} box input-mode-bc`}
             onClick={() => setIsCreateNew(true)}
           >
-            <strong>{nftInfo.name}</strong>
-            <p>{nftInfo.symbol}</p>
+            <strong className='textmode'>{nftInfo.name}</strong>
+            <p className='textmode'>{nftInfo.symbol}</p>
           </div>
         ) : (
-          <div className={`${isCreateNew ? 'active' : ''} box`} onClick={showModal}>
-            <strong>Create</strong>
-            <p>ERC-721</p>
+          <div className={`${isCreateNew ? 'active' : ''} box input-mode-bc`} onClick={showModal}>
+            <strong className='textmode'>Create</strong>
+            <p className='textmode'>ERC-721</p>
           </div>
         )}
 
         <div
-          className={`${!isCreateNew ? 'active' : ''} box`}
+          className={`${!isCreateNew ? 'active' : ''} box input-mode-bc`}
           onClick={() => setIsCreateNew(false)}
         >
-          <strong>Mochi</strong>
-          <p>MOC</p>
+          <strong className='textmode'>Mochi</strong>
+          <p className='textmode'>MOC</p>
         </div>
       </div>
 
       <Modal
-        title='Collection'
+        title={
+          <p className='textmode' style={{ margin: 0 }}>
+            Collection
+          </p>
+        }
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={
@@ -104,7 +108,11 @@ export default function Collections({ isCreateNew, setIsCreateNew }) {
                 },
               ]}
             >
-              <Input className='input-name-nft' placeholder='Enter token name' size='large' />
+              <Input
+                className='input-name-nft input-mode-bc'
+                placeholder='Enter token name'
+                size='large'
+              />
             </Form.Item>
             <Form.Item
               label='Symbol'
@@ -116,7 +124,11 @@ export default function Collections({ isCreateNew, setIsCreateNew }) {
                 },
               ]}
             >
-              <Input className='input-name-nft' placeholder='Enter token symbol' size='large' />
+              <Input
+                className='input-name-nft input-mode-bc'
+                placeholder='Enter token symbol'
+                size='large'
+              />
             </Form.Item>
           </Form>
         ) : (

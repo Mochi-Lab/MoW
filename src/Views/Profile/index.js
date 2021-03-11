@@ -62,9 +62,9 @@ export default function Profile() {
             </div>
             <div className='name'>
               {threeboxProfile && threeboxProfile.name ? (
-                <p>{threeboxProfile.name}</p>
+                <p className='textmode'>{threeboxProfile.name}</p>
               ) : (
-                <p>Unnamed</p>
+                <p className='textmode'>Unnamed</p>
               )}
             </div>
             <div className='address' onClick={() => copyToClipboard()}>

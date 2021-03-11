@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import DarkModeToggle from 'react-dark-mode-toggle';
+import './index.css';
+
 export default function ToggleDarkMode() {
   const [isDark, setIsDark] = useState(localStorage.getItem('theme') === 'dark');
   useEffect(() => {
@@ -19,5 +20,14 @@ export default function ToggleDarkMode() {
       setIsDark(true);
     }
   };
-  return <DarkModeToggle checked={!isDark} onChange={() => toggleThemeChange()} size={80} />;
+  return (
+    <div className='darkmode-switch'>
+      <div className='toggle' title='toggle dark mode'>
+        <label>
+          <input checked={!isDark} onChange={() => toggleThemeChange()} type='checkbox' name='' />
+          <span></span>
+        </label>
+      </div>
+    </div>
+  );
 }

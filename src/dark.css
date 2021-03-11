@@ -4,3 +4,84 @@ html[data-theme='dark'] {
   --nft-background: #000000;
   --input-background: #232323;
 }
+
+[data-theme='dark'] .ant-card {
+  border: 1px solid rgb(84 83 83) !important;
+}
+
+[data-theme='dark'] .ant-steps-item-title {
+  color: rgb(250, 250, 250) !important;
+}
+
+[data-theme='dark'] .search-style {
+  color: rgb(250, 250, 250) !important;
+}
+
+[data-theme='dark'] .page {
+  background: rgb(18, 18, 18) !important;
+}
+
+[data-theme='dark'] .select-box > div {
+  background: #333333 !important;
+}
+
+[data-theme='dark'] .ant-card {
+  background: rgb(18, 18, 18) !important;
+}
+
+[data-theme='dark'] .center {
+  background: rgb(18, 18, 18) !important;
+}
+
+[data-theme='dark'] .content-home,
+.ant-menu-submenu-popup > .ant-menu {
+  background: rgb(18, 18, 18) !important;
+}
+
+[data-theme='dark'] .menuBar {
+  background-color: var(--background-color) !important;
+}
+
+[data-theme='dark'] .ant-modal-content {
+  background-color: rgb(30, 30, 30) !important;
+}
+
+[data-theme='dark'] .ant-modal-header {
+  background-color: rgb(30, 30, 30) !important;
+}
+
+[data-theme='dark'] .ant-card-meta-title,
+.ant-card-meta-description {
+  color: rgb(250, 250, 250) !important;
+}
+
+[data-theme='dark'] label {
+  color: rgb(250, 250, 250) !important;
+}
+
+[data-theme='dark'] .choose > .active {
+  border: 1px solid rgb(250, 250, 250) !important;
+}
+
+[data-theme='dark'] .textmode {
+  color: rgb(250, 250, 250) !important;
+}
+
+[data-theme='dark'] .nav-textmode {
+  color: rgb(250, 250, 250) !important;
+}
+
+@media (max-width: 768px) {
+  [data-theme='dark'] .nav-textmode {
+    color: rgb(18, 18, 18) !important;
+  }
+}
+
+[data-theme='dark'] .get-listed {
+  color: rgb(250, 250, 250) !important;
+}
+
+[data-theme='dark'] .dropzone {
+  color: rgba(87, 87, 87, 0.35) !important;
+  border: 1px dashed rgba(255, 255, 255, 1.3) !important;
+}

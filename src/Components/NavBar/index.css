@@ -16,12 +16,25 @@
   width: 100%;
   top: 0px;
   transform: translate3d(0px, 0px, 0px);
-  background: var(--background-color);
+  background-color: rgb(255, 255, 255);
 }
 
 .leftMenu {
   height: 48px;
   width: 40%;
+}
+
+.nav-avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.justifyContent {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .leftMenu .ant-col {

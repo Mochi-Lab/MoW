@@ -1,4 +1,4 @@
-import s from 'Views/DetailNFT/style.module.css';
+import 'Views/DetailNFT/style.css';
 import { useState } from 'react';
 import { Modal, Button, Input } from 'antd';
 import { useParams } from 'react-router-dom';
@@ -30,7 +30,7 @@ export default function Transfer({ token }) {
 
   return (
     <>
-      <div className={s.gSzfBw}>
+      <div className='gSzfBw'>
         <Button shape='round' size='large' onClick={showModal}>
           Transfer
         </Button>

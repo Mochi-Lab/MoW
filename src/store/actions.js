@@ -65,18 +65,20 @@ export const setChainId = (chainId) => (dispatch) => {
 
 export const SET_ADDRESS = 'SET_ADDRESS';
 export const setAddress = (walletAddress) => (dispatch) => {
-  var shortAddress = `${walletAddress.slice(0, 8)}...${walletAddress.slice(
-    walletAddress.length - 6,
-    walletAddress.length
-  )}`;
-  dispatch({
-    type: SET_ADDRESS,
-    walletAddress,
-    shortAddress,
-  });
-  dispatch(setBalance());
+  if (walletAddress !== null) {
+    var shortAddress = `${walletAddress.slice(0, 8)}...${walletAddress.slice(
+      walletAddress.length - 6,
+      walletAddress.length
+    )}`;
+    dispatch({
+      type: SET_ADDRESS,
+      walletAddress,
+      shortAddress,
+    });
+    dispatch(setBalance());
 
-  dispatch(setCollectionByUser());
+    dispatch(setCollectionByUser());
+  }
 };
 
 export const SET_BALANCE = 'SET_BALANCE';

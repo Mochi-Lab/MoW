@@ -1,4 +1,4 @@
-import s from 'Views/DetailNFT/style.module.css';
+import 'Views/DetailNFT/style.css';
 import { Button, InputNumber } from 'antd';
 import { useState } from 'react';
 import Modal from 'antd/lib/modal/Modal';
@@ -35,7 +35,7 @@ export default function Sell({ token }) {
 
   return (
     <>
-      <div className={s.gSzfBw}>
+      <div className='gSzfBw'>
         <Button type='primary' shape='round' size='large' onClick={showModal}>
           Sell
         </Button>

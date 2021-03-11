@@ -1,8 +1,6 @@
-import s from './style.module.css';
 import { Tabs, Button, message } from 'antd';
 import {
   ExpandAltOutlined,
-  ShareAltOutlined,
   LeftOutlined,
   RightOutlined,
   FullscreenExitOutlined,
@@ -17,6 +15,9 @@ import Sell from 'Components/Sell';
 import Buy from 'Components/Buy';
 import Cancel from 'Components/Cancel';
 import Transfer from 'Components/Transfer';
+import ConnectWallet from 'Components/ConnectWallet';
+import Share from 'Components/Share';
+import './style.css';
 
 const { TabPane } = Tabs;
 
@@ -27,9 +28,9 @@ const RenderSwitch = ({ status, token, orderDetail }) => {
     case 2:
       return (
         <div className='PE'>
-          <div className={s['actions-btn']}>
+          <div className='actions-btn'>
             <Sell token={token} />
-            <div className={s.cAFwWB} />
+            <div className='cAFwWB' />
             <Transfer token={token} />
           </div>
         </div>
@@ -99,9 +100,9 @@ export default function DetailNFT() {
     <>
       {!!token ? (
         expandImgDetail ? (
-          <div className={`${s['expand-img-nft']} PE ${expandImgDetail ? 'is-expand-img' : null}`}>
-            <div className={s['btn-zoomin']}>
-              <div className={s.btns}>
+          <div className={`expand-img-nft PE ${expandImgDetail ? 'is-expand-img' : null}`}>
+            <div className='btn-zoomin'>
+              <div className='btns'>
                 <Button
                   shape='circle'
                   icon={<FullscreenExitOutlined />}
@@ -110,18 +111,16 @@ export default function DetailNFT() {
                 />
               </div>
             </div>
-            <div className={s['content-img']}>
-              <div className={`${s['eWiAaw']}`}>
-                <div className={s['img-content']}>
-                  <div
-                    className={`${s['css-1dbjc4n']} ${s['img-token']} ${s['width-100']} ${s['hieght-100']}`}
-                  >
-                    <div className={`${s['token-img']} ${s['css-1dbjc4n']} ${s['box-img-expand']}`}>
+            <div className='content-img'>
+              <div className='eWiAaw'>
+                <div className='img-content'>
+                  <div className='css-1dbjc4n img-token width-100 hieght-100'>
+                    <div className='token-img css-1dbjc4n box-img-expand'>
                       <div
-                        className={`${s['img-bg']} ${s['css-1dbjc4n']}`}
+                        className='img-bg css-1dbjc4n'
                         style={{ backgroundImage: `url(${token.image})` }}
                       ></div>
-                      <img alt='img-nft' src={token.image} className={s['img-nft-expand']} />
+                      <img alt='img-nft' src={token.image} className='img-nft-expand' />
                     </div>
                   </div>
                 </div>
@@ -129,11 +128,11 @@ export default function DetailNFT() {
             </div>
           </div>
         ) : (
-          <div className={`${s['detail-nft']}`}>
-            <div className={s['content-nft']}>
-              <div className={`${s['nft-content']} content`}>
-                <div className={s['btns-actions']}>
-                  <div className={s.btns}>
+          <div className='detail-nft'>
+            <div className='content-nft'>
+              <div className='nft-content content'>
+                <div className='btns-actions'>
+                  <div className='btns'>
                     <Button
                       shape='circle'
                       icon={<ExpandAltOutlined />}
@@ -145,7 +144,7 @@ export default function DetailNFT() {
                 {indexAvailable - 1 < 0 ? (
                   <></>
                 ) : (
-                  <div className={`${s.btns} ${s.btL}`}>
+                  <div className='btns btL'>
                     <Link
                       to={`/token/${availableSellOrder[indexAvailable - 1].nftAddress}/${
                         availableSellOrder[indexAvailable - 1].tokenId
@@ -156,11 +155,11 @@ export default function DetailNFT() {
                   </div>
                 )}
 
-                <div className={`${s['content-nft-img']} PE`}>
-                  <div className={`${s['img-nft']} PE`}>
-                    <div className={`${s['img-token']} ${s['css-1dbjc4n']}`}>
-                      <div className={`${s['css-1dbjc4n']} ${s['img']}`}>
-                        <div className={`${s['img-bg']} ${s['css-1dbjc4n']}`}></div>
+                <div className='content-nft-img PE'>
+                  <div className='img-nft PE'>
+                    <div className='img-token css-1dbjc4n'>
+                      <div className='css-1dbjc4n img'>
+                        <div className='img-bg css-1dbjc4n'></div>
                         <img alt='img-nft' src={token.image} />
                       </div>
                     </div>
@@ -169,7 +168,7 @@ export default function DetailNFT() {
                 {indexAvailable + 1 >= availableSellOrder.length ? (
                   <></>
                 ) : (
-                  <div className={`${s.btns} ${s.btR}`}>
+                  <div className='btns btR'>
                     <Link
                       to={`/token/${availableSellOrder[indexAvailable + 1].nftAddress}/${
                         availableSellOrder[indexAvailable + 1].tokenId
@@ -181,89 +180,63 @@ export default function DetailNFT() {
                 )}
               </div>
             </div>
-            <div className={`${s['info-nft']} PE`}>
-              <div className={s['sidebar-info-nft']}>
-                <div className={`${s['header-fixed-sidebar']} PE`}>
-                  <div className={s['header-fixed']}>
-                    <div className={s['title-nft']}>
-                      <div className={s['nft-title']}>
-                        <h1 title='Name' className={`${s['text-title']} ${s['short-text']}`}>
+            <div className='info-nft PE sideBar-bg'>
+              <div className='sidebar-info'>
+                <div className='nft-info'>
+                  <div className='PE'>
+                    <div className='box-title'>
+                      <div>
+                        <h1 title='Name' className='text-title textmode'>
                           {token.name}
                         </h1>
                       </div>
-                      <div className={s['actions-nft']}>
-                        <Button shape='circle' icon={<ShareAltOutlined />} size='large' />
-                      </div>
+                      <Share token={token} />
                     </div>
+                    {orderDetail ? (
+                      <div className='price-nft'>
+                        <div className='doaTrL'>
+                          <div className='lapozE'>
+                            <div className='price-eth'>
+                              {web3.utils.fromWei(orderDetail.price, 'ether')} BNB
+                            </div>
+                            <div className='amount-nft'>1 of 1</div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </div>
-                <div className={`${s['content-sidebar']}`}>
-                  <div className={s['sidebar-content']}>
-                    <div className={`${s['box-sidebar']} PE`}>
-                      <div className={`${s['sidebar-box']}`}>
-                        <div className={s['sidebar-info']}>
-                          <div className={s['nft-info']}>
-                            <div className='PE'>
-                              <div className={s['title-nft']}>
-                                <div className={s['nft-title']}>
-                                  <h1 title='Name' className={s['text-title']}>
-                                    {token.name}
-                                  </h1>
-                                </div>
-                                <div className={s['actions-nft']}>
-                                  <Button shape='circle' icon={<ShareAltOutlined />} size='large' />
-                                </div>
-                              </div>
-                              {orderDetail ? (
-                                <div className={s['price-nft']}>
-                                  <div className={s.doaTrL}>
-                                    <div className={s.lapozE}>
-                                      <div className={s['price-eth']}>
-                                        {web3.utils.fromWei(orderDetail.price, 'ether')} BNB
-                                      </div>
-                                      <div className={s['amount-nft']}>1 of 1</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              ) : (
-                                <></>
-                              )}
-                            </div>
-                          </div>
-                          <div className={s['nft-info']}>
-                            <div className={s['description-nft']}>{token.description}</div>
-                          </div>
-                          <div className={s['nft-info']}>
-                            <div className={s['tabs-info']}>
-                              <Tabs defaultActiveKey='1'>
-                                <TabPane tab='Owners' key='1'>
-                                  <p className={s['owner']}>
-                                    <strong>{owner}</strong>
-                                  </p>
-                                </TabPane>
-                              </Tabs>
-                            </div>
-                          </div>
-                        </div>
-                        <div className={`${s['footer-sidebar']} `}>
-                          <div className={s['actions-buy-bid']}>
-                            <div className='PE'>
-                              <RenderSwitch
-                                status={status}
-                                token={token}
-                                orderDetail={orderDetail}
-                              />
+                <div className='nft-info'>
+                  <div className='description-nft textmode'>{token.description}</div>
+                </div>
+                <div className='nft-info'>
+                  <div className='tabs-info'>
+                    <Tabs defaultActiveKey='1'>
+                      <TabPane tab='Owners' key='1'>
+                        <p className='owner textmode'>
+                          <strong>{owner}</strong>
+                        </p>
+                      </TabPane>
+                    </Tabs>
+                  </div>
+                </div>
+              </div>
+              <div className='footer-sidebar'>
+                <div className='actions-buy-bid'>
+                  <div className='PE'>
+                    {walletAddress ? (
+                      <RenderSwitch status={status} token={token} orderDetail={orderDetail} />
+                    ) : (
+                      <ConnectWallet />
+                    )}
 
-                              <div className={s['calc-fee']}>
-                                <div className={s.feeService}>
-                                  Service fee
-                                  <span className={s.pt}> 2.5% </span>.
-                                  <span className={s['eth-usd']}> 0.308 BNB $470.95 </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                    <div className='calc-fee'>
+                      <div className='feeService textmode'>
+                        Service fee
+                        <span className='pt textmode'> 2.5% </span>.
+                        <span className='eth-usd'> 0.308 BNB $470.95 </span>
                       </div>
                     </div>
                   </div>

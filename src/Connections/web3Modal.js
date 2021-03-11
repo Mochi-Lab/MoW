@@ -101,6 +101,6 @@ export const connectWeb3Modal = async () => {
   // Subscribe to provider disconnection
   provider.on('disconnect', (error) => {
     console.log(error);
-    store.dispatch(setAddress(''));
+    store.dispatch(setAddress(null));
   });
 };

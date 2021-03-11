@@ -21,10 +21,6 @@
   transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
 
-.ant-row .ant-card-bordered {
-  border: 1px solid #f0f0f0 !important;
-}
-
 .card-token .ant-card-meta-description {
   color: var(--color) !important;
 }
