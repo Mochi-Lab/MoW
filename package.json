@@ -17,6 +17,7 @@
     "axios": "^0.21.1",
     "fortmatic": "^2.2.1",
     "ipfs-http-client": "^49.0.4",
+    "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-alice-carousel": "^2.4.0",
     "react-dom": "^17.0.1",

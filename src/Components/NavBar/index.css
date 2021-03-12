@@ -25,7 +25,7 @@
 
 .leftMenu {
   height: 48px;
-  width: 40%;
+  width: 25%;
 }
 
 .nav-avatar {
@@ -57,11 +57,6 @@
   color: var(--color) !important;
 }
 
-.rightMenu .ant-menu-item .ant-btn {
-  background: var(--background-color) !important;
-  color: var(--color) !important;
-}
-
 .menuCon .leftMenu {
   float: left;
   margin-left: 2rem;
@@ -72,62 +67,39 @@
   right: 50px !important;
 }
 
-@media (max-width: 1532px) {
+@media (max-width: 1437px) {
   .leftMenu {
-    width: 34%;
+    width: 20%;
   }
 
-  .rightMenu .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item {
+  .menuCon .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item {
     margin: 0 10px;
   }
-}
-@media (max-width: 1330px) {
-  .leftMenu {
-    width: 30%;
-  }
-
-  .rightMenu .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item {
-    margin: 0 15px;
-  }
-}
-@media (max-width: 1268px) {
-  .leftMenu {
-    width: 29%;
-  }
-  .menuCon .ant-menu-horizontal > .ant-menu-item a {
+  .menuCon .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item a {
     padding: 10px 10px;
   }
 }
-
-@media (max-width: 1219px) {
-  .menuCon .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item,
-  .menuCon .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu {
-    margin: 0 8px !important;
-  }
-  .rightMenu .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item {
-    margin: 0 10px;
-  }
+@media (max-width: 1345px) {
   .leftMenu {
-    width: 30%;
+    width: 15%;
   }
-
-  .menuCon .ant-menu-horizontal > .ant-menu-item a {
-    padding: 10px 10px;
+  .menuCon .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item {
+    margin: 0 7px;
+  }
+  .menuCon .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item a {
+    padding: 10px 7px;
   }
 }
-@media (max-width: 1078px) {
-  .leftMenu {
-    width: 28%;
-  }
-
-  .menuCon .ant-menu-horizontal > .ant-menu-item a {
-    padding: 10px 5px;
-  }
-}
-
 @media (max-width: 1024px) {
   .leftMenu {
-    width: 27%;
+    width: 13%;
+  }
+
+  .menuCon .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item {
+    margin: 0 5px;
+  }
+  .menuCon .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item a {
+    padding: 10px 5px;
   }
 }
 

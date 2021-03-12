@@ -9,6 +9,7 @@ import './App.css';
 import SubmitNFT from 'Views/SubmitNft';
 import Create from 'Views/Create';
 import { setAvailableSellOrder } from 'store/actions';
+import Airdrops from 'Views/Airdrops';
 import store from 'store/index';
 import { useEffect } from 'react';
 import CreateERC721 from 'Views/Create/ERC721';
@@ -18,6 +19,9 @@ function App() {
   useEffect(() => {
     async function fetchDataInit() {
       await store.dispatch(setAvailableSellOrder());
+      document
+        .getElementsByTagName('HTML')[0]
+        .setAttribute('data-theme', localStorage.getItem('theme'));
     }
     fetchDataInit();
   }, []);
@@ -35,6 +39,7 @@ function App() {
             <Route exact path='/create/erc721' component={CreateERC721} />
             <Route exact path='/create/erc1155' component={CreateERC1155} />
             <Route exact path='/token/:addressToken/:id' component={DetailNFT} />
+            <Route exact path='/airdrops' component={Airdrops} />
           </Switch>
         </div>
       </BrowserRouter>

@@ -9,11 +9,15 @@ import NFTList from 'Contracts/NFTList.json';
 import SellOrderList from 'Contracts/SellOrderList.json';
 import Vault from 'Contracts/Vault.json';
 import CreativeStudio from 'Contracts/CreativeStudio.json';
+import NFTClaimToken from 'Contracts/NFTClaimToken.json';
+import ERC20 from 'Contracts/ERC20.json';
 import axios from 'axios';
 import { getContractAddress } from 'utils/getContractAddress';
 import { message } from 'antd';
 import * as randomAvatarGenerator from '@fractalsoftware/random-avatar-generator';
+const IPFS = require('ipfs-http-client');
 
+const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
 var contractAddress;
 
 ////////////////////
@@ -49,12 +53,14 @@ export const setWeb3 = (web3) => async (dispatch, getState) => {
   const sellOrderList = new web3.eth.Contract(SellOrderList.abi, contractAddress.SellOrderList);
   const vault = new web3.eth.Contract(Vault.abi, contractAddress.Vault);
   const creativeStudio = new web3.eth.Contract(CreativeStudio.abi, contractAddress.CreativeStudio);
+  const nftClaimToken = new web3.eth.Contract(NFTClaimToken.abi, contractAddress.NFTCampaign);
   dispatch(setAddressesProvider(addressesProvider));
   dispatch(setMarket(market));
   dispatch(setNftList(nftList));
   dispatch(setSellOrderList(sellOrderList));
   dispatch(setVault(vault));
   dispatch(setCreativeStudio(creativeStudio));
+  dispatch(setNftClaimToken(nftClaimToken));
 
   dispatch(setAvailableSellOrder());
 };
@@ -553,4 +559,334 @@ export const createCollection = ({ name, symbol }) => async (dispatch, getState)
   }
   // get own nft
   dispatch(setAcceptedNfts());
+};
+
+////////////////////
+// Campaign - Airdrop
+////////////////////
+
+export const SET_NFT_CLAIM_TOKEN = 'SET_NFT_CLAIM_TOKEN';
+export const setNftClaimToken = (nftClaimToken) => async (dispatch) => {
+  dispatch({
+    type: SET_NFT_CLAIM_TOKEN,
+    nftClaimToken,
+  });
+};
+
+export const FETCH_LIST_CAMPAIGN = 'FETCH_LIST_CAMPAIGN';
+export const fetchListCampaign = () => async (dispatch, getState) => {
+  let { nftClaimToken, web3, walletAddress } = getState();
+  try {
+    if (!!web3 && !!contractAddress && !!contractAddress.NFTCampaign) {
+      dispatch(setLoadingCampaign(true));
+      if (!nftClaimToken) {
+        nftClaimToken = new web3.eth.Contract(NFTClaimToken.abi, contractAddress.NFTCampaign);
+        dispatch(setNftClaimToken(nftClaimToken));
+      }
+      let allCampaigns = await nftClaimToken.methods.getAllCaimpaigns().call();
+      let listCampaignFilter = allCampaigns.filter((campaign) => campaign.status !== '3');
+      let getCampaignsByOwner = [];
+      const ownerContractCampaign = await nftClaimToken.methods.owner().call();
+      if (!!walletAddress) {
+        if (walletAddress.toLowerCase() !== ownerContractCampaign.toLowerCase()) {
+          getCampaignsByOwner = await nftClaimToken.methods
+            .getCampaignsByOwner(walletAddress)
+            .call();
+          listCampaignFilter = listCampaignFilter.filter(
+            (campaign) =>
+              campaign.status === '1' || getCampaignsByOwner.includes(campaign.campaignId)
+          );
+        }
+      } else {
+        listCampaignFilter = allCampaigns.filter((campaign) => campaign.status === '1');
+      }
+      var getInfoCampaign = (instance) => {
+        return new Promise(async (resolve) => {
+          let req = await axios.get(instance.infoURL);
+          let infoCampaign = { ...instance };
+          infoCampaign.titleShort = req.data.titleShort ? req.data.titleShort : '';
+          infoCampaign.slogan = req.data.slogan ? req.data.slogan : '';
+          infoCampaign.titleDescription = req.data.titleDescription
+            ? req.data.titleDescription
+            : '';
+          infoCampaign.description = req.data.description ? req.data.description : '';
+          infoCampaign.urlIcon = req.data.urlIcon ? req.data.urlIcon : '';
+          infoCampaign.urlBanner = req.data.urlBanner ? req.data.urlBanner : '';
+
+          let balanceNFT = 0;
+          let tokensYetClaim = [];
+          let canCancel = false;
+          if (!!walletAddress) {
+            let instanceNFT = new web3.eth.Contract(ERC721.abi, instance.nftAddress);
+            balanceNFT = await instanceNFT.methods.balanceOf(walletAddress).call();
+            if (balanceNFT > 0) {
+              for (let i = 0; i < balanceNFT; i++) {
+                let tokenId = await instanceNFT.methods
+                  .tokenOfOwnerByIndex(walletAddress, i)
+                  .call();
+                let statusClaim = await nftClaimToken.methods
+                  .getClaimStatus(instance.campaignId, tokenId)
+                  .call();
+                if (!statusClaim) {
+                  tokensYetClaim.push(tokenId);
+                }
+              }
+            }
+            if (instance.campaignOwner.toLowerCase() === walletAddress.toLowerCase()) {
+              canCancel = true;
+            }
+          }
+          let instanceTokenEarn = await new web3.eth.Contract(ERC20.abi, instance.tokenAddress);
+          infoCampaign.symbolTokenEarn = !!instanceTokenEarn
+            ? await instanceTokenEarn.methods.symbol().call()
+            : '';
+          infoCampaign.balanceNFT = !!balanceNFT ? balanceNFT : 0;
+          infoCampaign.tokensYetClaim = !!tokensYetClaim ? tokensYetClaim : [];
+          infoCampaign.canCancel = canCancel;
+          infoCampaign.ownerContractCampaign = ownerContractCampaign;
+          resolve(infoCampaign);
+        });
+      };
+
+      listCampaignFilter = listCampaignFilter.sort((a, b) => {
+        if (a.campaignId > b.campaignId) return -1;
+        if (a.campaignId < b.campaignId) return 1;
+        return 0;
+      });
+      let listCampaign = await Promise.all(
+        listCampaignFilter.map(async (instance) => {
+          return await getInfoCampaign(instance);
+        })
+      );
+      dispatch({ type: FETCH_LIST_CAMPAIGN, listCampaign });
+      dispatch(setLoadingCampaign(false));
+    }
+  } catch (error) {
+    console.log(error);
+    message.error('Oh no! Something went wrong !');
+  }
+};
+
+export const addCampaign = (
+  nftAddress,
+  tokenAddress,
+  totalFunds,
+  amountPerClaim,
+  startTime,
+  endTime,
+  titleShort,
+  slogan,
+  titleDescription,
+  description,
+  iconToken,
+  bannerImg
+) => async (dispatch, getState) => {
+  let { nftClaimToken, walletAddress, web3 } = getState();
+  try {
+    let resultAdd = false;
+    if (!!nftClaimToken) {
+      let contentCampaign = {
+        titleShort: '',
+        slogan: '',
+        description: '',
+        urlIcon: '',
+        urlBanner: '',
+      };
+
+      const promiseIcon = new Promise((resolve, reject) => {
+        if (!!iconToken) {
+          const readerIcon = new window.FileReader();
+          readerIcon.readAsArrayBuffer(iconToken); // convert file to array for buffer
+          readerIcon.onloadend = async () => {
+            let results = await ipfs.add(readerIcon.result);
+            let ipfsHash = results.cid.string;
+            resolve('https://gateway.ipfs.io/ipfs/' + ipfsHash);
+          };
+        } else {
+          resolve();
+        }
+      });
+
+      const promiseBanner = new Promise((resolve, reject) => {
+        if (!!bannerImg) {
+          const readerBanner = new window.FileReader();
+          readerBanner.readAsArrayBuffer(bannerImg);
+          readerBanner.onloadend = async () => {
+            let results = await ipfs.add(readerBanner.result);
+            let ipfsHash = results.cid.string;
+            resolve('https://gateway.ipfs.io/ipfs/' + ipfsHash);
+          };
+        } else {
+          resolve();
+        }
+      });
+
+      let result = await Promise.all([promiseIcon, promiseBanner]);
+      contentCampaign.titleShort = titleShort ? titleShort : '';
+      contentCampaign.slogan = slogan ? slogan : '';
+      contentCampaign.titleDescription = titleDescription ? titleDescription : '';
+      contentCampaign.description = description ? description : '';
+      contentCampaign.urlIcon = result[0] ? result[0] : '';
+      contentCampaign.urlBanner = result[1] ? result[1] : '';
+      contentCampaign = JSON.stringify(contentCampaign);
+      let results = await ipfs.add(contentCampaign);
+      let ipfsHash = results.cid.string;
+      let infoURL = 'https://gateway.ipfs.io/ipfs/' + ipfsHash;
+
+      totalFunds = web3.utils.toWei(totalFunds.toString(), 'ether');
+      amountPerClaim = web3.utils.toWei(amountPerClaim.toString(), 'ether');
+      resultAdd = await nftClaimToken.methods
+        .addCampaign(
+          nftAddress,
+          tokenAddress,
+          totalFunds,
+          amountPerClaim,
+          startTime,
+          endTime,
+          infoURL
+        )
+        .send({ from: walletAddress })
+        .on('receipt', (receipt) => {
+          message.success('Create Campaign Successfully');
+          return true;
+        })
+        .on('error', (error, receipt) => {
+          console.log(error);
+          message.error('Oh no! Something went wrong !');
+          return false;
+        });
+    }
+    return resultAdd;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+export const checkWhiteListNft = (addressNft) => async (dispatch, getState) => {
+  let { nftList, web3 } = getState();
+  try {
+    if (!nftList) {
+      let nftList = new web3.eth.Contract(NFTList.abi, contractAddress.NftList);
+      dispatch(setNftList(nftList));
+    }
+    const result = await nftList.methods.isAcceptedNFT(addressNft).call();
+    return result;
+  } catch (error) {
+    console.log(error);
+    message.error('Oh no! Something went wrong !');
+  }
+};
+
+export const checkAllowance = (addressToken, amount) => async (dispatch, getState) => {
+  const { walletAddress, web3 } = getState();
+  try {
+    const instaneErc20 = new web3.eth.Contract(ERC20.abi, addressToken);
+    let allowance = await instaneErc20.methods
+      .allowance(walletAddress, contractAddress.NFTCampaign)
+      .call();
+    return allowance;
+  } catch (error) {
+    console.log(error);
+    message.error('Oh no! Something went wrong !');
+  }
+};
+
+export const approveERC20 = (addressToken, amount) => async (dispatch, getState) => {
+  let { web3, walletAddress } = getState();
+  try {
+    const instaneErc20 = new web3.eth.Contract(ERC20.abi, addressToken);
+    await instaneErc20.methods
+      .approve(
+        contractAddress.NFTCampaign,
+        '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+      )
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Approve Successfully !');
+        return true;
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+        return false;
+      });
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+export const forceEndCampaign = (campaignId) => async (dispatch, getState) => {
+  let { nftClaimToken, walletAddress } = getState();
+  try {
+    let result = await nftClaimToken.methods
+      .forceEnd(campaignId)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Cancel Successfully !');
+        return true;
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+        return false;
+      });
+    return result;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+export const claimTokenByNFT = (campaignId, tokenIds) => async (dispatch, getState) => {
+  let { nftClaimToken, walletAddress } = getState();
+  try {
+    let result = await nftClaimToken.methods
+      .claim(campaignId, tokenIds, walletAddress)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Claims Successfully !');
+        return true;
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+        return false;
+      });
+    return result;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+export const acceptCampaign = (campaignId) => async (dispatch, getState) => {
+  let { nftClaimToken, walletAddress } = getState();
+  try {
+    let result = await nftClaimToken.methods
+      .acceptCampaign(campaignId)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Accept Campaign Successfully !');
+        return true;
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+        return false;
+      });
+    return result;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+export const SET_LOADING_CAMPAIGN = 'SET_LOADING_CAMPAIGN';
+export const setLoadingCampaign = (loadingCampaign) => async (dispatch) => {
+  dispatch({
+    type: SET_LOADING_CAMPAIGN,
+    loadingCampaign,
+  });
 };
