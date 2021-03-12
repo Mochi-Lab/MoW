@@ -313,14 +313,15 @@ export const setAvailableSellOrder = () => async (dispatch, getState) => {
     ERC721token.avatarToken = randomAvatarGenerator.getAvatarFromData(avatarData);
 
     ERC721token.tokens = await Promise.all(
-      listNftContract.tokenId.map(async (tokenId, index) => {
+      listNftContract.tokenId.map(async (order, index) => {
         let token = {};
-        token.index = tokenId;
-        token.tokenURI = await listNftContract.instance.methods.tokenURI(tokenId).call();
+        token.index = order.id;
+        token.tokenURI = await listNftContract.instance.methods.tokenURI(order.id).call();
         token.addressToken = listNftContract.instance._address;
         token.price = listNftContract.price[index];
         token.collections = ERC721token.name;
         token.symbolCollections = ERC721token.symbol;
+        token.sortIndex = order.sortIndex;
         // let req = await axios.get(token.tokenURI);
         // token.detail = req.data;
         return token;
@@ -336,20 +337,23 @@ export const setAvailableSellOrder = () => async (dispatch, getState) => {
     var convertErc721Tokens = [];
     var listNftContracts = [];
 
-    availableSellOrder.map(async (sellOrder) => {
-      let token = { tokenId: [], price: [] };
-      let nftindex = listNftContracts.findIndex((nft) => nft.nftAddress === sellOrder.nftAddress);
-      if (nftindex === -1) {
-        token.nftAddress = sellOrder.nftAddress;
-        token.instance = new web3.eth.Contract(ERC721.abi, sellOrder.nftAddress);
-        token.tokenId.push(sellOrder.tokenId);
-        token.price.push(sellOrder.price);
-        listNftContracts.push(token);
-      } else {
-        listNftContracts[nftindex].tokenId.push(sellOrder.tokenId);
-        listNftContracts[nftindex].price.push(sellOrder.price);
-      }
-    });
+    availableSellOrder
+      .slice(0)
+      .reverse()
+      .map(async (sellOrder, i) => {
+        let token = { tokenId: [], price: [] };
+        let nftindex = listNftContracts.findIndex((nft) => nft.nftAddress === sellOrder.nftAddress);
+        if (nftindex === -1) {
+          token.nftAddress = sellOrder.nftAddress;
+          token.instance = new web3.eth.Contract(ERC721.abi, sellOrder.nftAddress);
+          token.tokenId.push({ sortIndex: i, id: sellOrder.tokenId });
+          token.price.push(sellOrder.price);
+          listNftContracts.push(token);
+        } else {
+          listNftContracts[nftindex].tokenId.push({ sortIndex: i, id: sellOrder.tokenId });
+          listNftContracts[nftindex].price.push(sellOrder.price);
+        }
+      });
 
     convertErc721Tokens = await Promise.all(
       listNftContracts.map(async (listNftcontract) => {

@@ -4,7 +4,7 @@ import { Drawer, Button } from 'antd';
 import LeftMenu from './LeftMenu';
 import RightMenu from './RightMenu';
 import { Link } from 'react-router-dom';
-import logoBull from 'Assets/logo-bull.png';
+import logoMochi from 'Assets/logo-mochi.png';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 
 export default function NavBar() {
@@ -21,7 +21,7 @@ export default function NavBar() {
     <nav className='menuBar alignItem'>
       <div className='logo'>
         <Link to='/'>
-          <img src={logoBull} alt='logo'></img>
+          <img src={logoMochi} alt='logo'></img>
         </Link>
       </div>
       <Button className='barsMenu' style={{ display: 'none' }} onClick={showDrawer}>

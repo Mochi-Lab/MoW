@@ -260,6 +260,12 @@ div.line-loading {
   border: none !important;
 }
 
+.container {
+  width: 85%;
+  margin: 0 auto;
+  max-width: 1500px;
+}
+
 @media (max-width: 992px) {
   .logo {
     width: 85px;
