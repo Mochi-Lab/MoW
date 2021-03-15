@@ -98,7 +98,7 @@ export default function Home() {
           </div> */}
           <div className='new-nfts'>
             <div className='title-new'>
-              <h2>
+              <h2 className='textmode'>
                 New List <img src={iconNew} className='icon-new' alt='icon-new-list' />
               </h2>
             </div>
@@ -112,7 +112,7 @@ export default function Home() {
           </div>
           <div className='create-nft'>
             <div className='title-create'>
-              <h2>
+              <h2 className='textmode'>
                 Latest Created <img src={iconCreate} className='icon-new' alt='icon-new-created' />
               </h2>
             </div>
@@ -126,7 +126,7 @@ export default function Home() {
           </div>
           <div className='explore-nft'>
             <div className='title-explore'>
-              <h2>
+              <h2 className='textmode'>
                 Explore <img src={iconShop} className='icon-new' alt='icon-explore' />
               </h2>
             </div>

@@ -54,7 +54,7 @@ export default function Create() {
             <div className='select-box'>
               <div>
                 <p>
-                  <strong>Live on BSC Mainnet</strong>
+                  <strong className='textmode'>Live on BSC Mainnet</strong>
                   {/* coming soon image */}
                   <img
                     style={{ position: 'absolute', width: '60px' }}
@@ -62,15 +62,15 @@ export default function Create() {
                     alt='coming'
                   />
                 </p>
-                <p>Awesome things is ready to roll</p>
+                <p className='textmode'>Awesome things is ready to roll</p>
               </div>
             </div>
             <div className='select-box' onClick={() => next()}>
               <div>
                 <p>
-                  <strong>Live on BSC Testnet</strong>
+                  <strong className='textmode'>Live on BSC Testnet</strong>
                 </p>
-                <p>Awesome things but still in development process</p>
+                <p className='textmode'>Awesome things but still in development process</p>
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@ export default function Create() {
             <p className='select-network'>What is the address of your ERC721 ?</p>
             <div>
               <Input
-                className='input-address'
+                className='input-address input-mode-bc'
                 size='large'
                 placeholder='Enter your ERC721 contract address'
                 onChange={(event) => setContractAddress(event.target.value)}

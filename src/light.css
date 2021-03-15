@@ -1,0 +1,38 @@
+html[data-theme='light'] {
+  --color: rgb(5, 5, 5);
+  --background-color: rgb(255, 255, 255);
+  --nft-background: #fafafa;
+  --input-background: #ededed;
+}
+
+[data-theme='light'] .ant-card-bordered {
+  border: 1px solid #f0f0f0 !important;
+}
+
+[data-theme='light'] .menuBar {
+  background-color: var(--background-color) !important;
+}
+
+[data-theme='light'] .ant-modal-header {
+  background-color: fff !important;
+}
+
+[data-theme='light'] .dropzone {
+  color: rgba(45, 46, 46, 0.35);
+  border: 1px dashed rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='light'] .choose > .active {
+  border: 1px solid rgb(0, 102, 255) !important;
+}
+
+[data-theme='light'] .textmode,
+.search-style,
+ant-form-item-required {
+  color: black !important;
+}
+
+[data-theme='light'] .ant-menu-submenu-popup > .ant-menu,
+.center {
+  background-color: #fff !important;
+}

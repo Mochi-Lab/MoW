@@ -1,4 +1,4 @@
-import s from 'Views/DetailNFT/style.module.css';
+import 'Views/DetailNFT/style.css';
 import { Button } from 'antd';
 import { useDispatch } from 'react-redux';
 import { cancelSellOrder } from 'store/actions';
@@ -10,8 +10,8 @@ export default function Cancel({ orderDetail }) {
   };
 
   return (
-    <div className={s['actions-btn']}>
-      <div className={s.gSzfBw}>
+    <div className='actions-btn'>
+      <div className='gSzfBw'>
         <Button type='primary' shape='round' size='large' onClick={cancel}>
           Cancel
         </Button>

@@ -1,5 +1,13 @@
+@import '../../dark.css';
+@import '../../light.css';
 .input-search-nft {
   border-radius: 1rem !important;
+  background-color: var(--input-background) !important;
+}
+
+.input-search-nft .ant-input {
+  background-color: var(--input-background) !important;
+  color: aliceblue;
 }
 
 .menuBar {
@@ -8,12 +16,46 @@
   width: 100%;
   top: 0px;
   transform: translate3d(0px, 0px, 0px);
-  background: white;
+  background-color: rgb(255, 255, 255);
 }
 
 .leftMenu {
   height: 48px;
   width: 40%;
+}
+
+.nav-avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.justifyContent {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftMenu .ant-col {
+  background: var(--background-color);
+}
+
+.rightMenu .ant-menu {
+  background: var(--background-color) !important;
+}
+
+.rightMenu .ant-menu-horizontal .ant-menu-item a {
+  color: var(--color) !important;
+}
+
+.rightMenu .ant-menu-horizontal {
+  color: var(--color) !important;
+}
+
+.rightMenu .ant-menu-item .ant-btn {
+  background: var(--background-color) !important;
+  color: var(--color) !important;
 }
 
 .menuCon .leftMenu {

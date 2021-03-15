@@ -27,6 +27,7 @@ https://mow-market-275c5.web.app/
 - Buy NFT with fixed price
 - My page: list all my NFT assets
 - Browse page: buy NFT assets
+- Create page: create own NFT
 
 ### Phase 2:
 
