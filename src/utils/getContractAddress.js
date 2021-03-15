@@ -10,6 +10,7 @@ const contractAddress = {
     ExchangeOrderList: '0x37ca1D6c7479F3Eb9d6d10309e6f0C611E6bE48F',
     // generate nft for user
     Mochi: '0x3bF0FD7176204A80021C1BD17807144714E31148',
+    NFTCampaign: '',
   },
   //BSC Testnet
   97: {
@@ -22,6 +23,7 @@ const contractAddress = {
     ExchangeOrderList: '0x7b816A80Dd5FbC5d098970ffD44feC7D8f649343',
     // generate nft for user
     Mochi: '0xe1A8671a0793eC4506AB3B829887214086130FAE',
+    NFTCampaign: '0xB859B21CE9eC5A0bcF8C74B13a6732E637055034',
   },
   //Hmy Mainnet shard 0
   1666600000: {
