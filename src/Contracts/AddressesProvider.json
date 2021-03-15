@@ -66,6 +66,19 @@
           "type": "address"
         }
       ],
+      "name": "ExchangeOrderListUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newAddress",
+          "type": "address"
+        }
+      ],
       "name": "MarketUpdated",
       "type": "event"
     },
@@ -174,6 +187,19 @@
     },
     {
       "inputs": [],
+      "name": "EXCHANGE_ORDER_LIST",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "MARKET",
       "outputs": [
         {
@@ -259,6 +285,19 @@
     {
       "inputs": [],
       "name": "getCreativeStudio",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getExchangeOrderList",
       "outputs": [
         {
           "internalType": "address",
@@ -409,6 +448,24 @@
         }
       ],
       "name": "setCreativeStudioImpl",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "exchangeOrderList",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "params",
+          "type": "bytes"
+        }
+      ],
+      "name": "setExchangeOrderListImpl",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
