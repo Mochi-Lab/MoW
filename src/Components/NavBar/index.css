@@ -10,6 +10,10 @@
   color: aliceblue;
 }
 
+.ant-select-selector {
+  background-color: var(--input-background) !important;
+}
+
 .menuBar {
   z-index: 2;
   position: fixed;

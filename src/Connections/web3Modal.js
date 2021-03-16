@@ -40,13 +40,18 @@ const providerOptions = {
         56: 'https://bsc-dataseed.binance.org/',
         97: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
       },
+      qrcodeModalOptions: {
+        mobileLinks: ['rainbow', 'metamask', 'argent', 'trust', 'imtoken', 'pillar'],
+      },
+      bridge: 'https://bridge.walletconnect.org',
     },
   },
 };
 
 export const connectWeb3Modal = async () => {
   const web3Modal = new Web3Modal({
-    // network: 'mainnet', // optional
+    cacheProvider: false, // optional
+    network: 'binance',
     providerOptions, // required
   });
 

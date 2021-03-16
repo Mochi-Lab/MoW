@@ -28,7 +28,8 @@ html[data-theme='light'] {
 
 [data-theme='light'] .textmode,
 .search-style,
-ant-form-item-required {
+.ant-select-suffix,
+.ant-form-item-required {
   color: black !important;
 }
 

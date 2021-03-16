@@ -13,7 +13,8 @@ html[data-theme='dark'] {
   color: rgb(250, 250, 250) !important;
 }
 
-[data-theme='dark'] .search-style {
+[data-theme='dark'] .search-style,
+.ant-select-suffix {
   color: rgb(250, 250, 250) !important;
 }
 
