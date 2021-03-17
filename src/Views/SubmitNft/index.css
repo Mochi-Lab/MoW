@@ -1,0 +1,78 @@
+.steps-content {
+  min-height: 70vh;
+  margin-top: 16px;
+  padding-top: 10px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.create-step {
+  width: 50% !important;
+  margin: auto !important;
+}
+
+.select-network {
+  font-weight: 600;
+  color: gray;
+  font-size: 0.5cm;
+}
+
+.get-listed {
+  font-weight: 800;
+  font-size: 0.7cm;
+}
+
+.steps-action {
+  margin-top: 24px;
+}
+
+.input-address {
+  width: 70% !important;
+  margin: 15px !important;
+  border-radius: 1rem !important;
+}
+
+.select-box {
+  margin: auto;
+  width: 20vw;
+}
+
+.select-box > div {
+  margin: 24px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.select-box > div:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 6px 6px rgba(0, 0, 0, 0.23);
+  cursor: pointer;
+}
+
+.create-page {
+  width: 80%;
+  margin: auto;
+}
+
+@media (max-width: 1024px) {
+  .select-box {
+    width: 35vw;
+  }
+}
+@media (max-width: 768px) {
+  .select-box {
+    width: 45vw;
+  }
+}
+@media (max-width: 576px) {
+  .select-box {
+    width: 75vw;
+  }
+  .get-listed {
+    font-size: 1.3rem;
+  }
+  .select-network {
+    font-size: 1.2rem;
+  }
+}

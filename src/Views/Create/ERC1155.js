@@ -1,4 +1,5 @@
 import { Form, Input, Button, Row, message, Radio } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useSelector } from 'react-redux';
@@ -8,10 +9,11 @@ import ConnectWallet from 'Components/ConnectWallet';
 import { uploadSia } from './sia';
 import { uploadIPFS } from './ipfs';
 import './index.css';
+import { useHistory } from 'react-router';
 
 const { TextArea } = Input;
 
-export default function MyCollection() {
+export default function CreateERC1155() {
   const { walletAddress } = useSelector((state) => state);
   const [storage, setStorage] = useState(0);
   const [isCreateNew, setIsCreateNew] = useState(false);
@@ -19,6 +21,12 @@ export default function MyCollection() {
   const [files, setFiles] = useState([]);
 
   const [form] = Form.useForm();
+
+  const history = useHistory();
+
+  const goBack = () => {
+    history.goBack();
+  };
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
@@ -45,7 +53,7 @@ export default function MyCollection() {
   };
 
   return (
-    <div className='center'>
+    <div className='center create-pt'>
       <div className='my-collection'>
         {isLoading ? (
           <div className='center loading'>
@@ -54,6 +62,10 @@ export default function MyCollection() {
         ) : (
           <></>
         )}
+        <Button type='text' onClick={goBack} icon={<ArrowLeftOutlined />} className='textmode'>
+          Go Back
+        </Button>
+
         <h2 className='textmode'>You can create NFT for your own !!!</h2>
 
         <div>

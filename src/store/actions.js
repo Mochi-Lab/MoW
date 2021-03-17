@@ -1,4 +1,5 @@
 import { parseBalance } from 'utils/helper';
+import ERC1155 from 'Contracts/ERC1155.json';
 import ERC721 from 'Contracts/ERC721.json';
 import SampleERC721 from 'Contracts/SampleERC721.json';
 import Mochi from 'Contracts/Mochi.json';

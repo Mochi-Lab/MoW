@@ -6,11 +6,13 @@ import Profile from 'Views/Profile';
 import DetailNFT from 'Views/DetailNFT';
 
 import './App.css';
+import SubmitNFT from 'Views/SubmitNft';
 import Create from 'Views/Create';
-import MyCollection from 'Views/MyCollection';
 import { setAvailableSellOrder } from 'store/actions';
 import store from 'store/index';
 import { useEffect } from 'react';
+import CreateERC721 from 'Views/Create/ERC721';
+import CreateERC1155 from 'Views/Create/ERC1155';
 
 function App() {
   useEffect(() => {
@@ -28,8 +30,10 @@ function App() {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/profile' component={Profile} />
-            <Route exact path='/submit-Nfts' component={Create} />
-            <Route exact path='/create' component={MyCollection} />
+            <Route exact path='/submit-Nfts' component={SubmitNFT} />
+            <Route exact path='/create' component={Create} />
+            <Route exact path='/create/erc721' component={CreateERC721} />
+            <Route exact path='/create/erc1155' component={CreateERC1155} />
             <Route exact path='/token/:addressToken/:id' component={DetailNFT} />
           </Switch>
         </div>
