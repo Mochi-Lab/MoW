@@ -1,20 +1,30 @@
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Input, Grid, Col, Select } from 'antd';
-import { setStrSearch } from 'store/actions';
-import store from 'store/index';
+import { setStrSearch, setWeb3 } from 'store/actions';
 import { SearchOutlined } from '@ant-design/icons';
+import { getWeb3List } from 'utils/getWeb3List';
+import store from 'store/index';
 import './index.css';
 
 const { useBreakpoint } = Grid;
 const { Option } = Select;
 
 export default function LeftNar() {
+  const dispatch = useDispatch();
+  const [network, setNetwork] = useState(56);
+
+  useEffect(() => {
+    dispatch(setWeb3(getWeb3List(network).web3Default));
+  }, [network, dispatch]);
+
   const { md } = useBreakpoint();
   const searchNFT = (text) => {
     store.dispatch(setStrSearch(text));
   };
 
   function handleChange(value) {
-    console.log(`selected ${value}`);
+    setNetwork(value);
   }
 
   return (
@@ -25,14 +35,14 @@ export default function LeftNar() {
     >
       <Select
         size='large'
-        defaultValue='Binance Mainnet'
+        defaultValue={56}
         className='input-search-nft textmode'
         style={{ minWidth: 180, marginRight: 10 }}
         onChange={handleChange}
       >
-        <Option value='Binance Mainnet'>Binance Mainnet</Option>
-        <Option value='Binance Testnet'>Binance Testnet</Option>
-        <Option value='Harmony'>Harmony</Option>
+        <Option value={56}>Binance Mainnet</Option>
+        <Option value={97}>Binance Testnet</Option>
+        <Option value={1666600000}>Harmony</Option>
       </Select>
       <Input
         size='large'

@@ -42,7 +42,11 @@ export default function Sell({ token }) {
       </div>
 
       <Modal
-        title='Sell order'
+        title={
+          <h3 className='textmode' style={{ marginBottom: 0 }}>
+            Sell order
+          </h3>
+        }
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={[
@@ -56,15 +60,15 @@ export default function Sell({ token }) {
       >
         <div className='sell-img'>
           <img alt='img-nft' src={token.image} />
-          <p>{token.name}</p>
+          <p className='textmode'>{token.name}</p>
         </div>
         <div className='price-des'>
-          <p>Price</p>
+          <p className='textmode'>Price</p>
 
-          <p>Will be on sale until you transfer this item or cancel it.</p>
+          <p className='textmode'>Will be on sale until you transfer this item or cancel it.</p>
         </div>
         <div style={{ display: 'flex' }}>
-          <div className='center' style={{ height: 38, padding: '0px 10px 0px 0px' }}>
+          <div className='center' style={{ height: 38, padding: '0px 10px 0px 10px' }}>
             <img className='bnb-coin' src={bnb} alt='bnb' />
           </div>
           <InputNumber

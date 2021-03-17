@@ -1,93 +1,24 @@
-import { Form, Input, Button, Row, message } from 'antd';
+import { Form, Input, Button, Row, message, Radio } from 'antd';
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useDispatch, useSelector } from 'react-redux';
-import './index.css';
-import { generateNFt } from 'store/actions';
+import { useSelector } from 'react-redux';
 import IconLoading from 'Components/IconLoading';
 import Collections from './Collections';
 import ConnectWallet from 'Components/ConnectWallet';
+import { uploadSia } from './sia';
+import { uploadIPFS } from './ipfs';
+import './index.css';
 
 const { TextArea } = Input;
 
 export default function MyCollection() {
-  const dispatch = useDispatch();
   const { walletAddress } = useSelector((state) => state);
+  const [storage, setStorage] = useState(0);
   const [isCreateNew, setIsCreateNew] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
 
   const [form] = Form.useForm();
-
-  const generateUUID = () => {
-    let uuid = '';
-    const cs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 16; i++) {
-      uuid += cs.charAt(Math.floor(Math.random() * cs.length));
-    }
-    return uuid;
-  };
-
-  const generateImageUri = (values) => {
-    // Start Upload image
-    setIsLoading(true);
-
-    var blob = new Blob([files[0]], { type: files[0].fype });
-    var formData = new FormData();
-    formData.append('file', blob);
-
-    const uuid = generateUUID();
-    fetch(`https://siasky.net/skynet/skyfile/${uuid}`, {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        let image = 'https://siasky.net/' + result.skylink;
-        generateURI(values, image);
-      })
-      .catch((e) => {
-        setIsLoading(false);
-        console.log(e);
-      });
-  };
-
-  const generateURI = ({ name, description }, image) => {
-    let draw = {
-      name,
-      image,
-      description,
-    };
-    draw = JSON.stringify(draw);
-    var blob = new Blob([draw], { type: 'application/json' });
-    var formData = new FormData();
-    formData.append('file', blob);
-
-    const uuid = generateUUID();
-    fetch(`https://siasky.net/skynet/skyfile/${uuid}`, {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then(async (result) => {
-        let tokenUri = 'https://siasky.net/' + result.skylink;
-        setIsLoading(false);
-
-        await dispatch(generateNFt(isCreateNew, tokenUri));
-
-        // reset inpurt
-        setFiles([]);
-        form.resetFields();
-      })
-      .catch((e) => {
-        setIsLoading(false);
-        // reset inpurt
-        setFiles([]);
-        form.resetFields();
-        console.log(e);
-      });
-  };
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
@@ -102,9 +33,15 @@ export default function MyCollection() {
     },
   });
 
+  const handleStorageChange = (e) => {
+    setStorage(e.target.value);
+  };
+
   const onFinish = (values) => {
-    if (files.length > 0) generateImageUri(values);
-    else message.warn('Did you forget upload an Image ?');
+    if (files.length > 0) {
+      if (storage === 0) uploadIPFS(values, form, files, setFiles, setIsLoading, isCreateNew);
+      else uploadSia(values, form, files, setFiles, setIsLoading, isCreateNew);
+    } else message.warn('Did you forget upload an Image ?');
   };
 
   return (
@@ -123,7 +60,7 @@ export default function MyCollection() {
           <div>
             <h3 className='text-upload-image textmode'>Upload Image</h3>
             <div className='drag-box-search'>
-              <div className='drag-box' {...getRootProps({ className: 'dropzone input-mode-bc' })}>
+              <div className='drag-box' {...getRootProps({ className: 'dropzone' })}>
                 <input {...getInputProps()} />
                 {!!files[0] ? (
                   <img
@@ -136,6 +73,11 @@ export default function MyCollection() {
                 )}
               </div>
             </div>
+            <h3 className='text-upload-image textmode'>Select Storage</h3>
+            <Radio.Group value={storage} onChange={handleStorageChange}>
+              <Radio.Button value={0}>IPFS</Radio.Button>
+              <Radio.Button value={1}>Sia</Radio.Button>
+            </Radio.Group>
           </div>
           <div className='input-area'>
             <div>

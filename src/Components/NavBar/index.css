@@ -7,7 +7,7 @@
 
 .input-search-nft .ant-input {
   background-color: var(--input-background) !important;
-  color: aliceblue;
+  color: var(--color) !important;
 }
 
 .ant-select-selector {

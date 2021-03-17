@@ -25,7 +25,7 @@
   left: 0;
   position: absolute;
   z-index: 1;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.3) !important; 
 }
 
 .dropzone {
@@ -97,7 +97,7 @@
 
 .input-mode-bc {
   background-color: var(--input-background) !important;
-  color: #fff !important;
+  color: var(--color) !important;
   width: 100%;
 }
 

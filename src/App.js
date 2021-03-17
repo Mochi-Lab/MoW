@@ -8,15 +8,13 @@ import DetailNFT from 'Views/DetailNFT';
 import './App.css';
 import Create from 'Views/Create';
 import MyCollection from 'Views/MyCollection';
-import { web3Default } from 'Connections/web3Modal';
-import { setWeb3, setAvailableSellOrder } from 'store/actions';
+import { setAvailableSellOrder } from 'store/actions';
 import store from 'store/index';
 import { useEffect } from 'react';
 
 function App() {
   useEffect(() => {
     async function fetchDataInit() {
-      await store.dispatch(setWeb3(web3Default));
       await store.dispatch(setAvailableSellOrder());
     }
     fetchDataInit();

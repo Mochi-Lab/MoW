@@ -460,7 +460,7 @@ export const cancelSellOrder = (orderDetail) => async (dispatch, getState) => {
 // Create New NFT
 ////////////////////
 
-export const generateNFt = (isUserCollection, tokenUri) => async (dispatch, getState) => {
+export const generateNFT = (isUserCollection, tokenUri) => async (dispatch, getState) => {
   let { web3, chainId, walletAddress, erc721Instances, userCollections } = getState();
   contractAddress = getContractAddress(chainId);
   let erc721Instance;

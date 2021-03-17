@@ -36,7 +36,11 @@ export default function Transfer({ token }) {
         </Button>
       </div>
       <Modal
-        title='Transfer'
+        title={
+          <h3 className='textmode' style={{ marginBottom: 0 }}>
+            Transfer
+          </h3>
+        }
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={[
@@ -50,7 +54,7 @@ export default function Transfer({ token }) {
       >
         <div className='sell-img'>
           <img alt='img-nft' src={token.image} />
-          <p>{token.name}</p>
+          <p className='textmode'>{token.name}</p>
         </div>
         <div className='price-des'>
           <Input
