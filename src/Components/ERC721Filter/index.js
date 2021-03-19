@@ -1,7 +1,7 @@
 import { Layout, Menu, Input } from 'antd';
 import { ShopOutlined, SearchOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import ERC721 from 'Components/ERC721';
+import ERC721 from 'Components/ERC721Card';
 import IconLoading from 'Components/IconLoading';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';

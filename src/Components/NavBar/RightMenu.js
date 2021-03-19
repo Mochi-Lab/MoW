@@ -87,7 +87,7 @@ const RightMenu = () => {
                         <path
                           d='M1 5L5 9L13 1'
                           stroke='currentColor'
-                          stroke-width='2'
+                          strokeWidth='2'
                           stroke-linecap='round'
                         ></path>
                       </svg>

@@ -1,6 +1,5 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Modal } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
-import Modal from 'antd/lib/modal/Modal';
 import { createCollection, getERC721Info } from 'store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import ConnectWallet from 'Components/ConnectWallet';

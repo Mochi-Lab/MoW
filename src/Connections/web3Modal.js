@@ -82,7 +82,7 @@ export const connectWeb3Modal = async () => {
   // Subscribe to chainId change
   provider.on('chainChanged', (chainId) => {
     chainId = parseInt(web3.utils.hexToNumber(chainId));
-    if (chainId === 56 || chainId === 97) {
+    if (chainId === 56 || chainId === 97 || chainId === 1666700000) {
       store.dispatch(setChainId(chainId));
       store.dispatch(setAcceptedNfts());
     } else {

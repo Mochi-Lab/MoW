@@ -1,7 +1,6 @@
 import 'Views/DetailNFT/style.css';
-import { Button, InputNumber } from 'antd';
-import { useState } from 'react';
-import Modal from 'antd/lib/modal/Modal';
+import { Button, InputNumber, Modal, Form } from 'antd';
+import { useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { createSellOrder } from 'store/actions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,26 +10,32 @@ import './index.css';
 
 export default function Sell({ token }) {
   const dispatch = useDispatch();
-  const [price, setPrice] = useState();
   const { addressToken, id } = useParams();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { web3 } = useSelector((state) => state);
+
+  const [form] = Form.useForm();
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
+  const onSubmit = useCallback(
+    async (values) => {
+      await dispatch(
+        createSellOrder(addressToken, id, web3.utils.toWei(values.price.toString(), 'ether'))
+      );
+      setIsModalVisible(false);
+    },
+    [dispatch, addressToken, id, web3.utils]
+  );
+
   const handleOk = async () => {
-    await dispatch(createSellOrder(addressToken, id, web3.utils.toWei(price.toString(), 'ether')));
-    setIsModalVisible(false);
+    form.submit();
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
-  };
-
-  const onChange = (e) => {
-    setPrice(e);
   };
 
   return (
@@ -71,13 +76,16 @@ export default function Sell({ token }) {
           <div className='center' style={{ height: 38, padding: '0px 10px 0px 10px' }}>
             <img className='bnb-coin' src={bnb} alt='bnb' />
           </div>
-          <InputNumber
-            size='large'
-            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-            onChange={onChange}
-            style={{ width: 250 }}
-            placeholder='Set Price'
-          />
+          <Form onFinish={onSubmit} form={form}>
+            <Form.Item name={['price']} rules={[{ required: true, message: 'Enter price' }]}>
+              <InputNumber
+                size='large'
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                style={{ width: 250 }}
+                placeholder='Set Price'
+              />
+            </Form.Item>
+          </Form>
         </div>
       </Modal>
     </>

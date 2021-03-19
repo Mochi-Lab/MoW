@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input, Grid, Col, Select } from 'antd';
 import { setStrSearch, setWeb3 } from 'store/actions';
 import { SearchOutlined } from '@ant-design/icons';
-import { getWeb3List } from 'utils/getWeb3List';
+import { getWeb3List, web3Default } from 'utils/getWeb3List';
 import store from 'store/index';
 import './index.css';
 
@@ -12,7 +12,12 @@ const { Option } = Select;
 
 export default function LeftNar() {
   const dispatch = useDispatch();
-  const [network, setNetwork] = useState(56);
+  const [network, setNetwork] = useState(97);
+  const { chainId } = useSelector((state) => state);
+
+  useEffect(() => {
+    if (!!chainId) setNetwork(chainId);
+  }, [chainId]);
 
   useEffect(() => {
     dispatch(setWeb3(getWeb3List(network).web3Default));
@@ -35,14 +40,17 @@ export default function LeftNar() {
     >
       <Select
         size='large'
-        defaultValue={56}
+        defaultValue={97}
+        value={network}
         className='input-search-nft textmode'
         style={{ minWidth: 180, marginRight: 10 }}
         onChange={handleChange}
       >
-        <Option value={56}>Binance Mainnet</Option>
-        <Option value={97}>Binance Testnet</Option>
-        <Option value={1666600000}>Harmony</Option>
+        {Object.keys(web3Default).map((item) => (
+          <Option key={item} value={parseInt(item)}>
+            {web3Default[`${item}`].name}
+          </Option>
+        ))}
       </Select>
       <Input
         size='large'
