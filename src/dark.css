@@ -17,6 +17,10 @@ html[data-theme='dark'] {
   color: rgb(250, 250, 250) !important;
 }
 
+[data-theme='dark'] .ant-select-suffix > svg {
+  color: #fff !important;
+}
+
 [data-theme='dark'] .page {
   background: rgb(18, 18, 18) !important;
 }
@@ -39,6 +43,10 @@ html[data-theme='dark'] {
 }
 
 [data-theme='dark'] .menuBar {
+  background-color: var(--background-color) !important;
+}
+
+[data-theme='dark'] .ant-radio-button-wrapper {
   background-color: var(--background-color) !important;
 }
 

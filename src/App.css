@@ -9,6 +9,10 @@
   box-shadow: 0 0 12px #f3f1f1;
 }
 
+.ant-select-selector {
+  border-radius: 1rem !important;
+}
+
 .textmode,
 .search-style {
   color: black !important;

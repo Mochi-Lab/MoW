@@ -82,6 +82,12 @@
           "internalType": "uint256",
           "name": "price",
           "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
         }
       ],
       "name": "SellOrderAdded",
@@ -125,6 +131,12 @@
           "internalType": "address",
           "name": "buyer",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
         }
       ],
       "name": "SellOrderCompleted",
@@ -180,6 +192,11 @@
           "type": "uint256"
         },
         {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
           "internalType": "address payable",
           "name": "seller",
           "type": "address"
@@ -188,6 +205,11 @@
           "internalType": "uint256",
           "name": "price",
           "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
         }
       ],
       "name": "addSellOrder",
@@ -226,7 +248,36 @@
           "type": "address"
         }
       ],
-      "name": "checkDuplicate",
+      "name": "checkDuplicate_ERC1155",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "nftAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "seller",
+          "type": "address"
+        }
+      ],
+      "name": "checkDuplicate_ERC721",
       "outputs": [
         {
           "internalType": "bool",
@@ -248,27 +299,14 @@
           "internalType": "address",
           "name": "buyer",
           "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
         }
       ],
       "name": "completeSellOrder",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256[]",
-          "name": "sellId",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "address[]",
-          "name": "buyer",
-          "type": "address[]"
-        }
-      ],
-      "name": "completeSellOrderByBatch",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -308,6 +346,16 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
               "internalType": "address payable",
               "name": "seller",
               "type": "address"
@@ -316,6 +364,11 @@
               "internalType": "uint256",
               "name": "price",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -328,14 +381,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "address",
+              "internalType": "address[]",
               "name": "buyer",
-              "type": "address"
+              "type": "address[]"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint256[]",
               "name": "buyTime",
-              "type": "uint256"
+              "type": "uint256[]"
             }
           ],
           "internalType": "struct DataTypes.SellOrder[]",
@@ -374,6 +427,16 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
               "internalType": "address payable",
               "name": "seller",
               "type": "address"
@@ -382,6 +445,11 @@
               "internalType": "uint256",
               "name": "price",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -394,14 +462,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "address",
+              "internalType": "address[]",
               "name": "buyer",
-              "type": "address"
+              "type": "address[]"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint256[]",
               "name": "buyTime",
-              "type": "uint256"
+              "type": "uint256[]"
             }
           ],
           "internalType": "struct DataTypes.SellOrder[]",
@@ -440,6 +508,16 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
               "internalType": "address payable",
               "name": "seller",
               "type": "address"
@@ -448,6 +526,11 @@
               "internalType": "uint256",
               "name": "price",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -460,14 +543,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "address",
+              "internalType": "address[]",
               "name": "buyer",
-              "type": "address"
+              "type": "address[]"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint256[]",
               "name": "buyTime",
-              "type": "uint256"
+              "type": "uint256[]"
             }
           ],
           "internalType": "struct DataTypes.SellOrder[]",
@@ -538,6 +621,16 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
               "internalType": "address payable",
               "name": "seller",
               "type": "address"
@@ -546,6 +639,11 @@
               "internalType": "uint256",
               "name": "price",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -558,18 +656,85 @@
               "type": "uint256"
             },
             {
-              "internalType": "address",
+              "internalType": "address[]",
               "name": "buyer",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "buyTime",
+              "type": "uint256[]"
+            }
+          ],
+          "internalType": "struct DataTypes.SellOrder[]",
+          "name": "erc721",
+          "type": "tuple[]"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "sellId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "nftAddress",
               "type": "address"
             },
             {
               "internalType": "uint256",
-              "name": "buyTime",
+              "name": "tokenId",
               "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "seller",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "price",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isActive",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "sellTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "buyer",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "buyTime",
+              "type": "uint256[]"
             }
           ],
           "internalType": "struct DataTypes.SellOrder[]",
-          "name": "",
+          "name": "erc1155",
           "type": "tuple[]"
         }
       ],
@@ -604,6 +769,16 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
               "internalType": "address payable",
               "name": "seller",
               "type": "address"
@@ -612,6 +787,11 @@
               "internalType": "uint256",
               "name": "price",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -624,14 +804,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "address",
+              "internalType": "address[]",
               "name": "buyer",
-              "type": "address"
+              "type": "address[]"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint256[]",
               "name": "buyTime",
-              "type": "uint256"
+              "type": "uint256[]"
             }
           ],
           "internalType": "struct DataTypes.SellOrder[]",
@@ -670,6 +850,16 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
               "internalType": "address payable",
               "name": "seller",
               "type": "address"
@@ -678,6 +868,11 @@
               "internalType": "uint256",
               "name": "price",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -690,18 +885,85 @@
               "type": "uint256"
             },
             {
-              "internalType": "address",
+              "internalType": "address[]",
               "name": "buyer",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "buyTime",
+              "type": "uint256[]"
+            }
+          ],
+          "internalType": "struct DataTypes.SellOrder[]",
+          "name": "erc721",
+          "type": "tuple[]"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "sellId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "nftAddress",
               "type": "address"
             },
             {
               "internalType": "uint256",
-              "name": "buyTime",
+              "name": "tokenId",
               "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "seller",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "price",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isActive",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "sellTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "buyer",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "buyTime",
+              "type": "uint256[]"
             }
           ],
           "internalType": "struct DataTypes.SellOrder[]",
-          "name": "",
+          "name": "erc1155",
           "type": "tuple[]"
         }
       ],
@@ -714,7 +976,12 @@
       "outputs": [
         {
           "internalType": "uint256[]",
-          "name": "",
+          "name": "erc721",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "erc1155",
           "type": "uint256[]"
         }
       ],
@@ -752,7 +1019,12 @@
       "outputs": [
         {
           "internalType": "uint256[]",
-          "name": "",
+          "name": "erc721",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "erc1155",
           "type": "uint256[]"
         }
       ],
@@ -787,6 +1059,16 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
               "internalType": "address payable",
               "name": "seller",
               "type": "address"
@@ -795,6 +1077,11 @@
               "internalType": "uint256",
               "name": "price",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -807,14 +1094,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "address",
+              "internalType": "address[]",
               "name": "buyer",
-              "type": "address"
+              "type": "address[]"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint256[]",
               "name": "buyTime",
-              "type": "uint256"
+              "type": "uint256[]"
             }
           ],
           "internalType": "struct DataTypes.SellOrder[]",
@@ -848,6 +1135,11 @@
       "inputs": [
         {
           "internalType": "address",
+          "name": "seller",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
           "name": "nftAddress",
           "type": "address"
         },
@@ -857,7 +1149,36 @@
           "type": "uint256"
         }
       ],
-      "name": "getLatestSellId",
+      "name": "getLatestSellId_ERC1155",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "found",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "nftAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getLatestSellId_ERC721",
       "outputs": [
         {
           "internalType": "bool",
@@ -914,6 +1235,16 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
               "internalType": "address payable",
               "name": "seller",
               "type": "address"
@@ -922,6 +1253,11 @@
               "internalType": "uint256",
               "name": "price",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -934,14 +1270,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "address",
+              "internalType": "address[]",
               "name": "buyer",
-              "type": "address"
+              "type": "address[]"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint256[]",
               "name": "buyTime",
-              "type": "uint256"
+              "type": "uint256[]"
             }
           ],
           "internalType": "struct DataTypes.SellOrder",
@@ -980,6 +1316,16 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
               "internalType": "address payable",
               "name": "seller",
               "type": "address"
@@ -988,6 +1334,11 @@
               "internalType": "uint256",
               "name": "price",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -1000,14 +1351,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "address",
+              "internalType": "address[]",
               "name": "buyer",
-              "type": "address"
+              "type": "address[]"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint256[]",
               "name": "buyTime",
-              "type": "uint256"
+              "type": "uint256[]"
             }
           ],
           "internalType": "struct DataTypes.SellOrder[]",
@@ -1051,6 +1402,16 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "soldAmount",
+              "type": "uint256"
+            },
+            {
               "internalType": "address payable",
               "name": "seller",
               "type": "address"
@@ -1059,6 +1420,11 @@
               "internalType": "uint256",
               "name": "price",
               "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -1071,14 +1437,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "address",
+              "internalType": "address[]",
               "name": "buyer",
-              "type": "address"
+              "type": "address[]"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint256[]",
               "name": "buyTime",
-              "type": "uint256"
+              "type": "uint256[]"
             }
           ],
           "internalType": "struct DataTypes.SellOrder[]",
@@ -1100,6 +1466,19 @@
       "name": "initialize",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "nftList",
+      "outputs": [
+        {
+          "internalType": "contract INFTList",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {

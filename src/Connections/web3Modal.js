@@ -5,14 +5,6 @@ import { setChainId, setWeb3, setAddress, setAcceptedNfts, setThreebox } from 's
 import store from 'store/index';
 import Box from '3box';
 
-// //Mainnet
-// export const web3Default = new Web3(new Web3.providers.HttpProvider("https://bsc-dataseed.binance.org/"));
-
-// Testnet
-export const web3Default = new Web3(
-  new Web3.providers.HttpProvider('https://data-seed-prebsc-1-s2.binance.org:8545/')
-);
-
 const getThreeBox = async (address) => {
   const profile = await Box.getProfile(address);
   return profile;
@@ -40,13 +32,18 @@ const providerOptions = {
         56: 'https://bsc-dataseed.binance.org/',
         97: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
       },
+      qrcodeModalOptions: {
+        mobileLinks: ['rainbow', 'metamask', 'argent', 'trust', 'imtoken', 'pillar'],
+      },
+      bridge: 'https://bridge.walletconnect.org',
     },
   },
 };
 
 export const connectWeb3Modal = async () => {
   const web3Modal = new Web3Modal({
-    // network: 'mainnet', // optional
+    cacheProvider: false, // optional
+    network: 'binance',
     providerOptions, // required
   });
 
@@ -85,7 +82,7 @@ export const connectWeb3Modal = async () => {
   // Subscribe to chainId change
   provider.on('chainChanged', (chainId) => {
     chainId = parseInt(web3.utils.hexToNumber(chainId));
-    if (chainId === 56 || chainId === 97) {
+    if (chainId === 56 || chainId === 97 || chainId === 1666700000) {
       store.dispatch(setChainId(chainId));
       store.dispatch(setAcceptedNfts());
     } else {

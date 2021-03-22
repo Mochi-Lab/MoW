@@ -126,7 +126,8 @@ const rootReducer = (state = initialState, action) => {
     case actions.SET_AVAILABLE_SELL_ORDER:
       return {
         ...state,
-        availableSellOrder: action.availableSellOrder,
+        availableSellOrder721: action.availableSellOrder721,
+        availableSellOrder1155: action.availableSellOrder1155,
         convertErc721Tokens: action.convertErc721Tokens,
       };
     case actions.SET_MY_SELL_ORDER:

@@ -28,11 +28,13 @@ html[data-theme='light'] {
 
 [data-theme='light'] .textmode,
 .search-style,
-ant-form-item-required {
+.ant-select-suffix > svg,
+.ant-form-item-required {
   color: black !important;
 }
 
 [data-theme='light'] .ant-menu-submenu-popup > .ant-menu,
-.center {
+.center,
+.ant-radio-button-wrapper {
   background-color: #fff !important;
 }
