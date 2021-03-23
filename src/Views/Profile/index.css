@@ -109,15 +109,10 @@
 .tabs-actions-profile .ant-tabs-content-holder .ant-tabs-content,
 .tabs-actions-profile .ant-tabs-content-holder .ant-tabs-content .ant-layout.ant-layout-has-sider {
   height: 100%;
-  margin: 0 0.5rem 0 0;
 }
 
 .tabs-actions-profile.ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active {
   border-bottom-color: #f0f0f0;
-}
-
-.ant-layout {
-  background-color: white !important;
 }
 
 .tabs-actions-profile .ant-tabs-nav {

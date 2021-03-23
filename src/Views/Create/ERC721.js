@@ -1,12 +1,11 @@
 import { Form, Input, Button, Row, message, Radio } from 'antd';
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router';
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useSelector } from 'react-redux';
 import IconLoading from 'Components/IconLoading';
 import Collections from './Collections';
 import ConnectWallet from 'Components/ConnectWallet';
+import BackButton from 'Components/BackButton';
 import { uploadSia } from './sia';
 import { uploadIPFS } from './ipfs';
 import './index.css';
@@ -21,12 +20,6 @@ export default function CreateERC721() {
   const [files, setFiles] = useState([]);
 
   const [form] = Form.useForm();
-
-  const history = useHistory();
-
-  const goBack = () => {
-    history.goBack();
-  };
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
@@ -62,9 +55,7 @@ export default function CreateERC721() {
         ) : (
           <></>
         )}
-        <Button type='text' onClick={goBack} icon={<ArrowLeftOutlined />} className='textmode'>
-          Go Back
-        </Button>
+        <BackButton />
         <h2 className='textmode'>You can create NFT for your own !!!</h2>
 
         <div>

@@ -42,7 +42,8 @@ html[data-theme='dark'] {
   background: rgb(18, 18, 18) !important;
 }
 
-[data-theme='dark'] .menuBar {
+[data-theme='dark'] .menu-bar,
+.background-mode {
   background-color: var(--background-color) !important;
 }
 

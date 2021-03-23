@@ -18,6 +18,7 @@ import Transfer from 'Components/Transfer';
 import ConnectWallet from 'Components/ConnectWallet';
 import Share from 'Components/Share';
 import './style.css';
+import BackButton from 'Components/BackButton';
 
 const { TabPane } = Tabs;
 
@@ -87,8 +88,13 @@ export default function DetailNFT() {
         setIndexAvailable(indexInAvalableSell);
         // get token info
         const token = await erc721Instances.methods.tokenURI(id).call();
-        let req = await axios.get(token);
-        let detail = req.data;
+        let detail;
+        try {
+          let req = await axios.get(token);
+          detail = req.data;
+        } catch (error) {
+          detail = { name: 'Unnamed', description: '' };
+        }
         setToken(detail);
       } catch (error) {
         console.log(error);
@@ -134,7 +140,9 @@ export default function DetailNFT() {
             <div className='content-nft'>
               <div className='nft-content content'>
                 <div className='btns-actions'>
-                  <div className='btns'>
+                  <div className='btns justifyContent'>
+                    <BackButton />
+
                     <Button
                       shape='circle'
                       icon={<ExpandAltOutlined />}

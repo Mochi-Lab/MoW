@@ -14,7 +14,7 @@
   background-color: var(--input-background) !important;
 }
 
-.menuBar {
+.menu-bar {
   z-index: 2;
   position: fixed;
   width: 100%;

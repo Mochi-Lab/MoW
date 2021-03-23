@@ -101,7 +101,7 @@ export default function ERC721Filter({ erc721Tokens, isLoadingErc721 }) {
             </SubMenu>
           </Menu>
         </Sider>
-        <Layout style={{ padding: '1rem' }}>
+        <Layout style={{ padding: '1rem' }} className='background-mode'>
           <Content
             className='site-layout-background'
             style={{

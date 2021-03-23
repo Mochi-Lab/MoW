@@ -9,12 +9,13 @@ html[data-theme='light'] {
   border: 1px solid #f0f0f0 !important;
 }
 
-[data-theme='light'] .menuBar {
+[data-theme='light'] .menu-bar,
+.background-mode {
   background-color: var(--background-color) !important;
 }
 
 [data-theme='light'] .ant-modal-header {
-  background-color: fff !important;
+  background-color: #fff !important;
 }
 
 [data-theme='light'] .dropzone {

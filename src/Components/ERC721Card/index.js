@@ -15,8 +15,12 @@ function ERC721Card({ token, strSearch }) {
   useEffect(() => {
     async function fetchDetail() {
       if (!!token && !!token.tokenURI) {
-        let req = await axios.get(token.tokenURI);
-        setDetailNFT(req.data);
+        try {
+          let req = await axios.get(token.tokenURI);
+          setDetailNFT(req.data);
+        } catch (error) {
+          setDetailNFT({ name: 'Unnamed', description: '', image: imgNotFound });
+        }
       } else {
         setDetailNFT({ name: '', description: '', image: imgNotFound });
       }
