@@ -193,6 +193,10 @@
   margin-right: 0.5rem;
 }
 
+.explore-nft {
+  margin: 2rem auto;
+}
+
 .explore-nft .ant-card {
   margin-top: 1rem;
 }

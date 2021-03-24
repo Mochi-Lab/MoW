@@ -179,6 +179,7 @@ export const transferNft = (contractAddress, to, tokenId) => async (dispatch, ge
   let { walletAddress, web3, erc721Instances } = getState();
   let nftInstance = new web3.eth.Contract(ERC721.abi, contractAddress);
   try {
+    await dispatch(setLoadingTx(true));
     await nftInstance.methods
       .safeTransferFrom(walletAddress, to, tokenId)
       .send({ from: walletAddress })
@@ -189,7 +190,9 @@ export const transferNft = (contractAddress, to, tokenId) => async (dispatch, ge
         console.log(error);
         message.error('Oh no! Something went wrong !');
       });
+    await dispatch(setLoadingTx(false));
   } catch (error) {
+    await dispatch(setLoadingTx(false));
     message.error('Oh no! Something went wrong !');
   }
   // get own nft
@@ -448,6 +451,7 @@ export const buyNft = (orderDetail) => async (dispatch, getState) => {
 export const cancelSellOrder = (orderDetail) => async (dispatch, getState) => {
   const { market, walletAddress } = getState();
   try {
+    await dispatch(setLoadingTx(true));
     await market.methods
       .cancleSellOrder(orderDetail.sellId)
       .send({ from: walletAddress })
@@ -458,12 +462,22 @@ export const cancelSellOrder = (orderDetail) => async (dispatch, getState) => {
         console.log(error);
         message.error('Oh no! Something went wrong !');
       });
+    await dispatch(setLoadingTx(false));
   } catch (error) {
+    await dispatch(setLoadingTx(false));
     message.error('Oh no! Something went wrong !');
   }
 
   // Fetch new availableOrderList
   dispatch(setAvailableSellOrder());
+};
+
+export const IS_LOADING_TX = 'IS_LOADING_TX';
+export const setLoadingTx = (isLoadingTx) => async (dispatch) => {
+  dispatch({
+    type: IS_LOADING_TX,
+    isLoadingTx,
+  });
 };
 
 ////////////////////

@@ -13,6 +13,7 @@ export default function Sell({ token }) {
   const { addressToken, id } = useParams();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { web3 } = useSelector((state) => state);
+  const [loading, setLoading] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -22,10 +23,12 @@ export default function Sell({ token }) {
 
   const onSubmit = useCallback(
     async (values) => {
+      setLoading(true);
       await dispatch(
         createSellOrder(addressToken, id, web3.utils.toWei(values.price.toString(), 'ether'))
       );
       setIsModalVisible(false);
+      setLoading(false);
     },
     [dispatch, addressToken, id, web3.utils]
   );
@@ -55,10 +58,23 @@ export default function Sell({ token }) {
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={[
-          <Button key='cancel' shape='round' size='large' onClick={() => handleCancel()}>
+          <Button
+            key='cancel'
+            shape='round'
+            size='large'
+            loading={loading}
+            onClick={() => handleCancel()}
+          >
             Cancel
           </Button>,
-          <Button key='sell' type='primary' shape='round' size='large' onClick={() => handleOk()}>
+          <Button
+            key='sell'
+            type='primary'
+            shape='round'
+            size='large'
+            loading={loading}
+            onClick={() => handleOk()}
+          >
             Sell
           </Button>,
         ]}

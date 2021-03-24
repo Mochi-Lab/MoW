@@ -34,6 +34,7 @@ const initialState = {
   availableSellOrder: [],
   convertErc721Tokens: [],
   mySellOrder: [],
+  isLoadingTx: false,
 
   //CreativeStudio
   userCollections: [],
@@ -144,6 +145,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         userCollections: action.userCollections,
+      };
+    case actions.IS_LOADING_TX:
+      return {
+        ...state,
+        isLoadingTx: action.isLoadingTx,
       };
     default:
       return state;
