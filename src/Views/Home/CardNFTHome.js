@@ -12,8 +12,12 @@ export default function CardNFTHome({ token, strSearch }) {
   useEffect(() => {
     async function fetchDetail() {
       if (!!token && !!token.tokenURI) {
-        let req = await axios.get(token.tokenURI);
-        setDetailNFT(req.data);
+        try {
+          let req = await axios.get(token.tokenURI);
+          setDetailNFT(req.data);
+        } catch (error) {
+          setDetailNFT({ name: 'Unnamed', description: '', image: imgNotFound });
+        }
       } else {
         setDetailNFT({ name: '', description: '', image: imgNotFound });
       }
@@ -35,7 +39,7 @@ export default function CardNFTHome({ token, strSearch }) {
       <Link to={`/token/${token.addressToken}/${token.index}`}>
         <Card hoverable cover={<img alt={`img-nft-${token.index}`} src={detailNFT.image} />}>
           <div className='ant-card-meta-title'>{detailNFT.name}</div>
-          <div className='ant-card-meta-description'>
+          <div className='ant-card-meta-description textmode'>
             {!!token.price ? `${web3.utils.fromWei(token.price, 'ether')} BNB` : <></>}
           </div>
         </Card>

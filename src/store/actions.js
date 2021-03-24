@@ -135,9 +135,14 @@ export const getOwnedERC721 = (erc721Instances) => async (dispatch, getState) =>
           token.index = await instance.methods.tokenOfOwnerByIndex(walletAddress, i).call();
           token.tokenURI = await instance.methods.tokenURI(token.index).call();
           token.addressToken = instance._address;
-          let req = await axios.get(token.tokenURI);
-          token.detail = req.data;
-          ERC721token.tokens.push(token);
+          try {
+            let req = await axios.get(token.tokenURI);
+            token.detail = req.data;
+            ERC721token.tokens.push(token);
+          } catch (error) {
+            token.detail = { name: 'Unnamed', description: '' };
+            ERC721token.tokens.push(token);
+          }
         }
         resolve(ERC721token);
       } else {
@@ -421,7 +426,7 @@ export const buyNft = (orderDetail) => async (dispatch, getState) => {
   const { market, walletAddress, erc721Instances } = getState();
   try {
     await market.methods
-      .buy(orderDetail.sellId)
+      .buy(orderDetail.sellId, 1, '0x')
       .send({ from: walletAddress, value: orderDetail.price })
       .on('receipt', (receipt) => {
         message.success('Successfully purchased !');

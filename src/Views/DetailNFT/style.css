@@ -35,6 +35,10 @@
   position: relative;
 }
 
+.btns-actions {
+  width: 100%;
+}
+
 .content-nft .nft-content .btns-actions {
   position: absolute;
   right: 0px;

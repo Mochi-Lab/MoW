@@ -83,7 +83,7 @@ export default function Profile() {
                         d='M1 5L5 9L13 1'
                         stroke='currentColor'
                         strokeWidth='2'
-                        stroke-linecap='round'
+                        strokeLinecap='round'
                       ></path>
                     </svg>
                   ) : (

@@ -18,7 +18,7 @@ export default function NavBar() {
   };
 
   return (
-    <nav className='menuBar alignItem'>
+    <nav className='menu-bar alignItem'>
       <div className='logo'>
         <Link to='/'>
           <img src={logoMochi} alt='logo'></img>

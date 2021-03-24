@@ -2,6 +2,7 @@ import { Table, Layout, Menu, Input, Checkbox, Divider } from 'antd';
 import { ShopOutlined, SearchOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState, useRef } from 'react';
+import { getWeb3List } from 'utils/getWeb3List';
 
 const { SubMenu } = Menu;
 const { Content, Sider } = Layout;
@@ -25,9 +26,14 @@ const defaultCheckedList = [
 
 export default function TransactionTable() {
   const dispatch = useDispatch();
-  const { web3, sellOrderList, erc721Instances, erc721Tokens, walletAddress } = useSelector(
-    (state) => state
-  );
+  const {
+    web3,
+    sellOrderList,
+    erc721Instances,
+    erc721Tokens,
+    walletAddress,
+    chainId,
+  } = useSelector((state) => state);
   const [txns, setTxns] = useState([]);
   const [filterTxns, setFilterTxns] = useState([]);
 
@@ -223,11 +229,7 @@ export default function TransactionTable() {
       dataIndex: 'transactionHash',
       key: 'transactionHash',
       render: (value) => (
-        <a
-          target='_blank'
-          rel='noopener noreferrer'
-          href={`https://testnet.bscscan.com/tx/${value}`}
-        >
+        <a target='_blank' rel='noopener noreferrer' href={getWeb3List(chainId).explorer + value}>
           View
         </a>
       ),
@@ -250,7 +252,7 @@ export default function TransactionTable() {
           <SubMenu
             key='sub1'
             icon={<ShopOutlined />}
-            title='Collection'
+            title='Collections'
             className='collections-sidebar-left'
           >
             <Menu.Item key='1' onClick={() => selectToken(null, null)}>
@@ -283,7 +285,7 @@ export default function TransactionTable() {
           </SubMenu>
         </Menu>
       </Sider>
-      <Layout style={{ padding: '0 24px 24px' }}>
+      <Layout style={{ padding: '0 24px 24px' }} className='background-mode'>
         <Content
           className='site-layout-background'
           style={{
@@ -304,7 +306,7 @@ export default function TransactionTable() {
             columns={columns}
             dataSource={isChecked ? filterTxns : txns}
             pagination={{ size: 'small' }}
-            scroll={{ x: '100vw' }}
+            scroll={{ x: '100%' }}
           />
         </Content>
       </Layout>

@@ -1,14 +1,9 @@
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import BackButton from 'Components/BackButton';
 import { useHistory } from 'react-router';
 import './index.css';
 
 export default function Create() {
   const history = useHistory();
-
-  const goBack = () => {
-    history.goBack();
-  };
 
   function push(to) {
     history.push(to);
@@ -17,9 +12,7 @@ export default function Create() {
   return (
     <div className='center create-pt'>
       <div className='create-box'>
-        <Button type='text' onClick={goBack} icon={<ArrowLeftOutlined />} className='textmode'>
-          Go Back
-        </Button>
+        <BackButton />
         <h2 className='textmode'>Create collectible</h2>
         <p className='textmode'>
           Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want
