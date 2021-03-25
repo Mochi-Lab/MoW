@@ -2,7 +2,7 @@ import 'Views/DetailNFT/style.css';
 import { useState } from 'react';
 import { Modal, Button, Input } from 'antd';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { transferNft } from 'store/actions';
 
 export default function Transfer({ token }) {
@@ -10,13 +10,14 @@ export default function Transfer({ token }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [transferTo, setTransferTo] = useState('');
   const { addressToken, id } = useParams();
+  const { isLoadingTx } = useSelector((state) => state);
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleOk = async () => {
-    await dispatch(transferNft(addressToken, transferTo, id));
+    dispatch(transferNft(addressToken, transferTo, id));
     setIsModalVisible(false);
   };
 
@@ -31,7 +32,7 @@ export default function Transfer({ token }) {
   return (
     <>
       <div className='gSzfBw'>
-        <Button shape='round' size='large' onClick={showModal}>
+        <Button shape='round' size='large' onClick={showModal} loading={isLoadingTx}>
           Transfer
         </Button>
       </div>
