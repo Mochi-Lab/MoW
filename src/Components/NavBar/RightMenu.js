@@ -1,6 +1,6 @@
 import { Menu, Grid } from 'antd';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import ConnectWallet from 'Components/ConnectWallet';
 import { useSelector } from 'react-redux';
 import avatarDefault from 'Assets/avatar-default.svg';
@@ -14,6 +14,11 @@ const RightMenu = () => {
   const screen = useBreakpoint();
   const { shortAddress, threeboxProfile, walletAddress } = useSelector((state) => state);
   const [isCopied, setIsCopied] = useState(false);
+  const [pathRoute, setPathRoute] = useState();
+  const location = useLocation();
+  useEffect(() => {
+    setPathRoute(location.pathname);
+  }, [setPathRoute, location.pathname]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(walletAddress);
@@ -24,18 +29,21 @@ const RightMenu = () => {
   };
 
   return (
-    <Menu mode={screen.md && screen.lg ? 'horizontal' : 'inline'}>
-      <Menu.Item key='explorer'>
+    <Menu mode={screen.md && screen.lg ? 'horizontal' : 'inline'} selectedKeys={pathRoute}>
+      <Menu.Item key='/'>
         <Link to='/'>Explorer</Link>
       </Menu.Item>
-      <Menu.Item key='Submit_NFTs'>
+      <Menu.Item key='/submit-Nfts'>
         <Link to='/submit-Nfts'>Submit NFTs</Link>
       </Menu.Item>
-      <Menu.Item key='contact'>
-        <Link to='/contact'>Contact</Link>
-      </Menu.Item>
-      <Menu.Item key='Create'>
+      <Menu.Item key='/create'>
         <Link to='/create'>Create</Link>
+      </Menu.Item>
+      <Menu.Item key='/airdrops'>
+        <Link to='/airdrops'>Airdrops</Link>
+      </Menu.Item>
+      <Menu.Item key='/contact'>
+        <Link to='/contact'>Contact</Link>
       </Menu.Item>
       <Menu.Item key='connect-wallet'>
         <ConnectWallet />

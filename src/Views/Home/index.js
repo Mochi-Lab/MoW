@@ -12,6 +12,7 @@ import './index.css';
 import iconNew from 'Assets/images/new.png';
 import iconShop from 'Assets/images/shop.png';
 import iconCreate from 'Assets/images/create.png';
+import banner1 from 'Assets/banners/Twitter-cover-size-02-02.png';
 
 export default function Home() {
   const { convertErc721Tokens, isLoadingErc721, strSearch } = useSelector((state) => state);
@@ -50,22 +51,7 @@ export default function Home() {
     <div className='content-home '>
       <Slider {...carouselBanner} className='carousel-banner-home'>
         <div className='item-carousel'>
-          <img
-            src='https://treasureland.market/static/media/alpaca_banner.67c52c5a.png'
-            alt='banner'
-          />
-        </div>
-        <div className='item-carousel'>
-          <img
-            src='https://treasureland.market/static/media/banner_image.15026b74.png'
-            alt='banner'
-          />
-        </div>
-        <div className='item-carousel'>
-          <img
-            src='https://treasureland.market/static/media/seascape_banner.d62787c4.png'
-            alt='banner'
-          />
+          <img src={banner1} alt='banner' />
         </div>
       </Slider>
       {isLoadingErc721 || isLoadingErc721 === null ? (
@@ -130,7 +116,7 @@ export default function Home() {
                 Explore <img src={iconShop} className='icon-new' alt='icon-explore' />
               </h2>
             </div>
-            <Row>
+            <Row justify='center'>
               {mergeAllCollections().map((nft, i) => (
                 <CardNFTHome token={nft} strSearch={strSearch} key={i} />
               ))}

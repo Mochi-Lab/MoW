@@ -277,6 +277,22 @@ div.line-loading {
   max-width: 1500px;
 }
 
+.margin-bottom-0 {
+  margin-bottom: 0 !important;
+}
+
+.radius-1rem {
+  border-radius: 1rem !important;
+}
+
+.text-color-red {
+  color: red !important;
+}
+
+.text-color-primary {
+  color: #1890ff !important;
+}
+
 @media (max-width: 992px) {
   .logo {
     width: 85px;

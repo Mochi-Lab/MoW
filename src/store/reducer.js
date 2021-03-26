@@ -38,6 +38,11 @@ const initialState = {
 
   //CreativeStudio
   userCollections: [],
+
+  // Campaign - Airdrop
+  nftClaimToken: null,
+  listCampaign: [],
+  loadingCampaign: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -150,6 +155,21 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoadingTx: action.isLoadingTx,
+      };
+    case actions.SET_NFT_CLAIM_TOKEN:
+      return {
+        ...state,
+        nftClaimToken: action.nftClaimToken,
+      };
+    case actions.FETCH_LIST_CAMPAIGN:
+      return {
+        ...state,
+        listCampaign: action.listCampaign,
+      };
+    case actions.SET_LOADING_CAMPAIGN:
+      return {
+        ...state,
+        loadingCampaign: action.loadingCampaign,
       };
     default:
       return state;
