@@ -13,17 +13,10 @@ import {
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import {
-  fetchListCampaign,
-  addCampaign,
-  checkWhiteListNft,
-  checkAllowance,
-  approveERC20,
-} from 'store/actions';
+import { fetchListCampaign, addCampaign, checkAllowance, approveERC20 } from 'store/actions';
 import store from 'store/index';
 import './index.css';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { connectWeb3Modal } from 'Connections/web3Modal';
 
 const { TextArea } = Input;
@@ -245,7 +238,7 @@ export default function FormCreateCampaign() {
             <Row gutter={8}>
               <Col xs={{ span: 8 }} sm={{ span: 6 }} md={{ span: 6 }}>
                 <div className='ant-col ant-form-item-label'>
-                  <label title='Icon token'>Icon token</label>
+                  <label title='Icon token'>Token Icon</label>
                 </div>
                 <div className='ant-col ant-form-item-control'>
                   <div className='ant-form-item-control-input'>
@@ -299,12 +292,12 @@ export default function FormCreateCampaign() {
               </Col>
             </Row>
             <Form.Item
-              label='Title short'
+              label='Title'
               name='titleShort'
-              rules={[{ required: true, message: "'Title short' is required" }]}
+              rules={[{ required: true, message: "'Title' is required" }]}
             >
               <Input
-                placeholder='title short'
+                placeholder='title'
                 size='large'
                 value={titleShort}
                 onChange={changeShortTitle}
@@ -321,24 +314,7 @@ export default function FormCreateCampaign() {
               label='NFT Address'
               hasFeedback
               name='nftAddress'
-              rules={[
-                { required: true, message: "'NFT Address' is required" },
-                {
-                  validator: async (_, value) =>
-                    !!value
-                      ? !!web3.utils.isAddress(value)
-                        ? (await store.dispatch(checkWhiteListNft(value)))
-                          ? Promise.resolve()
-                          : Promise.reject(
-                              <div>
-                                NFT not in white list! Go submmit NFT{' '}
-                                <Link to='/submit-Nfts'>here</Link>
-                              </div>
-                            )
-                        : Promise.reject(new Error('Not is address'))
-                      : null,
-                },
-              ]}
+              rules={[{ required: true, message: "'NFT Address' is required" }]}
             >
               <Input
                 placeholder='nft address'
