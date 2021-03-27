@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, Grid, Col, Select } from 'antd';
 import { setStrSearch, setWeb3 } from 'store/actions';
 import { SearchOutlined } from '@ant-design/icons';
-import { getWeb3List, web3Default } from 'utils/getWeb3List';
+import { getWeb3List, web3Default, networkDefault } from 'utils/getWeb3List';
 import { useLocation } from 'react-router-dom';
 import store from 'store/index';
 import './index.css';
@@ -13,7 +13,7 @@ const { Option } = Select;
 
 export default function LeftNar() {
   const dispatch = useDispatch();
-  const [network, setNetwork] = useState(97);
+  const [network, setNetwork] = useState(networkDefault);
   const { chainId } = useSelector((state) => state);
   const location = useLocation();
 

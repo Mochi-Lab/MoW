@@ -1,8 +1,5 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import NavBar from 'Components/NavBar';
-
-import Home from 'Views/Home';
-
 import './App.css';
 
 import { setAvailableSellOrder } from 'store/actions';
@@ -27,15 +24,16 @@ function App() {
           <div className='bg-header'></div>
           <NavBar />
           <Switch>
-            <Route exact path='/' component={Home} />
-            {/* <Route exact path='/profile' component={Profile} />
+            {/* <Route exact path='/' component={Home} />
+            <Route exact path='/profile' component={Profile} />
             <Route exact path='/submit-Nfts' component={SubmitNFT} />
             <Route exact path='/create' component={Create} />
             <Route exact path='/browse' component={Browse} />
             <Route exact path='/create/erc721' component={CreateERC721} />
-            <Route exact path='/create/erc1155' component={CreateERC1155} /> */}
-            {/* <Route exact path='/token/:addressToken/:id' component={DetailNFT} /> */}
-            <Route exact path='/airdrops' component={Airdrops} />
+            <Route exact path='/create/erc1155' component={CreateERC1155} />
+            <Route exact path='/token/:addressToken/:id' component={DetailNFT} />
+            <Route exact path='/airdrops' component={Airdrops} /> */}
+            <Route exact path='/' component={Airdrops} />
           </Switch>
         </div>
       </BrowserRouter>

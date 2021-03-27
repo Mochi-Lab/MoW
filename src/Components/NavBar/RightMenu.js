@@ -32,7 +32,7 @@ const RightMenu = () => {
         <Link to='/submit-Nfts'>Submit NFTs</Link>
       </Menu.Item> */}
       <Menu.Item key='/airdrops'>
-        <Link to='/airdrops'>Airdrops</Link>
+        <Link to='/'>Airdrops</Link>
       </Menu.Item>
       {/* <Menu.Item key='/create'>
         <Link to='/create'>Create</Link>
