@@ -846,7 +846,7 @@ export const claimTokenByNFT = (campaignId, tokenIds) => async (dispatch, getSta
       .claim(campaignId, tokenIds, walletAddress)
       .send({ from: walletAddress })
       .on('receipt', (receipt) => {
-        message.success('Claims Successfully !');
+        message.success('Claim Successfully !');
         return true;
       })
       .on('error', (error, receipt) => {
