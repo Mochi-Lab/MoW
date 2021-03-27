@@ -237,6 +237,29 @@
   animation: pulseRing 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
 }
 
+.successDot {
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  background-color: var(--pulsating-dot, #52c31e);
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: pulseDot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite;
+}
+
+.successDot:before {
+  position: relative;
+  top: -100%;
+  left: -100%;
+  display: block;
+  width: 300%;
+  height: 300%;
+  background-color: var(--pulsating-dot, #52c31e);
+  border-radius: 45px;
+  content: '';
+  animation: pulseRing 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
 .btn-join-detail {
   background: #006cff 0% 0% no-repeat padding-box;
   border-radius: 5px;
