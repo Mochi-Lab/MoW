@@ -307,7 +307,7 @@ export default function Airdrops() {
             <div className='title-ends'>Claim ends</div>
             <div className='time-end'>
               {campaignShowDetail.startTime > Math.floor(Date.now() / 1000) ? (
-                <span className='text-color-primary'>Campaign yet start</span>
+                <span className='text-color-primary'>Pending</span>
               ) : counterDays(campaignShowDetail.endTime) <= 0 ? (
                 <span className='text-color-red'>Campaign ended</span>
               ) : (

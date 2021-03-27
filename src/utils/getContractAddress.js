@@ -9,7 +9,7 @@ const contractAddress = {
     CreativeStudio: '0xa5dD241c1A9A9826fB8E78c7db4dc8fdD3043b66',
     ExchangeOrderList: '0x37ca1D6c7479F3Eb9d6d10309e6f0C611E6bE48F',
     Mochi: '0x3bF0FD7176204A80021C1BD17807144714E31148',
-    NFTCampaign: '',
+    NFTCampaign: '0x8B131F200Ffe95e3A3D123bFD05dc6fe1C43053E',
   },
   //BSC Testnet
   97: {
