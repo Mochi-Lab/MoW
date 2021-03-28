@@ -3,7 +3,7 @@ import { connectWeb3Modal } from 'Connections/web3Modal';
 import { useSelector } from 'react-redux';
 
 export default function ConnectWallet() {
-  const walletAddress = useSelector((state) => state.walletAddress);
+  const { walletAddress, shortAddress } = useSelector((state) => state);
 
   const connect = () => {
     connectWeb3Modal();
@@ -15,7 +15,7 @@ export default function ConnectWallet() {
         {!!walletAddress ? (
           <>
             <Badge status='success' />
-            Change Wallet
+            {shortAddress}
           </>
         ) : (
           <>
