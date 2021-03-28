@@ -4,7 +4,7 @@ export const web3Default = {
   //BSC Mainnet
   56: {
     web3Default: new Web3(new Web3.providers.HttpProvider('https://bsc-dataseed.binance.org/')),
-    name: 'Binance Mainnet',
+    name: 'BSC Mainnet',
     explorer: 'https://bscscan.com/tx/',
   },
   //BSC Testnet
@@ -12,7 +12,7 @@ export const web3Default = {
     web3Default: new Web3(
       new Web3.providers.HttpProvider('https://data-seed-prebsc-1-s3.binance.org:8545/')
     ),
-    name: 'Binance Testnet',
+    name: 'BSC Testnet',
     explorer: 'https://testnet.bscscan.com/tx/',
   },
 };
