@@ -511,6 +511,44 @@
   cursor: pointer;
 }
 
+.your-nft {
+  border-top: 1px solid #f0f0f0;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+.your-nft .ant-card {
+  border-radius: 1rem;
+}
+.your-nft .ant-card-cover img {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  height: 15vh;
+  width: 100%;
+}
+.your-nft .ant-card-meta-description {
+  color: rgba(0, 0, 0, 0.45) !important;
+}
+.your-nft .ant-card-body {
+  padding: 1rem;
+  text-align: center;
+}
+
+.your-nft .ant-card-meta-description p {
+  margin: 0 auto;
+}
+.your-nft .ant-card-hoverable {
+  border-color: transparent;
+  -webkit-box-shadow: 0 1px 2px -2px rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 12%),
+    0 5px 12px 4px rgb(0 0 0 / 9%);
+  box-shadow: 0 1px 2px -2px rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 12%),
+    0 5px 12px 4px rgb(0 0 0 / 9%);
+}
+
+.card-nft {
+  margin-top: 1rem;
+}
+
 @media (max-width: 690px) {
   .description-short {
     display: block;

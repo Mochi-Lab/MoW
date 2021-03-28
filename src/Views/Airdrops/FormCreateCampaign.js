@@ -325,10 +325,10 @@ export default function FormCreateCampaign() {
             </Form.Item>
 
             <Form.Item
-              label='Token claim'
+              label='Airdrop token'
               name='tokenAddress'
               rules={[
-                { required: true, message: "'Token Claim' is required" },
+                { required: true, message: "'Airdrop token' is required" },
                 {
                   validator: validateTokenClaim,
                 },
@@ -337,7 +337,7 @@ export default function FormCreateCampaign() {
               style={{ marginBottom: '0.5rem' }}
             >
               <Input
-                placeholder='token claim'
+                placeholder='airdrop token'
                 size='large'
                 value={tokenAddress}
                 onChange={changeTokenAddress}

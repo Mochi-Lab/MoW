@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Modal } from 'antd';
+import { Button, Col, Modal, Row, Card } from 'antd';
 import {
   fetchListCampaign,
   forceEndCampaign,
@@ -16,6 +16,8 @@ import StatusCampaign from './StatusCampaign';
 import BtnClaimCampaign from './BtnClaimCampaign';
 import BtnCancelCampaign from './BtnCancelCampaign';
 import BtnAcceptCampaign from './BtnAcceptCampaign';
+
+const { Meta } = Card;
 
 export default function Airdrops() {
   const { listCampaign, nftClaimToken, walletAddress, loadingCampaign } = useSelector(
@@ -258,7 +260,7 @@ export default function Airdrops() {
         onCancel={() => setShowModalDetail(false)}
         footer={[
           <Button key='back' onClick={() => setShowModalDetail(false)} size='large' shape='round'>
-            Exit
+            Close
           </Button>,
           <BtnCancelCampaign
             key='cancel'
@@ -319,6 +321,26 @@ export default function Airdrops() {
         <div className='description-airdrop'>
           <div className='header-description textmode'>{campaignShowDetail.titleDescription}</div>
           <div className='content-description textmode'>{campaignShowDetail.description}</div>
+        </div>
+        <div className='your-nft'>
+          <h3>Your NFTs:</h3>
+          <Row gutter={16}>
+            {campaignShowDetail.allNFTsOfOwner
+              ? campaignShowDetail.allNFTsOfOwner.map((nft, i) => (
+                  <Col
+                    xs={{ span: 12 }}
+                    sm={{ span: 8 }}
+                    xl={{ span: 6 }}
+                    key={i}
+                    className='card-nft'
+                  >
+                    <Card hoverable cover={<img alt={nft.name} src={nft.image} />}>
+                      <Meta title={nft.description} description={`${nft.name} (${nft.tokenId})`} />
+                    </Card>
+                  </Col>
+                ))
+              : ''}
+          </Row>
         </div>
       </Modal>
     </div>
