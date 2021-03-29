@@ -616,6 +616,7 @@ export const fetchListCampaign = () => async (dispatch, getState) => {
           let balanceNFT = 0;
           let tokensYetClaim = [];
           let canCancel = false;
+          let allNFTsOfOwner = [];
           if (!!walletAddress) {
             let instanceNFT = new web3.eth.Contract(ERC721.abi, instance.nftAddress);
             balanceNFT = await instanceNFT.methods.balanceOf(walletAddress).call();
@@ -629,6 +630,16 @@ export const fetchListCampaign = () => async (dispatch, getState) => {
                   .call();
                 if (!statusClaim) {
                   tokensYetClaim.push(tokenId);
+                }
+                let tokenURI = await instanceNFT.methods.tokenURI(tokenId).call();
+                try {
+                  let req = await axios.get(tokenURI);
+                  let detail = req.data;
+                  detail.tokenId = tokenId;
+                  allNFTsOfOwner.push(detail);
+                } catch (error) {
+                  let detail = { name: 'Unnamed', description: '', tokenId };
+                  allNFTsOfOwner.push(detail);
                 }
               }
             }
@@ -644,6 +655,7 @@ export const fetchListCampaign = () => async (dispatch, getState) => {
           infoCampaign.tokensYetClaim = !!tokensYetClaim ? tokensYetClaim : [];
           infoCampaign.canCancel = canCancel;
           infoCampaign.ownerContractCampaign = ownerContractCampaign;
+          infoCampaign.allNFTsOfOwner = allNFTsOfOwner;
           resolve(infoCampaign);
         });
       };
