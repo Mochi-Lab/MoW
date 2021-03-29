@@ -199,16 +199,19 @@ export default function FormCreateCampaign() {
 
   return (
     <div className='box-create-airdrop'>
-      <Button
-        type='primary'
-        shape='round'
-        icon={<PlusOutlined />}
-        size='large'
-        className='btn-create-airdrop'
-        onClick={() => handleClickCreate()}
-      >
-        Create Airdrop
-      </Button>
+      {process.env.REACT_APP_CREATE_AIRDROP_ENABLED === '1' ? (
+        <Button
+          type='primary'
+          shape='round'
+          icon={<PlusOutlined />}
+          size='large'
+          className='btn-create-airdrop'
+          onClick={() => handleClickCreate()}
+        >
+          Create Airdrop
+        </Button>
+      ) : null}
+
       <Modal
         visible={showModalCreate}
         width={600}
