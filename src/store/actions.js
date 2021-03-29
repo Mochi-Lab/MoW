@@ -651,6 +651,9 @@ export const fetchListCampaign = () => async (dispatch, getState) => {
           infoCampaign.symbolTokenEarn = !!instanceTokenEarn
             ? await instanceTokenEarn.methods.symbol().call()
             : '';
+          infoCampaign.balanceTokenEarn = !!instanceTokenEarn
+            ? await instanceTokenEarn.methods.balanceOf(walletAddress).call()
+            : 0;
           infoCampaign.balanceNFT = !!balanceNFT ? balanceNFT : 0;
           infoCampaign.tokensYetClaim = !!tokensYetClaim ? tokensYetClaim : [];
           infoCampaign.canCancel = canCancel;

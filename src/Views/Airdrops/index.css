@@ -512,9 +512,7 @@
 }
 
 .your-nft {
-  border-top: 1px solid #f0f0f0;
-  margin-top: 1rem;
-  padding-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .your-nft .ant-card {
@@ -547,6 +545,26 @@
 
 .card-nft {
   margin-top: 1rem;
+}
+
+.your-left-balance {
+  border-top: 1px solid #f0f0f0;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+.your-left-balance b {
+  color: black;
+  font-weight: bold;
+  font-size: large;
+}
+.your-left-balance b span {
+  color: #ff5e5f;
+}
+
+.balance-token-earn {
+  color: blue;
+  font-size: large;
 }
 
 @media (max-width: 690px) {
