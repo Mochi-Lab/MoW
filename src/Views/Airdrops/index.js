@@ -24,9 +24,7 @@ export default function Airdrops() {
     (state) => state
   );
   const [showModalDetail, setShowModalDetail] = useState(false);
-  const [loadingCancelModal, setLoadingCancelModal] = useState(false);
-  const [loadingClaimModal, setLoadingClaimModal] = useState(false);
-  const [loadingAcceptModal, setLoadingAcceptModal] = useState(false);
+
   const [campaignShowDetail, setCampaignShowDetail] = useState({});
   const [loadingCancel, setLoadingCancel] = useState({ status: false, index: -1 });
   const [loadingClaim, setLoadingClaim] = useState({ status: false, index: -1 });
@@ -47,39 +45,23 @@ export default function Airdrops() {
     setShowModalDetail(status);
     setCampaignShowDetail(campaign);
   };
-  const cancelCampaign = async (campaignId, type) => {
-    if (type === 'modal') {
-      setLoadingCancelModal(true);
-    } else {
-      setLoadingCancel({ status: true, index: campaignId });
-    }
+  const cancelCampaign = async (campaignId) => {
+    setLoadingCancel({ status: true, index: campaignId });
     let result = await store.dispatch(forceEndCampaign(campaignId));
     if (result) {
       await store.dispatch(fetchListCampaign());
       setShowModalDetail(false);
     }
-    if (type === 'modal') {
-      setLoadingCancelModal(false);
-    } else {
-      setLoadingCancel({ status: false, index: -1 });
-    }
+    setLoadingCancel({ status: false, index: -1 });
   };
   const claimsCampaign = async (campaignId, tokenIds, type) => {
-    if (type === 'modal') {
-      setLoadingClaimModal(true);
-    } else {
-      setLoadingClaim({ status: true, index: campaignId });
-    }
+    setLoadingClaim({ status: true, index: campaignId });
     let result = await store.dispatch(claimTokenByNFT(campaignId, tokenIds));
     if (result) {
       await store.dispatch(fetchListCampaign());
       setShowModalDetail(false);
     }
-    if (type === 'modal') {
-      setLoadingClaimModal(false);
-    } else {
-      setLoadingClaim({ status: false, index: -1 });
-    }
+    setLoadingClaim({ status: false, index: -1 });
   };
 
   const counterDays = (timeEnd) => {
@@ -109,21 +91,13 @@ export default function Airdrops() {
   };
 
   const adminAcceptCampaign = async (campaignId, type) => {
-    if (type === 'modal') {
-      setLoadingAcceptModal(true);
-    } else {
-      setLoadingAccept({ status: true, index: campaignId });
-    }
+    setLoadingAccept({ status: true, index: campaignId });
     let result = await store.dispatch(acceptCampaign(campaignId));
     if (result) {
       await store.dispatch(fetchListCampaign());
       setShowModalDetail(false);
     }
-    if (type === 'modal') {
-      setLoadingAcceptModal(false);
-    } else {
-      setLoadingAccept({ status: false, index: -1 });
-    }
+    setLoadingAccept({ status: false, index: -1 });
   };
 
   return (
@@ -265,27 +239,23 @@ export default function Airdrops() {
           <BtnCancelCampaign
             key='cancel'
             campaign={campaignShowDetail}
-            cancelCampaign={() => cancelCampaign(campaignShowDetail.campaignId, 'modal')}
-            loading={loadingCancelModal}
+            cancelCampaign={() => cancelCampaign(campaignShowDetail.campaignId)}
+            loading={loadingCancel.status && loadingCancel.index === campaignShowDetail.campaignId}
           />,
           <BtnAcceptCampaign
             key='accept'
             campaign={campaignShowDetail}
-            adminAcceptCampaign={() => adminAcceptCampaign(campaignShowDetail.campaignId, 'modal')}
-            loading={loadingAcceptModal}
+            adminAcceptCampaign={() => adminAcceptCampaign(campaignShowDetail.campaignId)}
+            loading={loadingAccept.status && loadingAccept.index === campaignShowDetail.campaignId}
             className='btn-color-accept'
           />,
           <BtnClaimCampaign
             key='claim'
             campaign={campaignShowDetail}
             claimsCampaign={() =>
-              claimsCampaign(
-                campaignShowDetail.campaignId,
-                campaignShowDetail.tokensYetClaim,
-                'modal'
-              )
+              claimsCampaign(campaignShowDetail.campaignId, campaignShowDetail.tokensYetClaim)
             }
-            loading={loadingClaimModal}
+            loading={loadingClaim.status && loadingClaim.index === campaignShowDetail.campaignId}
           />,
         ]}
       >
@@ -321,6 +291,18 @@ export default function Airdrops() {
         <div className='description-airdrop'>
           <div className='header-description textmode'>{campaignShowDetail.titleDescription}</div>
           <div className='content-description textmode'>{campaignShowDetail.description}</div>
+        </div>
+        <div className='your-left-balance'>
+          <h3>
+            Your{' '}
+            <b>
+              $<span>{campaignShowDetail.symbolTokenEarn}</span>
+            </b>
+            :{' '}
+            <span className='balance-token-earn'>
+              {parseBalance(campaignShowDetail.balanceTokenEarn, 18)}
+            </span>
+          </h3>
         </div>
         <div className='your-nft'>
           <h3>Your NFTs:</h3>
