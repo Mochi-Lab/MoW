@@ -9,7 +9,7 @@ import NFTList from 'Contracts/NFTList.json';
 import SellOrderList from 'Contracts/SellOrderList.json';
 import Vault from 'Contracts/Vault.json';
 import CreativeStudio from 'Contracts/CreativeStudio.json';
-import NFTClaimToken from 'Contracts/NFTClaimToken.json';
+import NFTCampaign from 'Contracts/NFTCampaign.json';
 import ERC20 from 'Contracts/ERC20.json';
 import axios from 'axios';
 import { getContractAddress } from 'utils/getContractAddress';
@@ -53,14 +53,14 @@ export const setWeb3 = (web3) => async (dispatch, getState) => {
   const sellOrderList = new web3.eth.Contract(SellOrderList.abi, contractAddress.SellOrderList);
   const vault = new web3.eth.Contract(Vault.abi, contractAddress.Vault);
   const creativeStudio = new web3.eth.Contract(CreativeStudio.abi, contractAddress.CreativeStudio);
-  const nftClaimToken = new web3.eth.Contract(NFTClaimToken.abi, contractAddress.NFTCampaign);
+  const nftCampaign = new web3.eth.Contract(NFTCampaign.abi, contractAddress.NFTCampaign);
   dispatch(setAddressesProvider(addressesProvider));
   dispatch(setMarket(market));
   dispatch(setNftList(nftList));
   dispatch(setSellOrderList(sellOrderList));
   dispatch(setVault(vault));
   dispatch(setCreativeStudio(creativeStudio));
-  dispatch(setNftClaimToken(nftClaimToken));
+  dispatch(setNftClaimToken(nftCampaign));
 
   dispatch(setAvailableSellOrder());
 };
@@ -566,32 +566,30 @@ export const createCollection = ({ name, symbol }) => async (dispatch, getState)
 ////////////////////
 
 export const SET_NFT_CLAIM_TOKEN = 'SET_NFT_CLAIM_TOKEN';
-export const setNftClaimToken = (nftClaimToken) => async (dispatch) => {
+export const setNftClaimToken = (nftCampaign) => async (dispatch) => {
   dispatch({
     type: SET_NFT_CLAIM_TOKEN,
-    nftClaimToken,
+    nftCampaign,
   });
 };
 
 export const FETCH_LIST_CAMPAIGN = 'FETCH_LIST_CAMPAIGN';
 export const fetchListCampaign = () => async (dispatch, getState) => {
-  let { nftClaimToken, web3, walletAddress } = getState();
+  let { nftCampaign, web3, walletAddress } = getState();
   try {
     if (!!web3 && !!contractAddress && !!contractAddress.NFTCampaign) {
       dispatch(setLoadingCampaign(true));
-      if (!nftClaimToken) {
-        nftClaimToken = new web3.eth.Contract(NFTClaimToken.abi, contractAddress.NFTCampaign);
-        dispatch(setNftClaimToken(nftClaimToken));
+      if (!nftCampaign) {
+        nftCampaign = new web3.eth.Contract(NFTCampaign.abi, contractAddress.NFTCampaign);
+        dispatch(setNftClaimToken(nftCampaign));
       }
-      let allCampaigns = await nftClaimToken.methods.getAllCaimpaigns().call();
+      let allCampaigns = await nftCampaign.methods.getAllCaimpaigns().call();
       let listCampaignFilter = allCampaigns.filter((campaign) => campaign.status !== '3');
       let getCampaignsByOwner = [];
-      const ownerContractCampaign = await nftClaimToken.methods.owner().call();
+      const ownerContractCampaign = await nftCampaign.methods.owner().call();
       if (!!walletAddress) {
         if (walletAddress.toLowerCase() !== ownerContractCampaign.toLowerCase()) {
-          getCampaignsByOwner = await nftClaimToken.methods
-            .getCampaignsByOwner(walletAddress)
-            .call();
+          getCampaignsByOwner = await nftCampaign.methods.getCampaignsByOwner(walletAddress).call();
           listCampaignFilter = listCampaignFilter.filter(
             (campaign) =>
               campaign.status === '1' || getCampaignsByOwner.includes(campaign.campaignId)
@@ -625,10 +623,10 @@ export const fetchListCampaign = () => async (dispatch, getState) => {
                 let tokenId = await instanceNFT.methods
                   .tokenOfOwnerByIndex(walletAddress, i)
                   .call();
-                let statusClaim = await nftClaimToken.methods
+                let claimStatus = await nftCampaign.methods
                   .getClaimStatus(instance.campaignId, tokenId)
                   .call();
-                if (!statusClaim) {
+                if (!claimStatus) {
                   tokensYetClaim.push(tokenId);
                 }
                 let tokenURI = await instanceNFT.methods.tokenURI(tokenId).call();
@@ -685,8 +683,8 @@ export const fetchListCampaign = () => async (dispatch, getState) => {
 export const addCampaign = (
   nftAddress,
   tokenAddress,
-  totalFunds,
-  amountPerClaim,
+  totalSlots,
+  amountPerSlot,
   startTime,
   endTime,
   titleShort,
@@ -696,10 +694,10 @@ export const addCampaign = (
   iconToken,
   bannerImg
 ) => async (dispatch, getState) => {
-  let { nftClaimToken, walletAddress, web3 } = getState();
+  let { nftCampaign, walletAddress, web3 } = getState();
   try {
     let resultAdd = false;
-    if (!!nftClaimToken) {
+    if (!!nftCampaign) {
       let contentCampaign = {
         titleShort: '',
         slogan: '',
@@ -748,14 +746,13 @@ export const addCampaign = (
       let ipfsHash = results.cid.string;
       let infoURL = 'https://gateway.ipfs.io/ipfs/' + ipfsHash;
 
-      totalFunds = web3.utils.toWei(totalFunds.toString(), 'ether');
-      amountPerClaim = web3.utils.toWei(amountPerClaim.toString(), 'ether');
-      resultAdd = await nftClaimToken.methods
-        .addCampaign(
+      amountPerSlot = web3.utils.toWei(amountPerSlot.toString(), 'ether');
+      resultAdd = await nftCampaign.methods
+        .registerCampaign(
           nftAddress,
           tokenAddress,
-          totalFunds,
-          amountPerClaim,
+          totalSlots,
+          amountPerSlot,
           startTime,
           endTime,
           infoURL
@@ -807,6 +804,19 @@ export const checkAllowance = (addressToken, amount) => async (dispatch, getStat
   }
 };
 
+export const checkBalance = (addressToken) => async (dispatch, getState) => {
+  const { walletAddress, web3 } = getState();
+  try {
+    const instaneErc20 = new web3.eth.Contract(ERC20.abi, addressToken);
+    let weiBalance = await instaneErc20.methods.balanceOf(walletAddress).call();
+    let symbol = await instaneErc20.methods.symbol().call();
+    return { weiBalance, symbol };
+  } catch (error) {
+    console.log(error);
+    message.error('Oh no! Something went wrong !');
+  }
+};
+
 export const approveERC20 = (addressToken, amount) => async (dispatch, getState) => {
   let { web3, walletAddress } = getState();
   try {
@@ -833,9 +843,9 @@ export const approveERC20 = (addressToken, amount) => async (dispatch, getState)
 };
 
 export const forceEndCampaign = (campaignId) => async (dispatch, getState) => {
-  let { nftClaimToken, walletAddress } = getState();
+  let { nftCampaign, walletAddress } = getState();
   try {
-    let result = await nftClaimToken.methods
+    let result = await nftCampaign.methods
       .forceEnd(campaignId)
       .send({ from: walletAddress })
       .on('receipt', (receipt) => {
@@ -855,9 +865,9 @@ export const forceEndCampaign = (campaignId) => async (dispatch, getState) => {
 };
 
 export const claimTokenByNFT = (campaignId, tokenIds) => async (dispatch, getState) => {
-  let { nftClaimToken, walletAddress } = getState();
+  let { nftCampaign, walletAddress } = getState();
   try {
-    let result = await nftClaimToken.methods
+    let result = await nftCampaign.methods
       .claim(campaignId, tokenIds, walletAddress)
       .send({ from: walletAddress })
       .on('receipt', (receipt) => {
@@ -877,9 +887,9 @@ export const claimTokenByNFT = (campaignId, tokenIds) => async (dispatch, getSta
 };
 
 export const acceptCampaign = (campaignId) => async (dispatch, getState) => {
-  let { nftClaimToken, walletAddress } = getState();
+  let { nftCampaign, walletAddress } = getState();
   try {
-    let result = await nftClaimToken.methods
+    let result = await nftCampaign.methods
       .acceptCampaign(campaignId)
       .send({ from: walletAddress })
       .on('receipt', (receipt) => {
@@ -904,4 +914,26 @@ export const setLoadingCampaign = (loadingCampaign) => async (dispatch) => {
     type: SET_LOADING_CAMPAIGN,
     loadingCampaign,
   });
+};
+
+export const addMoreSlots = (campaignId, slots) => async (dispatch, getState) => {
+  let { nftCampaign, walletAddress } = getState();
+  try {
+    let result = await nftCampaign.methods
+      .addMoreSlots(campaignId, slots)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Add More Slots Successfully !');
+        return true;
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+        return false;
+      });
+    return result;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 };

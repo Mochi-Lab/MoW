@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Button, Col, Modal, Row, Card } from 'antd';
 import {
   fetchListCampaign,
   forceEndCampaign,
@@ -10,17 +9,12 @@ import store from 'store/index';
 import './index.css';
 import { useSelector } from 'react-redux';
 import IconLoading from 'Components/IconLoading';
-import { parseBalance, convertTimestampToDate } from 'utils/helper';
 import FormCreateCampaign from './FormCreateCampaign';
 import StatusCampaign from './StatusCampaign';
-import BtnClaimCampaign from './BtnClaimCampaign';
-import BtnCancelCampaign from './BtnCancelCampaign';
-import BtnAcceptCampaign from './BtnAcceptCampaign';
-
-const { Meta } = Card;
+import ModalDetailCampaign from './ModalDetailCampaign';
 
 export default function Airdrops() {
-  const { listCampaign, nftClaimToken, walletAddress, loadingCampaign } = useSelector(
+  const { listCampaign, nftCampaign, walletAddress, loadingCampaign } = useSelector(
     (state) => state
   );
   const [showModalDetail, setShowModalDetail] = useState(false);
@@ -35,14 +29,21 @@ export default function Airdrops() {
       await store.dispatch(fetchListCampaign());
     }
     fetchData();
-  }, [nftClaimToken, walletAddress]);
+  }, [nftCampaign, walletAddress]);
 
   useEffect(() => {
     setShowModalDetail(false);
   }, [walletAddress]);
 
-  const setShowModalDetailCampaign = (status, campaign) => {
+  useEffect(() => {
+    if (campaignShowDetail.index >= 0) {
+      setCampaignShowDetail(listCampaign[campaignShowDetail.index]);
+    }
+  }, [listCampaign, campaignShowDetail]);
+
+  const setShowModalDetailCampaign = (status, campaign, index) => {
     setShowModalDetail(status);
+    campaign.index = index;
     setCampaignShowDetail(campaign);
   };
   const cancelCampaign = async (campaignId) => {
@@ -125,13 +126,13 @@ export default function Airdrops() {
                 <img
                   src={!!campaign && !!campaign.urlBanner ? campaign.urlBanner : ''}
                   className='banner-campaign'
-                  onClick={() => setShowModalDetailCampaign(true, campaign)}
+                  onClick={() => setShowModalDetailCampaign(true, campaign, i)}
                   alt='banner-campaign'
                 />
                 <div className='description-short'>
                   <div
                     className='description-short-left'
-                    onClick={() => setShowModalDetailCampaign(true, campaign)}
+                    onClick={() => setShowModalDetailCampaign(true, campaign, i)}
                   >
                     <div className='icon-token'>
                       <img
@@ -161,7 +162,7 @@ export default function Airdrops() {
                     loadingClaim={loadingClaim}
                     adminAcceptCampaign={adminAcceptCampaign}
                     loadingAccept={loadingAccept}
-                    setShowModalDetailCampaign={() => setShowModalDetailCampaign(true, campaign)}
+                    setShowModalDetailCampaign={() => setShowModalDetailCampaign(true, campaign, i)}
                   />
                 </div>
               </div>
@@ -170,7 +171,7 @@ export default function Airdrops() {
                 <div className='description-short-list-airdrop'>
                   <div
                     className='description-short-left'
-                    onClick={() => setShowModalDetailCampaign(true, campaign)}
+                    onClick={() => setShowModalDetailCampaign(true, campaign, i)}
                   >
                     <div className='icon-token'>
                       <img
@@ -201,7 +202,7 @@ export default function Airdrops() {
                     setLoadingCancel={setLoadingCancel}
                     adminAcceptCampaign={adminAcceptCampaign}
                     loadingAccept={loadingAccept}
-                    setShowModalDetailCampaign={() => setShowModalDetailCampaign(true, campaign)}
+                    setShowModalDetailCampaign={() => setShowModalDetailCampaign(true, campaign, i)}
                   />
                 </div>
               </div>
@@ -209,122 +210,20 @@ export default function Airdrops() {
           )}
         </div>
       </div>
-      <Modal
-        visible={showModalDetail}
-        width={700}
-        title={[
-          <div className='title-airdrop-avatar textmode' key='title-airdrop-avatar'>
-            <div className='icon-token title-airdrop-avatar-child'>
-              <img src={campaignShowDetail.urlIcon} className='img-loaded' alt='airdrop-img' />
-              {campaignShowDetail.status === '1' &&
-              campaignShowDetail.startTime < Math.floor(Date.now() / 1000) &&
-              Math.floor(Date.now() / 1000) < campaignShowDetail.endTime ? (
-                <span className='airdrop-badge red css-vurnku airdrop-badge-modal'>
-                  <span>LIVE</span>
-                </span>
-              ) : null}
-            </div>
-            <div className='title-airdrop-avatar-child'>
-              <h2 className='textmode'>{campaignShowDetail.titleShort}</h2>
-              <p className='slogan-airdrop'>{campaignShowDetail.slogan}</p>
-            </div>
-          </div>,
-        ]}
-        onOk={() => setShowModalDetail(false)}
-        onCancel={() => setShowModalDetail(false)}
-        footer={[
-          <Button key='back' onClick={() => setShowModalDetail(false)} size='large' shape='round'>
-            Close
-          </Button>,
-          <BtnCancelCampaign
-            key='cancel'
-            campaign={campaignShowDetail}
-            cancelCampaign={() => cancelCampaign(campaignShowDetail.campaignId)}
-            loading={loadingCancel.status && loadingCancel.index === campaignShowDetail.campaignId}
-          />,
-          <BtnAcceptCampaign
-            key='accept'
-            campaign={campaignShowDetail}
-            adminAcceptCampaign={() => adminAcceptCampaign(campaignShowDetail.campaignId)}
-            loading={loadingAccept.status && loadingAccept.index === campaignShowDetail.campaignId}
-            className='btn-color-accept'
-          />,
-          <BtnClaimCampaign
-            key='claim'
-            campaign={campaignShowDetail}
-            claimsCampaign={() =>
-              claimsCampaign(campaignShowDetail.campaignId, campaignShowDetail.tokensYetClaim)
-            }
-            loading={loadingClaim.status && loadingClaim.index === campaignShowDetail.campaignId}
-          />,
-        ]}
-      >
-        <div className='amount-time-airdrop'>
-          <div className='amount-airdrop amount-time-airdrop-box'>
-            <div className='title-amount'>Amount</div>
-            <div className='per-amount'>
-              {parseBalance(campaignShowDetail.amountPerClaim)} {campaignShowDetail.symbolTokenEarn}{' '}
-              per winner
-            </div>
-            <div className='num-uers-amount'>
-              Remain {parseInt(campaignShowDetail.remainFunds / campaignShowDetail.amountPerClaim)}{' '}
-              Winners can claim
-            </div>
-          </div>
-          <div className='time-start-airdrop amount-time-airdrop-box'>
-            <div className='title-time-start'>Airdrop starts</div>
-            <div className='time-start'>{convertTimestampToDate(campaignShowDetail.startTime)}</div>
-          </div>
-          <div className='claim-ends amount-time-airdrop-box'>
-            <div className='title-ends'>Claim ends</div>
-            <div className='time-end'>
-              {campaignShowDetail.startTime > Math.floor(Date.now() / 1000) ? (
-                <span className='text-color-primary'>Pending</span>
-              ) : counterDays(campaignShowDetail.endTime) <= 0 ? (
-                <span className='text-color-red'>Campaign ended</span>
-              ) : (
-                `Ends in ${counterDays(campaignShowDetail.endTime)}`
-              )}
-            </div>
-          </div>
-        </div>
-        <div className='description-airdrop'>
-          <div className='header-description textmode'>{campaignShowDetail.titleDescription}</div>
-          <div className='content-description textmode'>{campaignShowDetail.description}</div>
-        </div>
-        <div className='your-left-balance'>
-          <h3>
-            Your{' '}
-            <b>
-              $<span>{campaignShowDetail.symbolTokenEarn}</span>
-            </b>
-            :{' '}
-            <span className='balance-token-earn'>
-              {parseBalance(campaignShowDetail.balanceTokenEarn, 18)}
-            </span>
-          </h3>
-        </div>
-        <div className='your-nft'>
-          <h3>Your NFTs:</h3>
-          <Row gutter={16}>
-            {campaignShowDetail.allNFTsOfOwner
-              ? campaignShowDetail.allNFTsOfOwner.map((nft, i) => (
-                  <Col
-                    xs={{ span: 12 }}
-                    sm={{ span: 8 }}
-                    xl={{ span: 6 }}
-                    key={i}
-                    className='card-nft'
-                  >
-                    <Card hoverable cover={<img alt={nft.name} src={nft.image} />}>
-                      <Meta title={nft.description} description={`${nft.name} (${nft.tokenId})`} />
-                    </Card>
-                  </Col>
-                ))
-              : ''}
-          </Row>
-        </div>
-      </Modal>
+      <ModalDetailCampaign
+        campaignShowDetail={campaignShowDetail}
+        loadingCancel={loadingCancel}
+        loadingClaim={loadingClaim}
+        loadingAccept={loadingAccept}
+        showModalDetail={showModalDetail}
+        cancelCampaign={cancelCampaign}
+        claimsCampaign={claimsCampaign}
+        adminAcceptCampaign={adminAcceptCampaign}
+        listCampaign={listCampaign}
+        setCampaignShowDetail={setCampaignShowDetail}
+        setShowModalDetail={setShowModalDetail}
+        counterDays={counterDays}
+      />
     </div>
   );
 }
