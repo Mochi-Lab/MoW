@@ -74,6 +74,7 @@ export default function FormCreateCampaign() {
   const changeTimeAirdrop = async (time) => {
     if (time) {
       const [startTime, endTime] = time;
+      console.log(startTime.unix(), endTime.unix());
       setStartTime(startTime.unix());
       setEndTime(endTime.unix());
     }

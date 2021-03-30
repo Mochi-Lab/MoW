@@ -56,17 +56,17 @@ export const connectWeb3Modal = async () => {
   if (chainId === 56 || chainId === 97) {
     let accounts = await web3.eth.getAccounts();
 
-    store.dispatch(setChainId(chainId));
-    store.dispatch(setWeb3(web3));
+    await store.dispatch(setChainId(chainId));
+    await store.dispatch(setWeb3(web3));
 
     if (accounts.length > 0) {
       // Sync 3box
       Sync3Box(accounts[0], provider);
 
-      store.dispatch(setAddress(accounts[0]));
+      await store.dispatch(setAddress(accounts[0]));
 
       // Init ERC721
-      store.dispatch(setAcceptedNfts());
+      await store.dispatch(setAcceptedNfts());
     }
   } else {
     alert('Please change to Binance Smart Chain Mainnet or Testnet');

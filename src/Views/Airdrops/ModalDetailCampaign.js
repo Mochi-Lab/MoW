@@ -22,7 +22,6 @@ export default function ModalDetailCampaign({
   claimsCampaign,
   adminAcceptCampaign,
   setShowModalDetail,
-  counterDays,
 }) {
   const [addSlots, setAddSlots] = useState(1);
   const [loadingAddMore, setLoadingAddMore] = useState();
