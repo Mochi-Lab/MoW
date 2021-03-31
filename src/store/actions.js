@@ -937,3 +937,50 @@ export const addMoreSlots = (campaignId, slots) => async (dispatch, getState) =>
     return false;
   }
 };
+
+export const rescheduleCampaign = (campaignId, startTime, endTime) => async (
+  dispatch,
+  getState
+) => {
+  let { nftCampaign, walletAddress } = getState();
+  try {
+    let result = await nftCampaign.methods
+      .rescheduleCampaign(campaignId, startTime, endTime)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Change Time Successfully !');
+        return true;
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+        return false;
+      });
+    return result;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+export const extendCampaign = (campaignId, endTime) => async (dispatch, getState) => {
+  let { nftCampaign, walletAddress } = getState();
+  try {
+    let result = await nftCampaign.methods
+      .extendCampaign(campaignId, endTime)
+      .send({ from: walletAddress })
+      .on('receipt', (receipt) => {
+        message.success('Extend Time Successfully !');
+        return true;
+      })
+      .on('error', (error, receipt) => {
+        console.log(error);
+        message.error('Oh no! Something went wrong !');
+        return false;
+      });
+    return result;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};

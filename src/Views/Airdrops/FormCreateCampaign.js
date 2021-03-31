@@ -12,7 +12,6 @@ import {
   Upload,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import {
   fetchListCampaign,
   addCampaign,
@@ -29,7 +28,7 @@ import { parseBalance } from 'utils/helper';
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 
-export default function FormCreateCampaign() {
+export default function FormCreateCampaign({ disabledDate }) {
   const [form] = Form.useForm();
 
   const { walletAddress, web3 } = useSelector((state) => state);
@@ -74,7 +73,6 @@ export default function FormCreateCampaign() {
   const changeTimeAirdrop = async (time) => {
     if (time) {
       const [startTime, endTime] = time;
-      console.log(startTime.unix(), endTime.unix());
       setStartTime(startTime.unix());
       setEndTime(endTime.unix());
     }
@@ -87,9 +85,6 @@ export default function FormCreateCampaign() {
     let value = e.target.value;
     setDescription(value);
   };
-  function disabledDate(current) {
-    return current && current < moment().subtract(1, 'days');
-  }
   async function handleClickCreate(current) {
     if (!walletAddress) {
       await connectWeb3Modal();
@@ -349,12 +344,11 @@ export default function FormCreateCampaign() {
               label={
                 <span>
                   Airdrop token{' '}
-                  {!!balanceOfOwner ? (
-                    <span>
-                      {' '}
-                      ( Balance: {balanceOfOwner.balanceOf} {balanceOfOwner.symbol})
-                    </span>
-                  ) : null}
+                  <span>
+                    {' '}
+                    ( Balance: {!!balanceOfOwner ? balanceOfOwner.balanceOf : 0}{' '}
+                    {balanceOfOwner ? balanceOfOwner.symbol : ''})
+                  </span>
                 </span>
               }
               name='tokenAddress'

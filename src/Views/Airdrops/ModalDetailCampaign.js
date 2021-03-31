@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Button, Col, Modal, Row, Card, Collapse, InputNumber, Form } from 'antd';
-import { fetchListCampaign, addMoreSlots } from 'store/actions';
+import { useState, useEffect } from 'react';
+import { Button, Col, Modal, Row, Card, Collapse, InputNumber, Form, DatePicker } from 'antd';
+import { fetchListCampaign, addMoreSlots, rescheduleCampaign, extendCampaign } from 'store/actions';
 import store from 'store/index';
 import './index.css';
 import { parseBalance, convertTimestampToDate } from 'utils/helper';
@@ -8,9 +8,11 @@ import BtnClaimCampaign from './BtnClaimCampaign';
 import BtnCancelCampaign from './BtnCancelCampaign';
 import BtnAcceptCampaign from './BtnAcceptCampaign';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 const { Meta } = Card;
 const { Panel } = Collapse;
+const { RangePicker } = DatePicker;
 
 export default function ModalDetailCampaign({
   campaignShowDetail,
@@ -22,11 +24,31 @@ export default function ModalDetailCampaign({
   claimsCampaign,
   adminAcceptCampaign,
   setShowModalDetail,
+  counterDays,
+  disabledDate,
 }) {
   const [addSlots, setAddSlots] = useState(1);
   const [loadingAddMore, setLoadingAddMore] = useState();
+  const [loadingChangeTime, setLoadingChangeTime] = useState();
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
+
+  const formatDate = 'YYYY/MM/DD HH:mm';
 
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.setFieldsValue({
+      times: [
+        moment(new Date(campaignShowDetail.startTime * 1000)),
+        moment(new Date(campaignShowDetail.endTime * 1000)),
+      ],
+    });
+    if (campaignShowDetail.startTime || campaignShowDetail.endTime) {
+      setStartTime(campaignShowDetail.startTime);
+      setEndTime(campaignShowDetail.endTime);
+    }
+  }, [campaignShowDetail.startTime, campaignShowDetail.endTime, form]);
 
   const changeAddSlots = async (amount) => {
     if (Number.isInteger(amount)) {
@@ -51,6 +73,61 @@ export default function ModalDetailCampaign({
       await store.dispatch(fetchListCampaign());
     }
     setLoadingAddMore(false);
+  };
+
+  const changeInputTimeAirdrop = async (time) => {
+    const [startTime, endTime] = time;
+    if (startTime && endTime) {
+      setStartTime(startTime.unix());
+      setEndTime(endTime.unix());
+    }
+  };
+  const handleExtendCampaign = async (campaignId) => {
+    let fieldErrors = null;
+    try {
+      await form.validateFields();
+    } catch (errorInfo) {
+      fieldErrors = errorInfo.errorFields;
+    }
+    if (!fieldErrors) {
+      setLoadingChangeTime(true);
+      await store.dispatch(extendCampaign(campaignId, endTime));
+      await store.dispatch(fetchListCampaign());
+      setLoadingChangeTime(false);
+    }
+  };
+  const handleRescheduleCampaign = async (campaignId) => {
+    let fieldErrors = null;
+    try {
+      await form.validateFields();
+    } catch (errorInfo) {
+      fieldErrors = errorInfo.errorFields;
+    }
+    if (!fieldErrors) {
+      setLoadingChangeTime(true);
+      await store.dispatch(rescheduleCampaign(campaignId, startTime, endTime));
+      await store.dispatch(fetchListCampaign());
+      setLoadingChangeTime(false);
+    }
+  };
+
+  const validateTimeChange = async (_, value) => {
+    if (!!value[0] && !!value[1]) {
+      if (
+        startTime === campaignShowDetail.startTime &&
+        campaignShowDetail.startTime > Math.floor(Date.now() / 1000)
+      ) {
+        return Promise.reject("'Start Time' not change");
+      }
+      if (endTime === campaignShowDetail.endTime) {
+        return Promise.reject("'End Time' not change");
+      }
+      if (endTime === startTime) {
+        return Promise.reject("'Start Time' equal 'End Time' is invalid");
+      }
+    } else {
+      return Promise.reject("'Times' is required");
+    }
   };
 
   return (
@@ -119,7 +196,7 @@ export default function ModalDetailCampaign({
                 <div className='add-slot-claim'>
                   <Collapse>
                     <Panel header='Add slots' key='1'>
-                      <Form form={form} layout='vertical' name='control-hooks'>
+                      <Form layout='vertical' name='control-hooks'>
                         <Form.Item
                           name='addSlots'
                           label='Slots'
@@ -168,27 +245,82 @@ export default function ModalDetailCampaign({
               ) : null}
             </div>
           </Col>
-          <Col xs={{ span: 24 }} md={{ span: 7 }}>
-            <div className='time-start-airdrop amount-time-airdrop-box'>
-              <div className='title-time-start'>Airdrop starts</div>
-              <div className='time-start'>
-                {convertTimestampToDate(campaignShowDetail.startTime)}
-              </div>
-            </div>
-          </Col>
-          <Col xs={{ span: 24 }} md={{ span: 7 }}>
-            <div className='claim-ends amount-time-airdrop-box'>
-              <div className='title-ends'>Claim ends</div>
-              <div className='time-end'>
-                {campaignShowDetail.startTime > Math.floor(Date.now() / 1000) ? (
-                  <span className='text-color-primary'>Pending</span>
-                ) : counterDays(campaignShowDetail.endTime) <= 0 ? (
-                  <span className='text-color-red'>Campaign ended</span>
-                ) : (
-                  `Ends in ${counterDays(campaignShowDetail.endTime)}`
-                )}
-              </div>
-            </div>
+          <Col xs={{ span: 24 }} md={{ span: 14 }}>
+            <Row>
+              <Col xs={{ span: 24 }} md={{ span: 12 }}>
+                <div className='time-start-airdrop amount-time-airdrop-box'>
+                  <div className='title-time-start'>Airdrop starts</div>
+                  <div className='time-start'>
+                    {convertTimestampToDate(campaignShowDetail.startTime)}
+                  </div>
+                </div>
+              </Col>
+              <Col xs={{ span: 24 }} md={{ span: 12 }}>
+                <div className='claim-ends amount-time-airdrop-box'>
+                  <div className='title-ends'>Claim ends</div>
+                  <div className='time-end'>
+                    {campaignShowDetail.startTime > Math.floor(Date.now() / 1000) ? (
+                      <span className='text-color-primary'>Pending</span>
+                    ) : counterDays(campaignShowDetail.endTime) <= 0 ? (
+                      <span className='text-color-red'>Campaign ended</span>
+                    ) : (
+                      `Ends in ${counterDays(campaignShowDetail.endTime)}`
+                    )}
+                  </div>
+                </div>
+              </Col>
+              <Col span={24}>
+                {campaignShowDetail.canCancel ? (
+                  <div className='change-time-campaign'>
+                    <Collapse>
+                      <Panel header='Change times' key='1'>
+                        <Form form={form} layout='vertical' name='control-hooks'>
+                          <Form.Item
+                            name='times'
+                            label='Times'
+                            rules={[{ validator: validateTimeChange }]}
+                          >
+                            <RangePicker
+                              showTime={'HH:mm'}
+                              format={formatDate}
+                              className='input-range-picker'
+                              size='large'
+                              disabledDate={disabledDate}
+                              onChange={changeInputTimeAirdrop}
+                              disabled={[
+                                campaignShowDetail.startTime < Math.floor(Date.now() / 1000),
+                                false,
+                              ]}
+                            />
+                          </Form.Item>
+                          {campaignShowDetail.startTime < Math.floor(Date.now() / 1000) ? (
+                            <Button
+                              type='primary'
+                              shape='round'
+                              onClick={() => handleExtendCampaign(campaignShowDetail.campaignId)}
+                              loading={loadingChangeTime}
+                            >
+                              Change
+                            </Button>
+                          ) : (
+                            <Button
+                              type='primary'
+                              shape='round'
+                              onClick={() =>
+                                handleRescheduleCampaign(campaignShowDetail.campaignId)
+                              }
+                              loading={loadingChangeTime}
+                            >
+                              Change
+                            </Button>
+                          )}
+                        </Form>
+                      </Panel>
+                    </Collapse>
+                  </div>
+                ) : null}
+              </Col>
+            </Row>
           </Col>
         </Row>
       </div>
