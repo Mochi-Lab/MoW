@@ -29,6 +29,7 @@ export default function Collections({ isCreateNew, setIsCreateNew }) {
   );
 
   const showModal = () => {
+    setIsCreateNew(true);
     setIsModalVisible(true);
   };
 
