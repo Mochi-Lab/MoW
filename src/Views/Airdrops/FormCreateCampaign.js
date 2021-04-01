@@ -100,8 +100,8 @@ export default function FormCreateCampaign() {
     if (!!value) {
       if (!!value && !!amountPerSlot && !!tokenAddress) {
         let weiBalance = await store.dispatch(checkBalance(tokenAddress));
-        let totalFunds = value * amountPerSlot;
-        if (parseBalance(weiBalance, 18) <= totalFunds)
+        let totalFunds = totalSlots * amountPerSlot;
+        if (parseBalance(weiBalance.weiBalance, 18) <= totalFunds)
           return Promise.reject(new Error('Run out of token'));
         return Promise.resolve();
       }
@@ -393,7 +393,10 @@ export default function FormCreateCampaign() {
                     min='1'
                     style={{ width: `100%`, borderRadius: '0.5rem' }}
                     value={totalSlots}
-                    onChange={(slots) => setTotalSlots(slots)}
+                    onChange={(slots) => {
+                      setTotalSlots(slots);
+                      if (slots) form.validateFields(['totalSlots', 'amountPer']);
+                    }}
                   />
                 </Form.Item>
               </Col>
@@ -415,7 +418,10 @@ export default function FormCreateCampaign() {
                     min='1'
                     style={{ width: `100%`, borderRadius: '0.5rem' }}
                     value={amountPerSlot}
-                    onChange={(amount) => setAmountPerSlot(amount)}
+                    onChange={(amount) => {
+                      setAmountPerSlot(amount);
+                      if (amount) form.validateFields(['totalSlots', 'amountPer']);
+                    }}
                   />
                 </Form.Item>
               </Col>
