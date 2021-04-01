@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { createSellOrder } from 'store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import bnb from 'Assets/binance-coin.svg';
+import LoadingModal from 'Components/LoadingModal';
 
 import './index.css';
 
@@ -12,6 +13,7 @@ export default function Sell({ token }) {
   const dispatch = useDispatch();
   const { addressToken, id } = useParams();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
   const { web3 } = useSelector((state) => state);
   const [loading, setLoading] = useState(false);
 
@@ -24,10 +26,12 @@ export default function Sell({ token }) {
   const onSubmit = useCallback(
     async (values) => {
       setLoading(true);
+      setVisible(true);
       await dispatch(
         createSellOrder(addressToken, id, web3.utils.toWei(values.price.toString(), 'ether'))
       );
       setIsModalVisible(false);
+      setVisible(false);
       setLoading(false);
     },
     [dispatch, addressToken, id, web3.utils]
@@ -43,6 +47,7 @@ export default function Sell({ token }) {
 
   return (
     <>
+      <LoadingModal title={'Sell'} visible={visible} />
       <div className='gSzfBw'>
         <Button type='primary' shape='round' size='large' onClick={showModal}>
           Sell
@@ -95,6 +100,7 @@ export default function Sell({ token }) {
           <Form onFinish={onSubmit} form={form}>
             <Form.Item name={['price']} rules={[{ required: true, message: 'Enter price' }]}>
               <InputNumber
+                className='textmode'
                 size='large'
                 formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 style={{ width: 250 }}

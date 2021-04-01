@@ -35,7 +35,6 @@ html[data-theme='light'] {
 }
 
 [data-theme='light'] .ant-menu-submenu-popup > .ant-menu,
-.center,
 .ant-radio-button-wrapper {
   background-color: #fff !important;
 }

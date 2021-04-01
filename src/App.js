@@ -27,7 +27,7 @@ function App() {
     fetchDataInit();
   }, []);
   return (
-    <div style={{ height: '100vh' }}>
+    <div className='app-background-color'>
       <BrowserRouter>
         <div className='page content'>
           <div className='bg-header'></div>

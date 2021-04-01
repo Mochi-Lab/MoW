@@ -15,6 +15,7 @@ import axios from 'axios';
 import { getContractAddress } from 'utils/getContractAddress';
 import { message } from 'antd';
 import * as randomAvatarGenerator from '@fractalsoftware/random-avatar-generator';
+import { getWeb3List } from 'utils/getWeb3List';
 const IPFS = require('ipfs-http-client');
 
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
@@ -432,26 +433,24 @@ export const createSellOrder = (nftAddress, tokenId, price) => async (dispatch, 
 };
 
 export const buyNft = (orderDetail) => async (dispatch, getState) => {
-  const { market, walletAddress, erc721Instances } = getState();
-  try {
-    await market.methods
-      .buy(orderDetail.sellId, 1, '0x')
-      .send({ from: walletAddress, value: orderDetail.price })
-      .on('receipt', (receipt) => {
-        message.success('Successfully purchased !');
-      })
-      .on('error', (error, receipt) => {
-        console.log(error);
-        message.error('Oh no! Something went wrong !');
-      });
-  } catch (error) {
-    message.error('Oh no! Something went wrong !');
-  }
+  const { market, walletAddress, erc721Instances, chainId } = getState();
+  let link = null;
+  await market.methods
+    .buy(orderDetail.sellId, 1, '0x')
+    .send({ from: walletAddress, value: orderDetail.price })
+    .on('receipt', (receipt) => {
+      link = getWeb3List(chainId).explorer + receipt.transactionHash;
+    })
+    .on('error', (error, receipt) => {
+      console.log(error);
+      message.error('Oh no! Something went wrong !');
+    });
 
   // Fetch new availableOrderList
   dispatch(setAvailableSellOrder());
   // get own nft
   dispatch(getOwnedERC721(erc721Instances));
+  return link;
 };
 
 export const cancelSellOrder = (orderDetail) => async (dispatch, getState) => {

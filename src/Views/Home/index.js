@@ -11,7 +11,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import './index.css';
 import iconNew from 'Assets/images/new.png';
 import iconShop from 'Assets/images/shop.png';
-import iconCreate from 'Assets/images/create.png';
 import banner1 from 'Assets/banners/Twitter-cover-size-02-02.png';
 
 export default function Home() {
@@ -20,22 +19,6 @@ export default function Home() {
     return [].concat(
       ...convertErc721Tokens.map((collections) => collections.tokens.map((token) => token))
     );
-  };
-  const randomCreate = () => {
-    let listNFT = mergeAllCollections();
-    if (listNFT.length < 7) {
-      return listNFT;
-    }
-    var arr = [];
-    var result = [];
-    while (arr.length < 8) {
-      var r = Math.floor(Math.random() * listNFT.length);
-      if (arr.indexOf(r) === -1) arr.push(r);
-    }
-    for (let i = 0; i < arr.length; i++) {
-      result.push(listNFT[arr[i]]);
-    }
-    return result;
   };
 
   const newListing = () => {
@@ -47,6 +30,7 @@ export default function Home() {
     });
     return listNFT.slice(0, 10);
   };
+
   return (
     <div className='content-home '>
       <Slider {...carouselBanner} className='carousel-banner-home'>
@@ -61,27 +45,6 @@ export default function Home() {
         </div>
       ) : (
         <div className='container'>
-          {/* <div className='top-sell-buy'>
-            <div className='title-top-sell-buy'>
-              <h2>Top artist </h2>
-            </div>
-            <Slider className='carousel-new-nfts' {...carouselTopSellBuy}>
-              {dataTopSelBuy.map((user, i) => (
-                <div className='item-top' key={i}>
-                  <div className='user-top'>
-                    <div className='num-order'>{i + 1}</div>
-                    <div className='avatar-top'>
-                      <img src={user.avatar} alt='avatar-top' />
-                    </div>
-                    <div className='info-top'>
-                      <p className='name-user-top'>{user.name}</p>
-                      <p className='amount-top'>{user.amount}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </Slider>
-          </div> */}
           <div className='new-nfts'>
             <div className='title-new'>
               <h2 className='textmode'>
@@ -90,20 +53,6 @@ export default function Home() {
             </div>
             <Slider className='carousel-new-nfts' {...carouselCard}>
               {newListing().map((nft, i) => (
-                <div className='item-carousel' key={i}>
-                  <CardNFTNotSearch token={nft} />
-                </div>
-              ))}
-            </Slider>
-          </div>
-          <div className='create-nft'>
-            <div className='title-create'>
-              <h2 className='textmode'>
-                Latest Created <img src={iconCreate} className='icon-new' alt='icon-new-created' />
-              </h2>
-            </div>
-            <Slider className='carousel-create-nfts' {...carouselCard}>
-              {randomCreate().map((nft, i) => (
                 <div className='item-carousel' key={i}>
                   <CardNFTNotSearch token={nft} />
                 </div>
