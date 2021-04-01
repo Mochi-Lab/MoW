@@ -4,6 +4,7 @@ import { Input, Grid, Col, Select } from 'antd';
 import { setStrSearch, setWeb3 } from 'store/actions';
 import { SearchOutlined } from '@ant-design/icons';
 import { getWeb3List, web3Default } from 'utils/getWeb3List';
+import { useLocation } from 'react-router-dom';
 import store from 'store/index';
 import './index.css';
 
@@ -14,6 +15,7 @@ export default function LeftNar() {
   const dispatch = useDispatch();
   const [network, setNetwork] = useState(97);
   const { chainId } = useSelector((state) => state);
+  const location = useLocation();
 
   useEffect(() => {
     if (!!chainId) setNetwork(chainId);
@@ -35,7 +37,7 @@ export default function LeftNar() {
   return (
     <Col
       span={md ? 40 : 25}
-      className='center'
+      className={location.pathname === '/browse' ? 'center' : 'alignItems'}
       style={{ height: '46px', paddingLeft: md ? '0px' : '10px' }}
     >
       <Select
@@ -52,15 +54,20 @@ export default function LeftNar() {
           </Option>
         ))}
       </Select>
-      <Input
-        size='large'
-        allowClear
-        style={{ width: '100%' }}
-        placeholder='Search by name, collection'
-        onChange={(e) => searchNFT(e.target.value)}
-        prefix={<SearchOutlined className='search-style' />}
-        className='input-search-nft'
-      />
+
+      {location.pathname === '/browse' ? (
+        <Input
+          size='large'
+          allowClear
+          style={{ width: '100%' }}
+          placeholder='Search by name, collection'
+          onChange={(e) => searchNFT(e.target.value)}
+          prefix={<SearchOutlined className='search-style' />}
+          className='input-search-nft'
+        />
+      ) : (
+        <></>
+      )}
     </Col>
   );
 }

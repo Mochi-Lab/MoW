@@ -41,6 +41,11 @@
   align-items: center;
 }
 
+.alignItems {
+  display: flex;
+  align-items: center;
+}
+
 .leftMenu .ant-col {
   background: var(--background-color);
 }
