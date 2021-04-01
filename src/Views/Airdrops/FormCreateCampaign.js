@@ -13,11 +13,18 @@ import {
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { fetchListCampaign, addCampaign, checkAllowance, approveERC20 } from 'store/actions';
+import {
+  fetchListCampaign,
+  addCampaign,
+  checkAllowance,
+  approveERC20,
+  checkBalance,
+} from 'store/actions';
 import store from 'store/index';
 import './index.css';
 import { useSelector } from 'react-redux';
 import { connectWeb3Modal } from 'Connections/web3Modal';
+import { parseBalance } from 'utils/helper';
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -34,14 +41,15 @@ export default function FormCreateCampaign() {
   const [description, setDescription] = useState();
   const [nftAddress, setNftAddress] = useState();
   const [tokenAddress, setTokenAddress] = useState();
-  const [totalFunds, setTotalFunds] = useState();
-  const [amountPerClaim, setAmountPerClaim] = useState();
+  const [totalSlots, setTotalSlots] = useState();
+  const [amountPerSlot, setAmountPerSlot] = useState();
   const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState();
   const [loadingApprove, setloadingApprove] = useState(false);
   const [iconToken, setIconToken] = useState();
   const [bannerImg, setBannerImg] = useState();
   const [loadingCreate, setLoadingCreate] = useState(false);
+  const [balanceOfOwner, setBalanceOfOwner] = useState(null);
 
   const changeShortTitle = async (e) => {
     let value = e.target.value;
@@ -59,12 +67,9 @@ export default function FormCreateCampaign() {
   const changeTokenAddress = async (e) => {
     let address = e.target.value;
     setTokenAddress(address);
-  };
-  const changeTotalFunds = async (amount) => {
-    setTotalFunds(amount);
-  };
-  const changeAmountPerClaim = async (amount) => {
-    setAmountPerClaim(amount);
+    let { balanceOf, symbol } = await showBalanceOfOwner(address);
+    if (!!balanceOf) setBalanceOfOwner({ balanceOf, symbol });
+    else setBalanceOfOwner(null);
   };
   const changeTimeAirdrop = async (time) => {
     if (time) {
@@ -88,19 +93,32 @@ export default function FormCreateCampaign() {
     if (!walletAddress) {
       await connectWeb3Modal();
     }
-    await setShowModalCreate(true);
+    setShowModalCreate(true);
   }
 
-  const compareTotal = (_, value) => {
+  const checkBalanceOwner = async (_, value) => {
     if (!!value) {
-      if (value <= totalFunds) {
+      if (!!value && !!amountPerSlot && !!tokenAddress) {
+        let weiBalance = await store.dispatch(checkBalance(tokenAddress));
+        let totalFunds = value * amountPerSlot;
+        if (parseBalance(weiBalance, 18) <= totalFunds)
+          return Promise.reject(new Error('Run out of token'));
         return Promise.resolve();
       }
-      return Promise.reject(new Error("'Claim per user' must less than 'Total claim'"));
     } else {
       return Promise.reject();
     }
   };
+  const showBalanceOfOwner = async (address) => {
+    if (!!address && !!web3.utils.isAddress(address)) {
+      let { weiBalance, symbol } = await store.dispatch(checkBalance(address));
+      if (weiBalance) {
+        return { balanceOf: parseBalance(weiBalance, 18), symbol };
+      }
+    }
+    return { balanceOf: null, symbol: null };
+  };
+
   const validateTokenClaim = async (_, value) => {
     if (!!value) {
       if (!!web3.utils.isAddress(value)) {
@@ -155,8 +173,8 @@ export default function FormCreateCampaign() {
         addCampaign(
           nftAddress,
           tokenAddress,
-          totalFunds,
-          amountPerClaim,
+          totalSlots,
+          amountPerSlot,
           startTime,
           endTime,
           titleShort,
@@ -326,9 +344,18 @@ export default function FormCreateCampaign() {
                 value={nftAddress}
               />
             </Form.Item>
-
             <Form.Item
-              label='Airdrop token'
+              label={
+                <span>
+                  Airdrop token{' '}
+                  {!!balanceOfOwner ? (
+                    <span>
+                      {' '}
+                      ( Balance: {balanceOfOwner.balanceOf} {balanceOfOwner.symbol})
+                    </span>
+                  ) : null}
+                </span>
+              }
               name='tokenAddress'
               rules={[
                 { required: true, message: "'Airdrop token' is required" },
@@ -350,42 +377,45 @@ export default function FormCreateCampaign() {
             <Row gutter={8}>
               <Col xs={{ span: 24 }} md={{ span: 12 }}>
                 <Form.Item
-                  name='amount'
-                  label='Total claim'
+                  name='totalSlots'
+                  label='Total slots'
                   rules={[
-                    { required: true, message: "'Total claim' is required" },
-                    { type: 'number', min: 0 },
+                    { required: true, message: "'Total slots' is required" },
+                    { type: 'number', min: 1 },
+                    {
+                      validator: checkBalanceOwner,
+                    },
                   ]}
                 >
                   <InputNumber
-                    placeholder='total claim'
+                    placeholder='total slots'
                     size='large'
                     min='1'
                     style={{ width: `100%`, borderRadius: '0.5rem' }}
-                    value={totalFunds}
-                    onChange={changeTotalFunds}
+                    value={totalSlots}
+                    onChange={(slots) => setTotalSlots(slots)}
                   />
                 </Form.Item>
               </Col>
               <Col xs={{ span: 24 }} md={{ span: 12 }}>
                 <Form.Item
                   name='amountPer'
-                  label='Claim per user'
+                  label='Amount per slot'
                   rules={[
-                    { required: true, message: "'Claim per user' is required" },
+                    { required: true, message: "'Amount per slot' is required" },
                     { type: 'number', min: 0 },
                     {
-                      validator: compareTotal,
+                      validator: checkBalanceOwner,
                     },
                   ]}
                 >
                   <InputNumber
-                    placeholder='claim per user'
+                    placeholder='amount per slot'
                     size='large'
                     min='1'
                     style={{ width: `100%`, borderRadius: '0.5rem' }}
-                    value={amountPerClaim}
-                    onChange={changeAmountPerClaim}
+                    value={amountPerSlot}
+                    onChange={(amount) => setAmountPerSlot(amount)}
                   />
                 </Form.Item>
               </Col>
@@ -396,8 +426,8 @@ export default function FormCreateCampaign() {
               rules={[{ required: true, message: "'Time airdrop' is required" }]}
             >
               <RangePicker
-                showTime
-                format='YYYY/MM/DD HH:mm:ss'
+                showTime={'HH:mm'}
+                format='YYYY/MM/DD HH:mm'
                 style={{ width: '100%', borderRadius: '0.5rem' }}
                 size='large'
                 disabledDate={disabledDate}

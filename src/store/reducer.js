@@ -40,7 +40,7 @@ const initialState = {
   userCollections: [],
 
   // Campaign - Airdrop
-  nftClaimToken: null,
+  nftCampaign: null,
   listCampaign: [],
   loadingCampaign: false,
 };
@@ -159,7 +159,7 @@ const rootReducer = (state = initialState, action) => {
     case actions.SET_NFT_CLAIM_TOKEN:
       return {
         ...state,
-        nftClaimToken: action.nftClaimToken,
+        nftCampaign: action.nftCampaign,
       };
     case actions.FETCH_LIST_CAMPAIGN:
       return {
