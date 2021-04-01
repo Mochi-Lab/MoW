@@ -1,12 +1,6 @@
 {"abi": [
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_addressesProvider",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -47,13 +41,13 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "totalFunds",
+        "name": "remainSlots",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amountPerClaim",
+        "name": "amountPerSlot",
         "type": "uint256"
       },
       {
@@ -106,19 +100,38 @@
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "claimer",
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "receiver",
         "type": "address"
       }
     ],
     "name": "Claimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "campaignId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "EmergencyWithdraw",
     "type": "event"
   },
   {
@@ -180,25 +193,6 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "campaignId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "WithdrawRemainFunds",
-    "type": "event"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -214,63 +208,19 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "nftAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
-        "name": "totalFunds",
+        "name": "campaignId",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "amountPerClaim",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "startTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "endTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "infoUrl",
-        "type": "string"
-      }
-    ],
-    "name": "addCampaign",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
+        "name": "slots",
         "type": "uint256"
       }
     ],
+    "name": "addMoreSlots",
+    "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "addressProvider",
-    "outputs": [
-      {
-        "internalType": "contract IAddressesProvider",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -282,7 +232,7 @@
       },
       {
         "internalType": "uint256[]",
-        "name": "tokenIds",
+        "name": "nftIds",
         "type": "uint256[]"
       },
       {
@@ -304,8 +254,13 @@
         "type": "uint256"
       },
       {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
         "internalType": "uint256[]",
-        "name": "tokenIds",
+        "name": "nftIds",
         "type": "uint256[]"
       }
     ],
@@ -318,6 +273,37 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "campaignId",
+        "type": "uint256"
+      }
+    ],
+    "name": "emergencyWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "campaignId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "extendCampaign",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -356,12 +342,12 @@
           },
           {
             "internalType": "uint256",
-            "name": "remainFunds",
+            "name": "remainSlots",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "amountPerClaim",
+            "name": "amountPerSlot",
             "type": "uint256"
           },
           {
@@ -427,12 +413,12 @@
           },
           {
             "internalType": "uint256",
-            "name": "remainFunds",
+            "name": "remainSlots",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "amountPerClaim",
+            "name": "amountPerSlot",
             "type": "uint256"
           },
           {
@@ -464,6 +450,19 @@
         "internalType": "struct NFTCampaign.Campaign",
         "name": "",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCampaignCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -516,7 +515,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "nftId",
         "type": "uint256"
       }
     ],
@@ -539,19 +538,6 @@
         "internalType": "uint256[]",
         "name": "",
         "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "nftList",
-    "outputs": [
-      {
-        "internalType": "contract INFTList",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -584,8 +570,87 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "nftAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalSlots",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountPerSlot",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "infoUrl",
+        "type": "string"
+      }
+    ],
+    "name": "registerCampaign",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "campaignId",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "removeExpiredCampaigns",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "campaignId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "rescheduleCampaign",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -612,24 +677,6 @@
       }
     ],
     "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "campaignId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "receiver",
-        "type": "address"
-      }
-    ],
-    "name": "withdrawRemainFunds",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

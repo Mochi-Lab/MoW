@@ -25,18 +25,18 @@ const RightMenu = () => {
 
   return (
     <Menu mode={screen.md && screen.lg ? 'horizontal' : 'inline'}>
-      <Menu.Item key='browse'>
+      {/* <Menu.Item key='browse'>
         <Link to='/browse'>Browse</Link>
       </Menu.Item>
       <Menu.Item key='/submit-Nfts'>
         <Link to='/submit-Nfts'>Submit NFTs</Link>
-      </Menu.Item>
+      </Menu.Item> */}
       <Menu.Item key='/airdrops'>
-        <Link to='/airdrops'>Airdrops</Link>
+        <Link to='/'>Airdrops</Link>
       </Menu.Item>
-      <Menu.Item key='/create'>
+      {/* <Menu.Item key='/create'>
         <Link to='/create'>Create</Link>
-      </Menu.Item>
+      </Menu.Item> */}
       <Menu.Item key='connect-wallet'>
         <ConnectWallet />
       </Menu.Item>
@@ -113,11 +113,11 @@ const RightMenu = () => {
               </div>
             </div>
           </Menu.Item>
-          <Menu.Item key='setting:2'>
+          {/* <Menu.Item key='setting:2'>
             <Link to='/profile'>
               <strong className='nav-textmode'>Profile</strong>
             </Link>
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item key='setting:1' disabled>
             <div style={{ cursor: 'pointer', color: 'black' }} className='justifyContent'>
               <strong className='nav-textmode'>Dark mode</strong>

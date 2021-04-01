@@ -237,6 +237,29 @@
   animation: pulseRing 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
 }
 
+.successDot {
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  background-color: var(--pulsating-dot, #52c31e);
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: pulseDot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite;
+}
+
+.successDot:before {
+  position: relative;
+  top: -100%;
+  left: -100%;
+  display: block;
+  width: 300%;
+  height: 300%;
+  background-color: var(--pulsating-dot, #52c31e);
+  border-radius: 45px;
+  content: '';
+  animation: pulseRing 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
 .btn-join-detail {
   background: #006cff 0% 0% no-repeat padding-box;
   border-radius: 5px;
@@ -486,6 +509,105 @@
   height: 100%;
   border-radius: 1.5rem;
   cursor: pointer;
+}
+
+.your-nft {
+  margin-top: 0.5rem;
+}
+
+.your-nft .ant-card {
+  border-radius: 1rem;
+}
+.your-nft .ant-card-cover img {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  height: 15vh;
+  width: 100%;
+}
+.your-nft .ant-card-meta-description {
+  color: rgba(0, 0, 0, 0.45) !important;
+}
+.your-nft .ant-card-body {
+  padding: 1rem;
+  text-align: center;
+}
+
+.your-nft .ant-card-meta-description p {
+  margin: 0 auto;
+}
+.your-nft .ant-card-hoverable {
+  border-color: transparent;
+  -webkit-box-shadow: 0 1px 2px -2px rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 12%),
+    0 5px 12px 4px rgb(0 0 0 / 9%);
+  box-shadow: 0 1px 2px -2px rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 12%),
+    0 5px 12px 4px rgb(0 0 0 / 9%);
+}
+
+.card-nft {
+  margin-top: 1rem;
+}
+
+.your-left-balance {
+  border-top: 1px solid #f0f0f0;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+.your-left-balance b {
+  color: black;
+  font-weight: bold;
+  font-size: large;
+}
+.your-left-balance b span {
+  color: #ff5e5f;
+}
+
+.balance-token-earn {
+  color: blue;
+  font-size: large;
+}
+
+.amount-time-airdrop {
+  text-align: center;
+}
+
+.amount-time-airdrop .ant-row {
+  width: 100%;
+}
+
+.amount-time-airdrop .ant-collapse {
+  border-radius: 1rem;
+}
+
+.amount-time-airdrop .ant-collapse > .ant-collapse-item,
+.amount-time-airdrop .ant-collapse > .ant-collapse-item:last-child {
+  border-radius: 1rem;
+}
+
+.amount-time-airdrop .ant-collapse-item:last-child > .ant-collapse-content {
+  border-radius: 0px 0px 1rem 1rem;
+}
+.amount-time-airdrop .ant-input-number {
+  width: 100%;
+}
+.amount-time-airdrop .ant-form-item-explain.ant-form-item-explain-error {
+  text-align: start;
+}
+.amount-time-airdrop .ant-input-number {
+  border-radius: 1rem;
+}
+.amount-time-airdrop .ant-input-number-handler-wrap {
+  display: none;
+}
+.amount-time-airdrop .ant-btn-round.ant-btn-sm {
+  padding: 0 8px;
+}
+.amount-time-airdrop .ant-input-number-input {
+  text-align: center;
+}
+
+.add-slot-claim {
+  margin-top: 0.5rem;
 }
 
 @media (max-width: 690px) {

@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Input, Grid, Col, Select } from 'antd';
-import { setStrSearch, setWeb3 } from 'store/actions';
+import { useSelector } from 'react-redux';
+import { Input, Grid, Col, Tag } from 'antd';
+import { setStrSearch } from 'store/actions';
 import { SearchOutlined } from '@ant-design/icons';
-import { getWeb3List, web3Default } from 'utils/getWeb3List';
+import { web3Default, networkDefault } from 'utils/getWeb3List';
 import { useLocation } from 'react-router-dom';
 import store from 'store/index';
 import './index.css';
 
 const { useBreakpoint } = Grid;
-const { Option } = Select;
 
 export default function LeftNar() {
-  const dispatch = useDispatch();
-  const [network, setNetwork] = useState(97);
+  const [network, setNetwork] = useState(networkDefault);
   const { chainId } = useSelector((state) => state);
   const location = useLocation();
 
@@ -21,18 +19,10 @@ export default function LeftNar() {
     if (!!chainId) setNetwork(chainId);
   }, [chainId]);
 
-  useEffect(() => {
-    dispatch(setWeb3(getWeb3List(network).web3Default));
-  }, [network, dispatch]);
-
   const { md } = useBreakpoint();
   const searchNFT = (text) => {
     store.dispatch(setStrSearch(text));
   };
-
-  function handleChange(value) {
-    setNetwork(value);
-  }
 
   return (
     <Col
@@ -40,20 +30,14 @@ export default function LeftNar() {
       className={location.pathname === '/browse' ? 'center' : 'alignItems'}
       style={{ height: '46px', paddingLeft: md ? '0px' : '10px' }}
     >
-      <Select
-        size='large'
-        defaultValue={97}
-        value={network}
-        className='input-search-nft textmode'
-        style={{ minWidth: 180, marginRight: 10 }}
-        onChange={handleChange}
-      >
-        {Object.keys(web3Default).map((item) => (
-          <Option key={item} value={parseInt(item)}>
-            {web3Default[`${item}`].name}
-          </Option>
-        ))}
-      </Select>
+      <Tag color='success' className='radius-1rem'>
+        <div className='box-live-time'>
+          <div className='icon-live successDot'></div>
+          <span className='time-counter--container'>
+            <span>&nbsp;{web3Default[`${network}`].name}</span>
+          </span>
+        </div>
+      </Tag>
 
       {location.pathname === '/browse' ? (
         <Input

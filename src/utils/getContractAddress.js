@@ -9,7 +9,7 @@ const contractAddress = {
     CreativeStudio: '0xa5dD241c1A9A9826fB8E78c7db4dc8fdD3043b66',
     ExchangeOrderList: '0x37ca1D6c7479F3Eb9d6d10309e6f0C611E6bE48F',
     Mochi: '0x3bF0FD7176204A80021C1BD17807144714E31148',
-    NFTCampaign: '',
+    NFTCampaign: '0x8B131F200Ffe95e3A3D123bFD05dc6fe1C43053E',
   },
   //BSC Testnet
   97: {
@@ -21,7 +21,7 @@ const contractAddress = {
     SellOrderList: '0x7E6A22965E26E9A5C9CEd3FDb7df8B7325848802',
     Vault: '0x2361A85d39686A27689051624e7Dd5a0DF1A0693',
     SeedifyNFT: '0xfA66C3001E0B3f9c6c203f5bBE483D121B28Ae6D',
-    NFTCampaign: '0xD8C508b9B16d5C74Abb55C1C9B1CFB84256B1c06',
+    NFTCampaign: '0x23442A5094aC64f1B54D07a199e79738f56bdbfE',
     Mochi: '0x254d7BEc0dc2644B58Ddb4f04Bd6C0144ea32E19',
   },
 };
