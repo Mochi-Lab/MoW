@@ -101,7 +101,7 @@ export default function FormCreateCampaign() {
       if (!!value && !!amountPerSlot && !!tokenAddress) {
         let weiBalance = await store.dispatch(checkBalance(tokenAddress));
         let totalFunds = totalSlots * amountPerSlot;
-        if (parseBalance(weiBalance.weiBalance, 18) <= totalFunds)
+        if (parseBalance(weiBalance.weiBalance, 18) < totalFunds)
           return Promise.reject(new Error('Run out of token'));
         return Promise.resolve();
       }
