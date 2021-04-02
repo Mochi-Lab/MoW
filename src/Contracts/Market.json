@@ -93,13 +93,18 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "id",
+          "name": "sellId",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
           "name": "amount",
           "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
         },
         {
           "internalType": "bytes",
@@ -116,7 +121,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "id",
+          "name": "exchangeId",
           "type": "uint256"
         }
       ],
@@ -129,7 +134,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "id",
+          "name": "sellId",
           "type": "uint256"
         }
       ],
@@ -142,33 +147,38 @@
       "inputs": [
         {
           "internalType": "address[]",
-          "name": "nftAddress",
+          "name": "nftAddresses",
           "type": "address[]"
         },
         {
           "internalType": "uint256[]",
-          "name": "tokenId",
+          "name": "tokenIds",
           "type": "uint256[]"
         },
         {
           "internalType": "uint256[]",
-          "name": "amount",
+          "name": "nftAmounts",
           "type": "uint256[]"
         },
         {
-          "internalType": "bytes",
-          "name": "sellerData",
-          "type": "bytes"
+          "internalType": "address[]",
+          "name": "tokens",
+          "type": "address[]"
         },
         {
-          "internalType": "address",
-          "name": "token",
-          "type": "address"
+          "internalType": "uint256[]",
+          "name": "prices",
+          "type": "uint256[]"
         },
         {
-          "internalType": "uint256",
-          "name": "price",
-          "type": "uint256"
+          "internalType": "address[]",
+          "name": "users",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "datas",
+          "type": "bytes[]"
         }
       ],
       "name": "createExchangeOrder",
@@ -213,8 +223,18 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "id",
+          "name": "exchangeId",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "destinationId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
         },
         {
           "internalType": "bytes",
@@ -295,6 +315,19 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "revokeToken",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "sellOrderList",
       "outputs": [
@@ -305,37 +338,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "token",
-          "type": "address"
-        }
-      ],
-      "name": "unAcceptToken",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "id",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "newPrice",
-          "type": "uint256"
-        }
-      ],
-      "name": "updateExchangePrice",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {

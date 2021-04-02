@@ -34,6 +34,12 @@
           "internalType": "address",
           "name": "nftAddress",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "isERC1155",
+          "type": "bool"
         }
       ],
       "name": "NFTAdded",
@@ -50,9 +56,9 @@
         },
         {
           "indexed": false,
-          "internalType": "uint256",
-          "name": "id",
-          "type": "uint256"
+          "internalType": "bool",
+          "name": "isERC1155",
+          "type": "bool"
         }
       ],
       "name": "NFTRegistered",
@@ -116,6 +122,19 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "getNFTCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -133,6 +152,11 @@
               "type": "uint256"
             },
             {
+              "internalType": "address",
+              "name": "nftAddress",
+              "type": "address"
+            },
+            {
               "internalType": "bool",
               "name": "isERC1155",
               "type": "bool"
@@ -148,22 +172,9 @@
               "type": "bool"
             }
           ],
-          "internalType": "struct DataTypes.NFTInfor",
+          "internalType": "struct DataTypes.NFTInfo",
           "name": "",
           "type": "tuple"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "getNFTsCount",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -234,6 +245,19 @@
         }
       ],
       "name": "registerNFT",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "nftAddress",
+          "type": "address"
+        }
+      ],
+      "name": "revokeNFT",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
