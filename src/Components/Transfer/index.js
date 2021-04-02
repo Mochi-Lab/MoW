@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { Modal, Button, Input } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import LoadingModal from 'Components/LoadingModal';
 import { transferNft } from 'store/actions';
 
 export default function Transfer({ token }) {
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [transferTo, setTransferTo] = useState('');
+  const [visible, setVisible] = useState(false);
   const { addressToken, id } = useParams();
   const { isLoadingTx } = useSelector((state) => state);
 
@@ -17,7 +19,9 @@ export default function Transfer({ token }) {
   };
 
   const handleOk = async () => {
-    dispatch(transferNft(addressToken, transferTo, id));
+    setVisible(true);
+    await dispatch(transferNft(addressToken, transferTo, id));
+    setVisible(false);
     setIsModalVisible(false);
   };
 
@@ -31,6 +35,7 @@ export default function Transfer({ token }) {
 
   return (
     <>
+      <LoadingModal title='Transfer' visible={visible} />
       <div className='gSzfBw'>
         <Button shape='round' size='large' onClick={showModal} loading={isLoadingTx}>
           Transfer

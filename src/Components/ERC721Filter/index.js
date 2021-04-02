@@ -70,7 +70,7 @@ export default function ERC721Filter({ erc721Tokens, isLoadingErc721 }) {
           innerWidth='50'
         />
       </div>
-      <Layout style={{ height: '100%' }}>
+      <Layout>
         <Sider className='site-layout-background style-sider-left'>
           <Menu
             mode='inline'
@@ -138,6 +138,7 @@ export default function ERC721Filter({ erc721Tokens, isLoadingErc721 }) {
               padding: 6,
               margin: 0,
               minHeight: 280,
+              overflow: 'auto',
             }}
           >
             {/* because isLoadingERC721 will false before start loading so isLoadingErc72 = null may be best option */}

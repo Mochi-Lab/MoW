@@ -34,10 +34,6 @@ html[data-theme='dark'] {
   background: rgb(58 58 58 / 85%) !important;
 }
 
-[data-theme='dark'] .center {
-  background: rgb(38 38 38) !important;
-}
-
 [data-theme='dark'] .content-home,
 .ant-menu-submenu-popup > .ant-menu {
   background: rgb(38 38 38) !important;
