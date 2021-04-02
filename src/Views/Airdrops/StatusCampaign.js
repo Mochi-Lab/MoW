@@ -59,7 +59,7 @@ export default function StatusCampaign({
         {campaign.status === '1' && campaign.startTime > Math.floor(Date.now() / 1000) ? (
           <div className='box-live-time'>
             <Tag icon={<SyncOutlined spin />} color='processing' className='radius-1rem'>
-              Comming soon
+              Coming Soon
             </Tag>
           </div>
         ) : null}
