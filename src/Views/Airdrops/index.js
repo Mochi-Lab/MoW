@@ -12,6 +12,7 @@ import IconLoading from 'Components/IconLoading';
 import FormCreateCampaign from './FormCreateCampaign';
 import StatusCampaign from './StatusCampaign';
 import ModalDetailCampaign from './ModalDetailCampaign';
+import moment from 'moment';
 
 export default function Airdrops() {
   const { listCampaign, nftCampaign, walletAddress, loadingCampaign } = useSelector(
@@ -40,6 +41,10 @@ export default function Airdrops() {
       setCampaignShowDetail(listCampaign[campaignShowDetail.index]);
     }
   }, [listCampaign, campaignShowDetail]);
+
+  function disabledDate(current) {
+    return current && current < moment().subtract(1, 'days');
+  }
 
   const setShowModalDetailCampaign = (status, campaign, index) => {
     setShowModalDetail(status);
@@ -112,7 +117,7 @@ export default function Airdrops() {
       )}
       <h1 className='title-airdrop textmode'>Airdrops</h1>
       <div className={`banner-airdrop ${listCampaign.length <= 0 ? 'margin-bottom-0' : ''}`}>
-        <FormCreateCampaign />
+        <FormCreateCampaign disabledDate={disabledDate} />
       </div>
       <div className='list-airdrop background-airdrop-mode'>
         <div className='show-campaigns'>
@@ -223,6 +228,7 @@ export default function Airdrops() {
         setCampaignShowDetail={setCampaignShowDetail}
         setShowModalDetail={setShowModalDetail}
         counterDays={counterDays}
+        disabledDate={disabledDate}
       />
     </div>
   );

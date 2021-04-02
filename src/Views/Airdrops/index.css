@@ -610,6 +610,15 @@
   margin-top: 0.5rem;
 }
 
+.input-range-picker {
+  width: 100%;
+  border-radius: 1rem !important;
+  height: 31px;
+}
+.input-range-picker .ant-picker-input input {
+  font-size: 13.5px !important;
+}
+
 @media (max-width: 690px) {
   .description-short {
     display: block;
