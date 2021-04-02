@@ -68,7 +68,7 @@
 }
 
 .description-short {
-  /* border-radius: 0px 0px 1.5rem 1.5rem; */
+  border-radius: 0px 0px 1.5rem 1.5rem;
   opacity: 1;
   backdrop-filter: blur(27px);
   -webkit-backdrop-filter: blur(27px);
@@ -509,6 +509,8 @@
   height: 100%;
   /* border-radius: 1.5rem; */
   cursor: pointer;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
 }
 
 .your-nft {
