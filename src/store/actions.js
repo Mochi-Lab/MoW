@@ -269,7 +269,7 @@ export const setCreativeStudio = (creativeStudio) => async (dispatch) => {
 // NFTs List
 ////////////////////
 
-export const registerNft = (contractAddress) => async (dispatch, getState) => {
+export const registerNft = (contractAddress, isERC1155 = false) => async (dispatch, getState) => {
   const { nftList, walletAddress, web3 } = getState();
 
   try {
@@ -277,7 +277,7 @@ export const registerNft = (contractAddress) => async (dispatch, getState) => {
     let ERC721token = new web3.eth.Contract(ERC721.abi, contractAddress);
     await ERC721token.methods.name().call();
     nftList.methods
-      .registerNFT(contractAddress)
+      .registerNFT(contractAddress, isERC1155)
       .send({ from: walletAddress })
       .on('receipt', (receipt) => {
         message.success('Register Successfully');
